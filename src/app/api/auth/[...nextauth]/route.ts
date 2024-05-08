@@ -1,5 +1,4 @@
 import { authenticate } from '@/services/authService';
-import nextAuth from 'next-auth';
 import type { AuthOptions } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -15,8 +14,8 @@ export const authOptions: AuthOptions = {
       async authorize(credentials, req) {
         if (typeof credentials !== 'undefined') {
           const res = await authenticate(
-            credentials.email,
-            credentials.password
+            credentials?.email,
+            credentials?.password
           );
           if (typeof res !== 'undefined') {
             return { ...res.user, apiToken: res.token };
