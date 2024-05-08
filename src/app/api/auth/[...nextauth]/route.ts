@@ -8,7 +8,7 @@ export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      name: 'snapscout-auth-service',
       credentials: {
         email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
@@ -35,7 +35,6 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async session({ session, token, user }) {
       const sanitizedToken = Object.keys(token).reduce((p, c) => {
-        // strip unnecessary properties
         if (c !== 'iat' && c !== 'exp' && c !== 'jti' && c !== 'apiToken') {
           return { ...p, [c]: token[c] };
         } else {
