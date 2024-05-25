@@ -1,4 +1,4 @@
-import React, { ComponentType } from "react";
+import React from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
@@ -18,7 +18,6 @@ const formSchema = z
   .object({
     firstName: z.string().min(1, { message: "character must be atleast 1" }),
     lastName: z.string().min(1, { message: "character must be atleast 1" }),
-    agency: z.string({ required_error: "Please select an agency" }),
     password: z.string().min(8),
     confirmPassword: z.string().min(8),
   })

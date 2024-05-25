@@ -36,16 +36,16 @@ function AgencyStepTwo({ handleNextStep }: StageComponentProps) {
   }
   const agencies = ["Navigatu", "Minegears", "Marvel"];
   return (
-    <div className="space-y-3">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="space-y-3">
           <FormField
             control={form.control}
             name="agency"
             render={({ field }) => (
               <FormItem>
                 <div className="space-y-2">
-                  <FormLabel>Second Name</FormLabel>
+                  <FormLabel>Agency Name</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -76,16 +76,28 @@ function AgencyStepTwo({ handleNextStep }: StageComponentProps) {
                 <div className="space-y-2">
                   <FormLabel>Contact Number</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Contact Number" />
+                    <Input
+                      {...field}
+                      placeholder="Contact Number"
+                      className="border border-[#CBD5E1]"
+                    />
                   </FormControl>
                 </div>
                 <FormMessage />
               </FormItem>
             )}
           />
-        </form>
-      </Form>
-    </div>
+          <div className="mt-5 flex justify-end w-full">
+            <Button
+              type="submit"
+              className="bg-[#0F172A] text-white rounded-[.5rem] p-5 hover:bg-[#0F172A]"
+            >
+              Continue
+            </Button>
+          </div>
+        </div>
+      </form>
+    </Form>
   );
 }
 
