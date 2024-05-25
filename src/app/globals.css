@@ -4,20 +4,28 @@
 
 body {
   --tw-bg-opacity: 1;
-  background-color: rgb(30 41 59 / var(--tw-bg-opacity));
+  background: rgb(27, 115, 84);
+  background: linear-gradient(56deg,
+      rgba(27, 115, 84, 1) 11%,
+      rgba(28, 74, 84, 1) 56%,
+      rgba(18, 18, 66, 1) 95%);
 }
+
 .lockup {
   max-width: 90ch;
   margin: 0 auto;
 }
+
 .lockup-small {
   max-width: 180ch;
   margin: 0 auto;
 }
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }

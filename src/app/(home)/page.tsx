@@ -1,10 +1,10 @@
-import Topnav from '@/componentUtils/Topnav';
+import Topnav from "@/componentUtils/Topnav";
+import Landing from "./Landing";
 
 export default async function Home() {
   return (
-    <div className='flex min-h-screen flex-col justify-between  overflow-visible'>
-      <Topnav />
-      <main>Hello World</main>
+    <div className="flex min-h-screen flex-col">
+      <Landing />
     </div>
   );
 }

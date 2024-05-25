@@ -1,23 +1,23 @@
-import { authenticate } from '@/services/authService';
-import type { AuthOptions } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
-import NextAuth from 'next-auth/next';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import { authenticate } from "@/services/authService";
+import type { AuthOptions } from "next-auth";
+import { JWT } from "next-auth/jwt";
+import NextAuth from "next-auth/next";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
-      name: 'snapscout-auth-service',
+      name: "snapscout-auth-service",
       credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        if (typeof credentials !== 'undefined') {
+        if (typeof credentials !== "undefined") {
           const res = await authenticate(
             credentials?.email,
-            credentials?.password
+            credentials?.password,
           );
           if (res) {
             const data = { ...res.user, apiToken: res.token };
@@ -31,11 +31,11 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
-  session: { strategy: 'jwt' },
+  session: { strategy: "jwt" },
   callbacks: {
     async session({ session, token, user }) {
       const sanitizedToken = Object.keys(token).reduce((p, c) => {
-        if (c !== 'iat' && c !== 'exp' && c !== 'jti' && c !== 'apiToken') {
+        if (c !== "iat" && c !== "exp" && c !== "jti" && c !== "apiToken") {
           return { ...p, [c]: token[c] };
         } else {
           return p;
