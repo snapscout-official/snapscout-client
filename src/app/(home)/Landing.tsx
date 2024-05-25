@@ -29,7 +29,9 @@ function Landing() {
       email: "",
     },
   });
-  const onSubmit = () => {};
+  const onSubmit = (data: { email: string }) => {
+    console.log(data);
+  };
   return (
     <MainContainer>
       <div className="grid grid-cols-1">
