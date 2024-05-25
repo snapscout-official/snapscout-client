@@ -24,7 +24,7 @@ export default async function RootLayout({
       </head>
       <body className={`${inter.className} antialiased`}>
         <Topnav />
-        <main className=" mt-[6rem] w-full">{children}</main>
+        <main className="mt-[6rem] w-full min-h-screen">{children}</main>
       </body>
     </html>
   );
