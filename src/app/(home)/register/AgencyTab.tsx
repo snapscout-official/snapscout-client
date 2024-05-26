@@ -2,16 +2,18 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import AgencyStepOne from "./AgencyStepOne";
-import { FormData } from "@/types/auth-types";
+import { States } from "@/types/auth-types";
 import AgencyStepTwo from "./AgencyStepTwo";
 import { StageTwoFormData, StageOneFormData } from "@/types/auth-types";
+import AgencyStepThree from "./AgencyStepThree";
 function AgencyTab() {
   const [step, setStep] = useState<number>(1);
-  const [formValues, setFormValues] = useState<FormData>({
+  const [formValues, setFormValues] = useState<States>({
     firstName: "",
     lastName: "",
     password: "",
     confirmPassword: "",
+    contactNumber: "",
     agency: "",
   });
   console.log(formValues);
@@ -26,6 +28,10 @@ function AgencyTab() {
       stage: 2,
       component: <AgencyStepTwo handleNextStep={handleNextStep} />,
     },
+    {
+      stage: 3,
+      component: <AgencyStepThree globalStates={formValues} />,
+    },
   ];
   function handleNextStep(data: StageTwoFormData | StageOneFormData) {
     if (step === maxStep) {
@@ -39,11 +45,12 @@ function AgencyTab() {
     setStep(step + 1);
   }
   return (
-    <Card className="bg-white border-none rounded-[.2rem] p-5">
-      <CardContent className="space-y-2"></CardContent>
-      {stages
-        .filter((componentStage) => componentStage.stage === step)
-        ?.map((stage) => stage.component)}
+    <Card className="bg-white border-none rounded-[.2rem] px-3 py-4">
+      <CardContent className="space-y-2">
+        {stages
+          .filter((componentStage) => componentStage.stage === step)
+          ?.map((stage) => stage.component)}
+      </CardContent>
     </Card>
   );
 }

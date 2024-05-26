@@ -1,16 +1,15 @@
 import { authenticate } from "@/services/authService";
-import type { AuthOptions } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
-import NextAuth from "next-auth/next";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-export const authOptions: AuthOptions = {
+export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "snapscout-auth-service",
       credentials: {
-        email: { label: "Email", type: "text" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
@@ -31,6 +30,9 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  pages: {
+    signIn: "/register",
+  },
   session: { strategy: "jwt" },
   callbacks: {
     async session({ session, token, user }) {
@@ -52,6 +54,17 @@ export const authOptions: AuthOptions = {
       }
       return token;
     },
+    // authorized({ auth, request: { nextUrl } }) {
+    //   const isLoggedIn = !!auth?.user;
+    //   const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
+    //   if (isOnDashboard) {
+    //     if (isLoggedIn) return true;
+    //     return false; // Redirect unauthenticated users to login page
+    //   } else if (isLoggedIn) {
+    //     return Response.redirect(new URL("/dashboard", nextUrl));
+    //   }
+    //   return true;
+    // },
   },
 };
 const handler = NextAuth(authOptions);

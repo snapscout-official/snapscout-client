@@ -55,7 +55,7 @@ function AgencyStepTwo({ handleNextStep }: StageComponentProps) {
                         <SelectValue placeholder="Select an agency" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="bg-[#18C873] text-white">
                       {agencies.map((agency, index) => (
                         <SelectItem value={agency} key={index}>
                           {agency}
@@ -68,6 +68,7 @@ function AgencyStepTwo({ handleNextStep }: StageComponentProps) {
               </FormItem>
             )}
           />
+          <div className="w-full bg-[#0F172A] h-[200px]"></div>
           <FormField
             control={form.control}
             name="contactNumber"
@@ -78,7 +79,7 @@ function AgencyStepTwo({ handleNextStep }: StageComponentProps) {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Contact Number"
+                      placeholder="Enter Contact Number"
                       className="border border-[#CBD5E1]"
                     />
                   </FormControl>

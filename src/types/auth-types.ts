@@ -1,9 +1,10 @@
-export type FormData = {
+export type States = {
   firstName: string | null;
   lastName: string | null;
   password: string | null;
   confirmPassword: string | null;
   agency: string | null;
+  contactNumber: string | null;
 };
 export type StageTwoFormData = {
   agency: string;
