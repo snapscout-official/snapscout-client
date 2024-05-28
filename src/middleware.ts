@@ -14,12 +14,12 @@ export default auth((req) => {
   const forbidden = !isPublicRoute && !isLoggedIn;
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return Response.redirect(new URL(AGENCY_DEFAULT_LOGIN_REDIRECT));
+      return Response.redirect(new URL(AGENCY_DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
     return null;
   }
   if (forbidden) {
-    return Response.redirect(new URL(DEFAULT_REGISTER_ROUTE));
+    return Response.redirect(new URL(DEFAULT_REGISTER_ROUTE, nextUrl));
   }
   return null;
 });
