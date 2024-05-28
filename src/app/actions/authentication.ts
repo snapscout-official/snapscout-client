@@ -1,9 +1,11 @@
 "use server";
+import { signIn } from "@/auth";
+import { AGENCY_DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { States } from "@/types/auth-types";
-import { signIn } from "next-auth/react";
+import { AuthError } from "next-auth";
 export async function registerUser(formData: States) {
   try {
-    const res = await fetch("http://localhost:8080/api/v1/agency/signup", {
+    const res = await fetch("http://localhost:8001/api/v1/agency/signup", {
       method: "POST",
       body: JSON.stringify({
         ...formData,
@@ -11,24 +13,39 @@ export async function registerUser(formData: States) {
         email: "gio.gonzales@carsu.edu.ph",
         buildingName: "Test",
         street: "Testing",
-        barangay: "SanVicente",
+        barangay: "San Vicente",
         city: "Butuan City",
         province: "Testing",
+        dateOfBirth: "June 11, 2002",
+        tinNumber: "1331231313",
         country: "Philippines",
         agencyCategory: "Test",
         position: "Manager",
       }),
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
     });
 
     if (!res.ok) {
-      console.log("Error: ", res.status);
+      console.log("Auth service response went wrong");
       return;
     }
-    signIn(undefined, { callbackUrl: "/" });
+    await signIn("credentials", {
+      email: "gio.gonzales@carsu.edu.ph",
+      password: formData.password,
+      redirectTo: AGENCY_DEFAULT_LOGIN_REDIRECT,
+    });
   } catch (err) {
-    console.log(err);
+    if (err instanceof AuthError) {
+      switch (err.type) {
+        case "CredentialsSignin":
+          return { error: "Invalid Credentials" };
+        default:
+          return { error: "Something went wrong" };
+      }
+    }
+    throw err;
   }
 }

@@ -1,20 +1,34 @@
-import Credentials from "next-auth/providers/credentials";
-import { authConfig } from "../auth.config";
-import NextAuth from "next-auth/next";
+import NextAuth from "next-auth";
+import { authConfig } from "./auth.config";
 import { authenticate } from "./services/authService";
-interface CredentialsInterface {
-  email: string;
-  password: string;
-}
-export const { auth, signIn, signOut } = NextAuth({
+import Credentials from "next-auth/providers/credentials";
+export const {
+  handlers: { GET, POST },
+  auth,
+  signIn,
+  signOut,
+} = NextAuth({
   ...authConfig,
+  session: { strategy: "jwt" },
   providers: [
     Credentials({
+      name: "snapscout-auth-service",
       async authorize(credentials) {
         try {
-          await authenticate(credentials?.email, credentials?.password);
-        } catch (error) {
-          console.log(error);
+          if (typeof credentials === "undefined") {
+            throw new Error("No credentials acquired");
+          }
+          const res = await authenticate(
+            credentials?.email,
+            credentials?.password,
+          );
+          if (!res.ok) {
+            throw new Error("fetch login error");
+          }
+          const data = await res.json();
+          return { ...data.user, apiToken: data.token };
+        } catch (err) {
+          throw err;
         }
       },
     }),

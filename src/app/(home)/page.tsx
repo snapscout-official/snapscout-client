@@ -1,4 +1,3 @@
-import Topnav from "@/componentUtils/Topnav";
 import Landing from "./Landing";
 
 export default async function Home() {

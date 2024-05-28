@@ -11,29 +11,34 @@ import {
 } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
-import { registerUser } from "@/app/actions/authentication";
 import { States } from "@/types/auth-types";
+import { registerUser } from "@/app/actions/authentication";
+import { useRouter } from "next/navigation";
 
-interface ComponentProps {
-  globalState: States;
-}
 const stageThreeSchema = z.object({
   acceptTermCondition: z.boolean({
     required_error: "Must accept terms and conditions to proceed",
   }),
 });
-function AgencyStepThree({ globalState }: ComponentProps) {
+
+function AgencyStepThree({ globalStates }: { globalStates: States }) {
   const [error, setError] = useState<string | null>();
   const form = useForm<z.infer<typeof stageThreeSchema>>({
     resolver: zodResolver(stageThreeSchema),
   });
+  async function signUser(formData: States) {
+    try {
+      await registerUser(formData);
+    } catch (err) {
+      console.log(err);
+    }
+  }
   async function onSubmit(data: { acceptTermCondition: boolean }) {
     if (!data.acceptTermCondition) {
       setError("Must accept terms and conditions");
       return;
     }
-    await registerUser(globalState);
-    console.log("Accepted");
+    await signUser(globalStates);
   }
   return (
     <div className="space-y-2">
