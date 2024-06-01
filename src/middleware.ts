@@ -6,21 +6,23 @@ import {
   authRoutes,
   publicRoutes,
 } from "@/routes";
+
 export default auth((req) => {
   const isLoggedIn = !!req.auth;
+  console.log(req.auth);
   const { nextUrl } = req;
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-  const forbidden = !isPublicRoute && !isLoggedIn;
-  if (isAuthRoute) {
-    if (isLoggedIn) {
-      return Response.redirect(new URL(AGENCY_DEFAULT_LOGIN_REDIRECT, nextUrl));
-    }
-    return null;
+
+  //auth type of middleware
+  if (isLoggedIn && isAuthRoute) {
+    return Response.redirect(new URL(AGENCY_DEFAULT_LOGIN_REDIRECT, nextUrl));
   }
-  if (forbidden) {
+  //guest type of middleware
+  if (!isPublicRoute && !isLoggedIn) {
     return Response.redirect(new URL(DEFAULT_REGISTER_ROUTE, nextUrl));
   }
+
   return null;
 });
 

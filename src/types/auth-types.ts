@@ -16,7 +16,10 @@ export type StageOneFormData = {
   password: string;
   confirmPassword: string;
 };
-
+export interface LoginStates {
+  email: string;
+  password: string;
+}
 export interface StageComponentProps {
   handleNextStep: (formValues: StageTwoFormData | StageOneFormData) => void;
 }

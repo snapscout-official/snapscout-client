@@ -16,9 +16,7 @@ function AgencyTab() {
     contactNumber: "",
     agency: "",
   });
-  console.log(formValues);
   const maxStep = 3;
-
   const stages = [
     {
       stage: 1,
