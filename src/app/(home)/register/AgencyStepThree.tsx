@@ -13,7 +13,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { States } from "@/types/auth-types";
 import { registerUser } from "@/app/actions/authentication";
-import { useRouter } from "next/navigation";
 
 const stageThreeSchema = z.object({
   acceptTermCondition: z.boolean({
@@ -33,7 +32,7 @@ function AgencyStepThree({ globalStates }: { globalStates: States }) {
       console.log(err);
     }
   }
-  async function onSubmit(data: { acceptTermCondition: boolean }) {
+  async function onSubmit(data: z.infer<typeof stageThreeSchema>) {
     if (!data.acceptTermCondition) {
       setError("Must accept terms and conditions");
       return;
@@ -41,7 +40,7 @@ function AgencyStepThree({ globalStates }: { globalStates: States }) {
     await signUser(globalStates);
   }
   return (
-    <div className="space-y-2">
+    <div className="space-y-5">
       <ScrollArea className="w-full h-[300px]">
         Jokester began sneaking into the castle in the middle of the night and
         leaving jokes all over the place: under the king's pillow, in his soup,

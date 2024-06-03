@@ -1,5 +1,5 @@
 "use server";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { AGENCY_DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { LoginStates, States } from "@/types/auth-types";
 import { AuthError } from "next-auth";
@@ -11,14 +11,12 @@ export async function registerUser(formData: States) {
         method: "POST",
         body: JSON.stringify({
           ...formData,
-          gender: "Male",
           email: "gio.gonzales@carsu.edu.ph",
           buildingName: "Test",
           street: "Testing",
           barangay: "San Vicente",
           city: "Butuan City",
           province: "Testing",
-          dateOfBirth: "June 11, 2002",
           tinNumber: "1331231313",
           country: "Philippines",
           agencyCategory: "Test",
@@ -68,5 +66,40 @@ export async function agencyLoginUser(formData: LoginStates) {
       }
     }
     throw err;
+  }
+}
+export async function logoutUser() {
+  try {
+    await signOut({ redirectTo: "/login" });
+    // redirect("/login");
+  } catch (err) {
+    if (err instanceof AuthError) {
+      switch (err.type) {
+        case "SignOutError":
+          return { error: "Error Signing Out" };
+        default:
+          return { error: "Something went wrong" };
+      }
+    }
+    throw err;
+  }
+}
+export async function authenticate(
+  email: string | unknown,
+  password: string | unknown,
+) {
+  try {
+    const res = await fetch("http://localhost:8001/api/v1/agency/login", {
+      body: JSON.stringify({ email: email, password: password }),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return res;
+  } catch (error) {
+    console.log("Failed to authenticate user in our server:", error);
+    throw new Error("Failed to authenticate user");
   }
 }

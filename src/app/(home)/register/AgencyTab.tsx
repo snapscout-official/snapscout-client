@@ -13,8 +13,9 @@ function AgencyTab() {
     lastName: "",
     password: "",
     confirmPassword: "",
-    contactNumber: "",
     agency: "",
+    contactNumber: "",
+    gender: "",
   });
   const maxStep = 3;
   const stages = [
@@ -43,7 +44,7 @@ function AgencyTab() {
     setStep(step + 1);
   }
   return (
-    <Card className="bg-white border-none rounded-[.2rem] px-3 py-4">
+    <Card className="bg-[#F1F5F9] border-none rounded-[.2rem] px-3 py-4">
       <CardContent className="space-y-2">
         {stages
           .filter((componentStage) => componentStage.stage === step)

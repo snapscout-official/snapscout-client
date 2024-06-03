@@ -9,12 +9,12 @@ export const Canvassing = () => {
         Your go-to marketplace
       </h2>
       <h1
-        className={`${inter700.className} font-bold text-[3rem] text-white text-center mt-1 md:text-[3.5rem] lg:text-[4rem]`}
+        className={`${inter700.className}  leading-tight tracking-tight font-bold text-[3rem] w-[50%] mx-auto text-white text-center mt-1 md:text-[3.5rem] lg:text-[4.3rem]`}
       >
         Canvassing Made Easy
       </h1>
       <p
-        className={`${interLight.className} text-md text-[#FFF5E0] font-semibold mx-auto text-center lg:w-[45%] lg:mx-auto`}
+        className={`${interLight.className} leading-loose text-xl text-[#FFF5E0] font-semibold mx-auto text-center lg:w-[75%] lg:mx-auto`}
       >
         Forget scrolling through endless online reviews or sifting through
         online posts - SnapScout puts the power of convenience at your

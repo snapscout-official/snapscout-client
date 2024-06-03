@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
-import { authenticate } from "./services/authService";
 import Credentials from "next-auth/providers/credentials";
+import { authenticate } from "./app/actions/authentication";
 export const {
   handlers: { GET, POST },
   auth,
@@ -12,7 +12,7 @@ export const {
   session: { strategy: "jwt" },
   providers: [
     Credentials({
-      name: "snapscout-auth-service",
+      name: "credentials",
       async authorize(credentials) {
         try {
           if (typeof credentials === "undefined") {
@@ -28,9 +28,36 @@ export const {
           const data = await res.json();
           return { ...data.user, apiToken: data.token };
         } catch (err) {
-          throw err;
+          console.log(err);
         }
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        const JwtToken = {
+          ...user,
+          ...token,
+        };
+        return JwtToken;
+      }
+      return token;
+    },
+    async session({ token, session }) {
+      const sanitizedToken = Object.keys(token).reduce((p, c) => {
+        if (c !== "iat" && c !== "exp" && c !== "jti" && c !== "apiToken") {
+          return { ...p, [c]: token[c] };
+        } else {
+          return p;
+        }
+      }, {});
+      const data = {
+        ...session,
+        user: sanitizedToken,
+        apiToken: token.apiToken,
+      };
+      return data;
+    },
+  },
 });

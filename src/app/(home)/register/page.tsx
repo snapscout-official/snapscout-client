@@ -11,7 +11,7 @@ function Register() {
         defaultValue="agency"
         className={`${inter.className} w-[500px] items-center `}
       >
-        <TabsList className="grid w-full grid-cols-2 bg-white rounded-[.3rem]">
+        <TabsList className="grid w-full grid-cols-2 bg-[#F1F5F9] rounded-[.3rem]">
           <TabsTrigger value="agency">Agency</TabsTrigger>
           <TabsTrigger value="merchant">Merchant</TabsTrigger>
         </TabsList>
@@ -19,7 +19,7 @@ function Register() {
           <AgencyTab />
         </TabsContent>
         <Link
-          href="#"
+          href="/login"
           className={`${inter.className} underline text-[#F1F5F9] text-sm `}
         >
           Log in Instead

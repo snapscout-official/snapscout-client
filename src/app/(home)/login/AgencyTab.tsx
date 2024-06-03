@@ -43,8 +43,8 @@ export default function AgencyTab() {
     }
   }
   return (
-    <Card className="bg-white min-w-full border-none p-3">
-      <CardContent className="w-full">
+    <Card className="bg-[#F1F5F9] min-w-full border-none p-5 ">
+      <CardContent className="w-full p-10">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleLogin)}>
             <div className="space-y-3">
@@ -58,7 +58,7 @@ export default function AgencyTab() {
                     <FormControl>
                       <Input
                         placeholder="Email "
-                        className="border-[#E6E6E6] rounded-[.5rem]"
+                        className="border-[#E6E6E6] rounded-[.5rem] bg-white"
                         type="email"
                         {...field}
                       />
@@ -76,7 +76,7 @@ export default function AgencyTab() {
                     <FormControl>
                       <Input
                         placeholder="password"
-                        className="border-[#E6E6E6] rounded-[.5rem]"
+                        className="border-[#E6E6E6] rounded-[.5rem] bg-white"
                         type="password"
                         {...field}
                       />
@@ -85,16 +85,18 @@ export default function AgencyTab() {
                 )}
               />
 
-              <Button
-                disabled={loading}
-                type="submit"
-                className="bg-[#0F172A] text-white rounded-[.5rem] p-5 hover:bg-[#0F172A]"
-              >
-                {loading ? (
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                ) : null}
-                Login
-              </Button>
+              <div className="mt-5 flex justify-end w-full">
+                <Button
+                  disabled={loading}
+                  type="submit"
+                  className="bg-[#0F172A] text-white rounded-[.5rem] p-5 hover:bg-[#0F172A]"
+                >
+                  {loading ? (
+                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  ) : null}
+                  Login
+                </Button>
+              </div>
             </div>
           </form>
         </Form>

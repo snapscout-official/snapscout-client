@@ -17,7 +17,11 @@ import {
 const formSchema = z
   .object({
     firstName: z.string().min(1, { message: "character must be atleast 1" }),
+    email: z.string().email({ message: "must be a valid email" }),
     lastName: z.string().min(1, { message: "character must be atleast 1" }),
+    tinNumber: z
+      .string()
+      .min(6, { message: "character must be atleast 6 characters long" }),
     password: z.string().min(8),
     confirmPassword: z.string().min(8),
   })
@@ -77,7 +81,7 @@ function AgencyStepOne({ handleNextStep }: StageComponentProps) {
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
                     <Input
-                      className=" text-[#64748B] border border-[#E6E6E6]"
+                      className=" text-[#64748B] border border-[#E6E6E6] bg-white"
                       {...field}
                     />
                   </FormControl>
@@ -95,7 +99,7 @@ function AgencyStepOne({ handleNextStep }: StageComponentProps) {
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
                     <Input
-                      className=" text-[#64748B] border border-[#E6E6E6]"
+                      className=" text-[#64748B] border border-[#E6E6E6] bg-white"
                       {...field}
                     />
                   </FormControl>
@@ -106,6 +110,44 @@ function AgencyStepOne({ handleNextStep }: StageComponentProps) {
           />
           <FormField
             control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="">
+                <div className="space-y-2">
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      className=" text-[#64748B] border border-[#E6E6E6] bg-white"
+                      type="email"
+                      {...field}
+                    />
+                  </FormControl>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="tinNumber"
+            render={({ field }) => (
+              <FormItem>
+                <div className="space-y-2">
+                  <FormLabel>Tin Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      className=" text-[#64748B] border border-[#E6E6E6] bg-white"
+                      {...field}
+                    />
+                  </FormControl>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="password"
             render={({ field }) => (
               <FormItem className="">
@@ -114,7 +156,7 @@ function AgencyStepOne({ handleNextStep }: StageComponentProps) {
                   <FormControl>
                     <Input
                       type="password"
-                      className=" text-[#64748B] border border-[#E6E6E6]"
+                      className=" text-[#64748B] border border-[#E6E6E6] bg-white"
                       {...field}
                     />
                   </FormControl>
@@ -133,7 +175,7 @@ function AgencyStepOne({ handleNextStep }: StageComponentProps) {
                   <FormControl>
                     <Input
                       type="password"
-                      className=" text-[#64748B] border border-[#E6E6E6]"
+                      className=" text-[#64748B] border border-[#E6E6E6] bg-white"
                       {...field}
                     />
                   </FormControl>
