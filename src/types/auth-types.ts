@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { merchantThreeSchema, merchantTwoSchema } from "./schema";
 export type States = {
   firstName: string | null;
   lastName: string | null;
@@ -28,10 +30,29 @@ export type StageOneFormData = {
   tinNumber: string;
   confirmPassword: string;
 };
+export interface MerchantStageTwo {
+  businessName: string;
+  buildingName: string;
+  street: string;
+  barangay: string;
+  city: string;
+  province: string;
+  country: string;
+}
+export interface MerchantStageThree {
+  accepts: boolean;
+  bussinessPermit: FileList;
+  philgeps: FileList;
+}
 export interface LoginStates {
   email: string;
   password: string;
 }
-export interface StageComponentProps {
+export interface AgencyStageComponentProps {
   handleNextStep: (formValues: StageTwoFormData | StageOneFormData) => void;
+}
+export interface MerchantStageComponentProps {
+  handleNextStep: (
+    formData: StageOneFormData | MerchantStageTwo | MerchantStageThree,
+  ) => void;
 }

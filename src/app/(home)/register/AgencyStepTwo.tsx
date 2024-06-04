@@ -22,11 +22,15 @@ import {
   FormMessage,
   FormField,
 } from "@/components/ui/form";
-import { StageComponentProps, StageTwoFormData } from "@/types/auth-types";
+import {
+  AgencyStageComponentProps,
+  StageTwoFormData,
+} from "@/types/auth-types";
 import { Popover, PopoverContent } from "@/components/ui/popover";
 import { PopoverTrigger } from "@radix-ui/react-popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "@radix-ui/react-icons";
+import SubmitButton from "@/componentUtils/SubmitButton";
 
 const stageTwoSchema = z.object({
   agency: z.string({ required_error: "Must select an agency" }),
@@ -36,13 +40,12 @@ const stageTwoSchema = z.object({
     message: "Contact number must be atleast 11 characters long",
   }),
 });
-function AgencyStepTwo({ handleNextStep }: StageComponentProps) {
+function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
   const form = useForm<z.infer<typeof stageTwoSchema>>({
     resolver: zodResolver(stageTwoSchema),
   });
 
   function onSubmit(data: StageTwoFormData) {
-    console.log(data.dateOfBirth);
     handleNextStep(data);
   }
   const agencies = ["Navigatu", "Minegears", "Marvel"];
@@ -179,12 +182,7 @@ function AgencyStepTwo({ handleNextStep }: StageComponentProps) {
             )}
           />
           <div className="mt-5 flex justify-end w-full">
-            <Button
-              type="submit"
-              className="bg-[#0F172A] text-white rounded-[.5rem] p-5 hover:bg-[#0F172A]"
-            >
-              Continue
-            </Button>
+            <SubmitButton>Continue</SubmitButton>
           </div>
         </div>
       </form>

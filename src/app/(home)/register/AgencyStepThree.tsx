@@ -13,6 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { States } from "@/types/auth-types";
 import { registerUser } from "@/app/actions/authentication";
+import SubmitButton from "@/componentUtils/SubmitButton";
 
 const stageThreeSchema = z.object({
   acceptTermCondition: z.boolean({
@@ -83,12 +84,7 @@ function AgencyStepThree({ globalStates }: { globalStates: States }) {
             )}
           />
           <div className="mt-5 flex justify-end w-full">
-            <Button
-              type="submit"
-              className="bg-[#0F172A] text-white rounded-[.5rem] p-5 hover:bg-[#0F172A]"
-            >
-              Continue
-            </Button>
+            <SubmitButton>Submit</SubmitButton>
           </div>
         </form>
       </Form>

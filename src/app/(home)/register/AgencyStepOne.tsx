@@ -2,9 +2,12 @@ import React from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { StageComponentProps, StageOneFormData } from "@/types/auth-types";
+import {
+  AgencyStageComponentProps,
+  MerchantStageComponentProps,
+  StageOneFormData,
+} from "@/types/auth-types";
 import {
   Form,
   FormLabel,
@@ -13,6 +16,7 @@ import {
   FormMessage,
   FormField,
 } from "@/components/ui/form";
+import SubmitButton from "@/componentUtils/SubmitButton";
 
 const formSchema = z
   .object({
@@ -55,7 +59,9 @@ const formSchema = z
       });
     }
   });
-function AgencyStepOne({ handleNextStep }: StageComponentProps) {
+export default function StepOne({
+  handleNextStep,
+}: AgencyStageComponentProps | MerchantStageComponentProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -186,16 +192,9 @@ function AgencyStepOne({ handleNextStep }: StageComponentProps) {
           />
         </div>
         <div className="mt-5 flex justify-end w-full">
-          <Button
-            type="submit"
-            className="bg-[#0F172A] text-white rounded-[.5rem] p-5 hover:bg-[#0F172A]"
-          >
-            Continue
-          </Button>
+          <SubmitButton>Continue</SubmitButton>
         </div>
       </form>
     </Form>
   );
 }
-
-export default AgencyStepOne;

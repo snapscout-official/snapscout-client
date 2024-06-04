@@ -1,7 +1,15 @@
 "use client";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { Card, CardContent } from "@/components/ui/card";
+
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { inter } from "@/app/ui/fonts";
+import { agencyLoginUser } from "@/app/actions/authentication";
+import { LoginStates } from "@/types/auth-types";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
 import {
   Form,
@@ -10,13 +18,6 @@ import {
   FormItem,
   FormControl,
 } from "@/components/ui/form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { inter } from "@/app/ui/fonts";
-import { agencyLoginUser } from "@/app/actions/authentication";
-import { LoginStates } from "@/types/auth-types";
 const formSchema = z.object({
   email: z.string().min(3, { message: "Email too short" }).email(),
   password: z.string().min(1, { message: "Password is required" }),
@@ -76,7 +77,7 @@ export default function AgencyTab() {
                     <FormControl>
                       <Input
                         placeholder="password"
-                        className="border-[#E6E6E6] rounded-[.5rem] bg-white"
+                        className="border-[#E6E6E6] rounded-[.5rem] bg-white "
                         type="password"
                         {...field}
                       />

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import AgencyStepOne from "./AgencyStepOne";
+import StepOne from "./AgencyStepOne";
 import { States } from "@/types/auth-types";
 import AgencyStepTwo from "./AgencyStepTwo";
 import { StageTwoFormData, StageOneFormData } from "@/types/auth-types";
@@ -21,22 +21,21 @@ function AgencyTab() {
   const stages = [
     {
       stage: 1,
-      component: <AgencyStepOne handleNextStep={handleNextStep} />,
+      component: <StepOne key={1} handleNextStep={handleNextStep} />,
     },
     {
       stage: 2,
-      component: <AgencyStepTwo handleNextStep={handleNextStep} />,
+      component: <AgencyStepTwo key={2} handleNextStep={handleNextStep} />,
     },
     {
       stage: 3,
-      component: <AgencyStepThree globalStates={formValues} />,
+      component: <AgencyStepThree key={3} globalStates={formValues} />,
     },
   ];
   function handleNextStep(data: StageTwoFormData | StageOneFormData) {
-    if (step === maxStep) {
+    if (step >= maxStep) {
       //validate either using components own function or here must set loading state
-      setStep(1);
-      return;
+      throw new Error("Cannot go beyond last stage");
     }
     //appends formData into the global state
     setFormValues({ ...formValues, ...data });
@@ -48,7 +47,7 @@ function AgencyTab() {
       <CardContent className="space-y-2">
         {stages
           .filter((componentStage) => componentStage.stage === step)
-          ?.map((stage) => stage.component)}
+          ?.map((stage, index) => stage.component)}
       </CardContent>
     </Card>
   );

@@ -4,6 +4,7 @@ import { inter } from "@/app/ui/fonts";
 import AgencyTab from "./AgencyTab";
 import CenterContainer from "@/componentUtils/CenterContainer";
 import Link from "next/link";
+import MerchantTab from "./MerchantTab";
 function Register() {
   return (
     <CenterContainer>
@@ -18,6 +19,9 @@ function Register() {
         <TabsContent value="agency">
           <AgencyTab />
         </TabsContent>
+        <TabsContent value="merchant">
+          <MerchantTab />
+        </TabsContent>
         <Link
           href="/login"
           className={`${inter.className} underline text-[#F1F5F9] text-sm `}
@@ -25,7 +29,6 @@ function Register() {
           Log in Instead
         </Link>
       </Tabs>
-      <div className="w-full flex justify-center"></div>
     </CenterContainer>
   );
 }
