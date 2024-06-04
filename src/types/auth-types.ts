@@ -1,5 +1,3 @@
-import { z } from "zod";
-import { merchantThreeSchema, merchantTwoSchema } from "./schema";
 export type States = {
   firstName: string | null;
   lastName: string | null;
