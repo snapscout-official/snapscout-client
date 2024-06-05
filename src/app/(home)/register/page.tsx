@@ -5,7 +5,7 @@ import AgencyTab from "./AgencyTab";
 import CenterContainer from "@/componentUtils/CenterContainer";
 import Link from "next/link";
 import MerchantTab from "./MerchantTab";
-function Register() {
+async function Register() {
   return (
     <CenterContainer>
       <Tabs

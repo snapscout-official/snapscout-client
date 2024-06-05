@@ -9,6 +9,7 @@ import {
 } from "@/types/auth-types";
 import MerchantSteptwo from "./MerchantSteptwo";
 import MerchantStepThree from "./MerchantStepThree";
+import MerchantStepFour from "./MerchantStepFour";
 export default function MerchantTab() {
   const [step, setStep] = useState<number>(1);
   const [globalFormValues, setGlobalFormValues] = useState({});
@@ -25,6 +26,12 @@ export default function MerchantTab() {
     {
       component: <MerchantStepThree key={3} handleNextStep={handleNextStep} />,
       stage: 3,
+    },
+    {
+      component: (
+        <MerchantStepFour key={4} globalFormValues={globalFormValues} />
+      ),
+      stage: 4,
     },
   ];
   function handleNextStep(

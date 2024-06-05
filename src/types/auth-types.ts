@@ -14,6 +14,24 @@ export type StageThreeFormData = {
   city: string;
   province: string;
 };
+export interface MerchantGlobalStates {
+  firstName: string;
+  email: string;
+  lastName: string;
+  password: string;
+  tinNumber: string;
+  confirmPassword: string;
+  businessName: string;
+  buildingName: string;
+  street: string;
+  barangay: string;
+  city: string;
+  province: string;
+  country: string;
+  accepts: boolean;
+  bussinessPermit: FileList;
+  philgeps: FileList;
+}
 export type StageTwoFormData = {
   agency: string;
   contactNumber: string;

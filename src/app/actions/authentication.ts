@@ -1,9 +1,10 @@
 "use server";
 import { signIn, signOut } from "@/auth";
 import { AGENCY_DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { LoginStates, States } from "@/types/auth-types";
+import { LoginStates, MerchantGlobalStates, States } from "@/types/auth-types";
+import { error } from "console";
 import { AuthError } from "next-auth";
-export async function registerUser(formData: States) {
+export async function registerAgencyUser(formData: States) {
   try {
     const res = await fetch(
       `${process.env.AUTH_SERVICE_URL}/api/v1/agency/signup`,
@@ -79,6 +80,38 @@ export async function logoutUser() {
           return { error: "Error Signing Out" };
         default:
           return { error: "Something went wrong" };
+      }
+    }
+    throw err;
+  }
+}
+
+export async function registerMerchantUser(formData: MerchantGlobalStates) {
+  try {
+    const res = await fetch(
+      `${process.env.AUTH_SERVICE_URL}/api/v1/merchant/signup`,
+      {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      },
+    );
+    if (!res.ok) throw new Error("Something went wrong on the server");
+    await signIn("credentials", {
+      email: formData.email,
+      password: formData.password,
+      redirectTo: AGENCY_DEFAULT_LOGIN_REDIRECT,
+    });
+  } catch (err) {
+    if (err instanceof AuthError) {
+      switch (err.type) {
+        case "CredentialsSignin":
+          return { error: "invalid credentials" };
+        default:
+          return { error: "something went wrong" };
       }
     }
     throw err;

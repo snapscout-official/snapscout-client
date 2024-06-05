@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,7 +11,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { States } from "@/types/auth-types";
-import { registerUser } from "@/app/actions/authentication";
+import { registerAgencyUser } from "@/app/actions/authentication";
 import SubmitButton from "@/componentUtils/SubmitButton";
 
 const stageThreeSchema = z.object({
@@ -28,7 +27,7 @@ function AgencyStepThree({ globalStates }: { globalStates: States }) {
   });
   async function signUser(formData: States) {
     try {
-      await registerUser(formData);
+      await registerAgencyUser(formData);
     } catch (err) {
       console.log(err);
     }
