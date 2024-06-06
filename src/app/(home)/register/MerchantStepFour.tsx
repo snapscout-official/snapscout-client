@@ -44,9 +44,16 @@ export default function MerchantStepFour({ globalFormValues }: StepFourProps) {
       globalFormValues.bussinessPermit[0],
       globalFormValues.philgeps[0],
     ]);
-    console.log(bufferResult);
-    return;
-    const result = await registerMerchantUser(globalFormValues);
+    const newFormData = new FormData();
+    Object.keys(globalFormValues).forEach((keys: string) => {
+      if (!(globalFormValues[keys] instanceof FileList)) {
+        newFormData.append(keys, globalFormValues[keys]);
+        return;
+      }
+      newFormData.append(keys, globalFormValues[keys][0]);
+    });
+
+    const result = await registerMerchantUser(newFormData);
   }
 
   return (

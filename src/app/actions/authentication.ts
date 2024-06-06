@@ -86,13 +86,13 @@ export async function logoutUser() {
   }
 }
 
-export async function registerMerchantUser(formData: MerchantGlobalStates) {
+export async function registerMerchantUser(formData: FormData) {
   try {
     const res = await fetch(
       `${process.env.AUTH_SERVICE_URL}/api/v1/merchant/signup`,
       {
         method: "POST",
-        body: JSON.stringify(formData),
+        body: JSON.stringify(Object.fromEntries(formData)),
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -101,8 +101,8 @@ export async function registerMerchantUser(formData: MerchantGlobalStates) {
     );
     if (!res.ok) throw new Error("Something went wrong on the server");
     await signIn("credentials", {
-      email: formData.email,
-      password: formData.password,
+      email: formData.get("email"),
+      password: formData.get("password"),
       redirectTo: AGENCY_DEFAULT_LOGIN_REDIRECT,
     });
   } catch (err) {
