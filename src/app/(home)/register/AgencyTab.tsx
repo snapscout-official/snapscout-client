@@ -8,15 +8,7 @@ import { StageTwoFormData, StageOneFormData } from "@/types/auth-types";
 import AgencyStepThree from "./AgencyStepThree";
 function AgencyTab() {
   const [step, setStep] = useState<number>(1);
-  const [formValues, setFormValues] = useState<States>({
-    firstName: "",
-    lastName: "",
-    password: "",
-    confirmPassword: "",
-    agency: "",
-    contactNumber: "",
-    gender: "",
-  });
+  const [formValues, setFormValues] = useState<States>({});
   const maxStep = 3;
   const stages = [
     {

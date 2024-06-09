@@ -4,13 +4,13 @@ declare module "next-auth" {
   }
 }
 export type States = {
-  firstName: string | null;
-  lastName: string | null;
-  password: string | null;
-  confirmPassword: string | null;
-  agency: string | null;
-  contactNumber: string | null;
-  gender: string | null;
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  confirmPassword?: string;
+  agency?: string;
+  contactNumber?: string;
+  gender?: string;
 };
 export type StageThreeFormData = {
   buildingName: string;
@@ -20,26 +20,26 @@ export type StageThreeFormData = {
   province: string;
 };
 export interface MerchantGlobalStates {
-  firstName: string;
-  gender: Gender | undefined;
-  email: string;
-  lastName: string;
-  dateOfBirth: string | undefined;
-  phoneNumber: string | undefined;
-  category: string | undefined;
-  password: string;
-  tinNumber: string;
-  confirmPassword: string;
-  businessName: string;
-  buildingName: string;
-  street: string;
-  barangay: string;
-  city: string;
-  province: string;
-  country: string;
-  accepts: boolean;
-  businessPermit: FileList;
-  philgeps: FileList;
+  firstName?: string;
+  gender?: Gender | undefined;
+  email?: string;
+  lastName?: string;
+  dateOfBirth?: string | undefined;
+  phoneNumber?: string | undefined;
+  category?: string | undefined;
+  password?: string;
+  tinNumber?: string;
+  confirmPassword?: string;
+  businessName?: string;
+  buildingName?: string;
+  street?: string;
+  barangay?: string;
+  city?: string;
+  province?: string;
+  country?: string;
+  accepts?: boolean;
+  businessPermit?: FileList;
+  philgeps?: FileList;
 }
 export type StageTwoFormData = {
   agency: string;
