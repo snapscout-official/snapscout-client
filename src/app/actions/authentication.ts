@@ -1,12 +1,13 @@
 "use server";
-import { signIn, signOut } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import {
   AGENCY_DEFAULT_LOGIN_REDIRECT,
+  DEFAULT_LOGIN_ROUTE,
   MERCHANT_DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
 import { LoginStates, States } from "@/types/auth-types";
 import { AuthError } from "next-auth";
-
+import { redirect } from "next/navigation";
 export async function registerAgencyUser(formData: States) {
   try {
     const res = await fetch(
@@ -76,8 +77,9 @@ export async function agencyLoginUser(formData: LoginStates) {
 }
 export async function logoutUser() {
   try {
-    await signOut({ redirectTo: "/login" });
-    // redirect("/login");
+    await signOut({
+      redirectTo: DEFAULT_LOGIN_ROUTE,
+    });
   } catch (err) {
     if (err instanceof AuthError) {
       switch (err.type) {
@@ -158,7 +160,7 @@ export async function authenticate(
     return res;
   } catch (error) {
     console.log("Failed to authenticate user in our server:", error);
-    throw new Error("Failed to authenticate user");
+    throw new Error("Failed to authenticate user in our server");
   }
 }
 export async function loginMerchantUser(credentialsData: {
@@ -172,6 +174,7 @@ export async function loginMerchantUser(credentialsData: {
       role: "merchant",
       redirectTo: MERCHANT_DEFAULT_LOGIN_REDIRECT,
     });
+    console.log(res);
   } catch (err) {
     if (err instanceof AuthError) {
       switch (err.type) {
@@ -183,8 +186,24 @@ export async function loginMerchantUser(credentialsData: {
     }
     if (err instanceof Error) {
       console.log("We got Error: ", err.message);
+      throw err;
     }
-    console.log("We got Error: ", err);
     throw err;
   }
+}
+
+export async function foo() {
+  const authResult = await auth();
+  if (authResult) {
+    const res = await fetch(`${process.env.AUTH_SERVICE_URL}/api/v1/bar`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${authResult.apiToken}`,
+      },
+    });
+    const data = await res.json();
+    return data;
+  }
+  return null;
 }

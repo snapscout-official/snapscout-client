@@ -1,12 +1,11 @@
-import { logoutUser } from "@/app/actions/authentication";
-import { auth } from "@/auth";
+import { foo, logoutUser } from "@/app/actions/authentication";
 import { Button } from "@/components/ui/button";
 
 async function Dashboard() {
-  const session = await auth();
+  const data = await foo();
   return (
     <div>
-      {JSON.stringify(session)}
+      {JSON.stringify(data)}
       <form action={logoutUser}>
         <Button type="submit">Sign Out</Button>
       </form>

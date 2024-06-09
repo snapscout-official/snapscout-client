@@ -1,3 +1,8 @@
+declare module "next-auth" {
+  interface Session {
+    apiToken: string;
+  }
+}
 export type States = {
   firstName: string | null;
   lastName: string | null;

@@ -29,12 +29,13 @@ export const {
             credentials?.role,
           );
           if (!res.ok) {
-            throw new Error("fetch login error");
+            const data = await res.json();
+            throw new Error("Something went wrong");
           }
           const data = await res.json();
           return { ...data.user, apiToken: data.token };
         } catch (err) {
-          console.log(err);
+          throw err;
         }
       },
     }),

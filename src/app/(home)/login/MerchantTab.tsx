@@ -63,6 +63,7 @@ export default function MerchantTab() {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage className="text-red-600" />
                   </FormItem>
                 )}
               />
@@ -78,6 +79,7 @@ export default function MerchantTab() {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage className="text-red-600" />
                   </FormItem>
                 )}
               />
