@@ -9,10 +9,8 @@ import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -29,7 +27,9 @@ function Landing() {
       email: "",
     },
   });
-  const onSubmit = () => {};
+  const onSubmit = (data: { email: string }) => {
+    console.log(data);
+  };
   return (
     <MainContainer>
       <div className="grid grid-cols-1">

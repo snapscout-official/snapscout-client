@@ -4,11 +4,14 @@
 
 body {
   --tw-bg-opacity: 1;
+  min-height: 100dvh;
   background: rgb(27, 115, 84);
-  background: linear-gradient(56deg,
-      rgba(27, 115, 84, 1) 11%,
-      rgba(28, 74, 84, 1) 56%,
-      rgba(18, 18, 66, 1) 95%);
+  background: linear-gradient(
+    56deg,
+    rgba(27, 115, 84, 1) 11%,
+    rgba(28, 74, 84, 1) 56%,
+    rgba(18, 18, 66, 1) 95%
+  );
 }
 
 .lockup {
