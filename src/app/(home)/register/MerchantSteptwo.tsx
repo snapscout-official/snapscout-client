@@ -14,10 +14,7 @@ import { useForm } from "react-hook-form";
 import { inter } from "@/app/ui/fonts";
 import { merchantTwoSchema } from "@/types/schema";
 import { Input } from "@/components/ui/input";
-import {
-  MerchantStageComponentProps,
-  MerchantStageTwo,
-} from "@/types/auth-types";
+import { MerchantStageComponentProps } from "@/types/auth-types";
 export default function MerchantSteptwo({
   handleNextStep,
 }: MerchantStageComponentProps) {
@@ -27,10 +24,16 @@ export default function MerchantSteptwo({
       buildingName: "",
     },
   });
-  function handleSubmit(formData: MerchantStageTwo) {
+  function handleSubmit(formData: z.infer<typeof merchantTwoSchema>) {
     try {
       //handleNextStep from the parent component
-      handleNextStep(formData);
+      handleNextStep({
+        ...formData,
+        barangay: "San Vicente",
+        city: "Butuan City",
+        province: "Agusan Del Norte",
+        country: "Philippines",
+      });
     } catch (err) {
       //just console initially should be changed to proper error handling
       console.log(err);

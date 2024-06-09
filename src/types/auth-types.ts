@@ -16,8 +16,12 @@ export type StageThreeFormData = {
 };
 export interface MerchantGlobalStates {
   firstName: string;
+  gender: Gender | undefined;
   email: string;
   lastName: string;
+  dateOfBirth: string | undefined;
+  phoneNumber: string | undefined;
+  category: string | undefined;
   password: string;
   tinNumber: string;
   confirmPassword: string;
@@ -29,7 +33,7 @@ export interface MerchantGlobalStates {
   province: string;
   country: string;
   accepts: boolean;
-  bussinessPermit: FileList;
+  businessPermit: FileList;
   philgeps: FileList;
 }
 export type StageTwoFormData = {
@@ -46,6 +50,7 @@ export type StageOneFormData = {
   tinNumber: string;
   confirmPassword: string;
 };
+type Gender = "male" | "female";
 export interface MerchantStageTwo {
   businessName: string;
   buildingName: string;
@@ -57,7 +62,7 @@ export interface MerchantStageTwo {
 }
 export interface MerchantStageThree {
   accepts: boolean;
-  bussinessPermit: FileList;
+  businessPermit: FileList;
   philgeps: FileList;
 }
 export interface LoginStates {

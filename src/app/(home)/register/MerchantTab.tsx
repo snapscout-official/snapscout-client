@@ -10,6 +10,7 @@ import {
 import MerchantSteptwo from "./MerchantSteptwo";
 import MerchantStepThree from "./MerchantStepThree";
 import MerchantStepFour from "./MerchantStepFour";
+type emptyType = {};
 export default function MerchantTab() {
   const [step, setStep] = useState<number>(1);
   const [globalFormValues, setGlobalFormValues] = useState({});

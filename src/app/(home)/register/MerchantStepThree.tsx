@@ -35,7 +35,7 @@ export default function MerchantStepThree({
   const form = useForm<z.infer<typeof merchantThreeSchema>>({
     resolver: zodResolver(merchantThreeSchema),
   });
-  const businessPermitRef = form.register("bussinessPermit", {
+  const businessPermitRef = form.register("businessPermit", {
     required: true,
   });
 
@@ -45,7 +45,7 @@ export default function MerchantStepThree({
       //idk wtf i am doing if this is correct
       if (!confirmed) {
         setImages([
-          { file: formData.bussinessPermit[0], designation: "businessPermit" },
+          { file: formData.businessPermit[0], designation: "businessPermit" },
           { file: formData.philgeps[0], designation: "philgeps" },
         ]);
         setConfirmed(true);

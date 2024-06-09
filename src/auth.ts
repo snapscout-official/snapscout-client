@@ -13,6 +13,11 @@ export const {
   providers: [
     Credentials({
       name: "credentials",
+      credentials: {
+        password: { type: "password" },
+        email: { type: "email" },
+        role: { type: "text" },
+      },
       async authorize(credentials) {
         try {
           if (typeof credentials === "undefined") {
@@ -21,6 +26,7 @@ export const {
           const res = await authenticate(
             credentials?.email,
             credentials?.password,
+            credentials?.role,
           );
           if (!res.ok) {
             throw new Error("fetch login error");

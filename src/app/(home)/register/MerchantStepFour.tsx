@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useForm, useFormState } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { merchantStepFourSchema } from "@/types/schema";
 
@@ -20,12 +20,13 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { MerchantGlobalStates } from "@/types/auth-types";
 import { registerMerchantUser } from "@/app/actions/authentication";
-import { toArrayBuffer } from "@/services/authService";
+import { generateNewFormData } from "@/services/authService";
 type StepFourProps = {
   globalFormValues: MerchantGlobalStates;
 };
 export default function MerchantStepFour({ globalFormValues }: StepFourProps) {
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>();
   const form = useForm<z.infer<typeof merchantStepFourSchema>>({
     resolver: zodResolver(merchantStepFourSchema),
     defaultValues: {
@@ -35,25 +36,29 @@ export default function MerchantStepFour({ globalFormValues }: StepFourProps) {
   async function handleFormSubmit(
     formData: z.infer<typeof merchantStepFourSchema>,
   ) {
+    setLoading(true);
     if (!formData.accepts) {
       alert("Must accept terms and policy");
       return;
     }
-    //create an buffer array with mapped name and the buffer content then pass to globalFormValues
-    const bufferResult = await toArrayBuffer([
-      globalFormValues.bussinessPermit[0],
-      globalFormValues.philgeps[0],
-    ]);
-    const newFormData = new FormData();
-    Object.keys(globalFormValues).forEach((keys: string) => {
-      if (!(globalFormValues[keys] instanceof FileList)) {
-        newFormData.append(keys, globalFormValues[keys]);
-        return;
-      }
-      newFormData.append(keys, globalFormValues[keys][0]);
-    });
 
-    const result = await registerMerchantUser(newFormData);
+    try {
+      const modifiedFormValues: MerchantGlobalStates = {
+        ...globalFormValues,
+        dateOfBirth: new Date("2024-06-09").toISOString(),
+        gender: "male",
+        phoneNumber: "09918804161",
+        category: "Testing",
+      };
+      const newFormData = generateNewFormData(modifiedFormValues);
+      const result = await registerMerchantUser(newFormData);
+      setLoading(false);
+    } catch (err) {
+      if (err instanceof Error) {
+        setLoading(false);
+        setError(err.message);
+      }
+    }
   }
 
   return (
@@ -117,6 +122,9 @@ export default function MerchantStepFour({ globalFormValues }: StepFourProps) {
               Sign Up
             </Button>
           </div>
+          {error ? (
+            <FormDescription className="text-red-600">{error}</FormDescription>
+          ) : null}
         </div>
       </form>
     </Form>

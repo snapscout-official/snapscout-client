@@ -31,7 +31,7 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 export const merchantThreeSchema = z.object({
   accepts: z.boolean({ required_error: "Must accept" }),
-  bussinessPermit: z
+  businessPermit: z
     .instanceof(FileList)
     .refine((files) => {
       return files?.[0]?.size <= MAX_FILE_SIZE;

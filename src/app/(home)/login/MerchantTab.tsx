@@ -1,29 +1,31 @@
 "use client";
-
+import React, { useState } from "react";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { inter } from "@/app/ui/fonts";
-import { agencyLoginUser } from "@/app/actions/authentication";
-import { LoginStates } from "@/types/auth-types";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import React, { useState } from "react";
 import {
   Form,
-  FormField,
-  FormLabel,
-  FormItem,
   FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
+import { inter } from "@/app/ui/fonts";
+import { loginMerchantUser } from "@/app/actions/authentication";
 const formSchema = z.object({
   email: z.string().min(3, { message: "Email too short" }).email(),
   password: z.string().min(1, { message: "Password is required" }),
 });
-export default function AgencyTab() {
+
+export default function MerchantTab() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,35 +33,33 @@ export default function AgencyTab() {
       password: "",
     },
   });
-  async function handleLogin(formData: LoginStates) {
+  async function onSubmit(formData: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
-      await agencyLoginUser({
-        email: formData.email,
-        password: formData.password,
-      });
+      await loginMerchantUser(formData);
       setLoading(false);
     } catch (err) {
-      console.log(err);
+      if (err instanceof Error) {
+        setError(err.message);
+        setLoading(false);
+      }
     }
   }
   return (
     <Card className="bg-[#F1F5F9] min-w-full border-none p-5 ">
-      <CardContent className="w-full p-10">
+      <CardContent className={`${inter.className} w-full p-10`}>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleLogin)}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-5">
               <FormField
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className={`${inter.className}`}>
-                      Email Address
-                    </FormLabel>
+                    <FormLabel>Email Address</FormLabel>
                     <FormControl>
                       <Input
-                        className="border-[#E6E6E6] rounded-[.5rem] bg-white"
                         type="email"
+                        className="border-[#E6E6E6] rounded-[.5rem] bg-white"
                         {...field}
                       />
                     </FormControl>
@@ -70,25 +70,22 @@ export default function AgencyTab() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className={`${inter.className}`}>
-                      Password
-                    </FormLabel>
+                    <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        className="border-[#E6E6E6] rounded-[.5rem] bg-white font-light "
                         type="password"
+                        className="border-[#E6E6E6] rounded-[.5rem] bg-white"
                         {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
-
               <div className="mt-5 flex justify-end w-full">
                 <Button
                   disabled={loading}
                   type="submit"
-                  className="bg-[#0F172A] text-white rounded-[.5rem] p-5 hover:bg-[#0F172A]"
+                  className="bg-[#0F172A]  text-white rounded-[.5rem] p-5 hover:bg-[#0F172A]"
                 >
                   {loading ? (
                     <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
@@ -96,6 +93,11 @@ export default function AgencyTab() {
                   Login
                 </Button>
               </div>
+              {error ? (
+                <FormDescription className="text-red-600">
+                  {error}
+                </FormDescription>
+              ) : null}
             </div>
           </form>
         </Form>

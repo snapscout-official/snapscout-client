@@ -6,7 +6,7 @@ import { LoginTab } from "./LoginTab";
 function Login() {
   return (
     <MainContainer>
-      <div className="grid grid-cols-1 md:grid-cols-2">
+      <div className="grid  md:grid-cols-2">
         <Canvassing />
         <LoginTab />
       </div>
