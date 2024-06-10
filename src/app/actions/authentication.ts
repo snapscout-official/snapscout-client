@@ -7,7 +7,6 @@ import {
 } from "@/routes";
 import { LoginStates, States } from "@/types/auth-types";
 import { AuthError } from "next-auth";
-import { redirect } from "next/navigation";
 export async function registerAgencyUser(formData: States) {
   try {
     const res = await fetch(
@@ -107,14 +106,10 @@ export async function registerMerchantUser(formData: FormData) {
       },
     );
     if (!res.ok) {
-      const data = await res.json();
-      console.log(data);
       throw new Error(
         `Something went wrong in the server, status code:  ${res.status}`,
       );
     }
-    const data = await res.json();
-    console.log("we got: ", data);
   } catch (err) {
     if (err instanceof AuthError) {
       switch (err.type) {
@@ -168,20 +163,19 @@ export async function loginMerchantUser(credentialsData: {
   password: string;
 }) {
   try {
-    const res = await signIn("credentials", {
+    await signIn("credentials", {
       password: credentialsData.password,
       email: credentialsData.email,
       role: "merchant",
       redirectTo: MERCHANT_DEFAULT_LOGIN_REDIRECT,
     });
-    console.log(res);
   } catch (err) {
     if (err instanceof AuthError) {
       switch (err.type) {
         case "CredentialsSignin":
           return { error: "invalid credentials" };
         default:
-          return { error: "something went wrong" };
+          return { error: "something went wrong during sign in flow" };
       }
     }
     if (err instanceof Error) {

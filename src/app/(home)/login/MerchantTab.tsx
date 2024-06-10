@@ -36,7 +36,11 @@ export default function MerchantTab() {
   async function onSubmit(formData: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
-      await loginMerchantUser(formData);
+      const result = await loginMerchantUser(formData);
+      if (result?.error) {
+        setError(result.error);
+      }
+      console.log(result);
       setLoading(false);
     } catch (err) {
       if (err instanceof Error) {
@@ -83,6 +87,11 @@ export default function MerchantTab() {
                   </FormItem>
                 )}
               />
+              {error ? (
+                <FormDescription className="text-red-600 text-md">
+                  {error}
+                </FormDescription>
+              ) : null}
               <div className="mt-5 flex justify-end w-full">
                 <Button
                   disabled={loading}
@@ -95,11 +104,6 @@ export default function MerchantTab() {
                   Login
                 </Button>
               </div>
-              {error ? (
-                <FormDescription className="text-red-600">
-                  {error}
-                </FormDescription>
-              ) : null}
             </div>
           </form>
         </Form>

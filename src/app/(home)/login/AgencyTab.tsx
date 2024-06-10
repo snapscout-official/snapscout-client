@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import {
   Form,
   FormField,
+  FormDescription,
   FormLabel,
   FormItem,
   FormControl,
@@ -24,6 +25,7 @@ const formSchema = z.object({
 });
 export default function AgencyTab() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,10 +36,13 @@ export default function AgencyTab() {
   async function handleLogin(formData: LoginStates) {
     try {
       setLoading(true);
-      await agencyLoginUser({
+      const result = await agencyLoginUser({
         email: formData.email,
         password: formData.password,
       });
+      if (result?.error) {
+        setError(result.error);
+      }
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -83,7 +88,11 @@ export default function AgencyTab() {
                   </FormItem>
                 )}
               />
-
+              {error ? (
+                <FormDescription className="text-red-600 text-md">
+                  {error}
+                </FormDescription>
+              ) : null}
               <div className="mt-5 flex justify-end w-full">
                 <Button
                   disabled={loading}

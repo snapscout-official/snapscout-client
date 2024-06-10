@@ -29,7 +29,6 @@ export const {
             credentials?.role,
           );
           if (!res.ok) {
-            const data = await res.json();
             throw new Error("Something went wrong");
           }
           const data = await res.json();
