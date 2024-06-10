@@ -15,6 +15,7 @@
     "incremental": true,
     "plugins": [
       {
+        "noImplicitAny": false,
         "name": "next"
       }
     ],

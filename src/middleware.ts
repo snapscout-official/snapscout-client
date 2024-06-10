@@ -5,8 +5,7 @@ import {
   authRoutes,
   publicRoutes,
 } from "@/routes";
-
-export default auth((req) => {
+export default auth((req, ctx) => {
   const isLoggedIn = !!req.auth;
   const { nextUrl } = req;
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
@@ -17,13 +16,11 @@ export default auth((req) => {
     if (isAuthRoute) {
       return Response.redirect(new URL(AGENCY_DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-    return null;
   }
   //guest type of middleware
   if (!isPublicRoute && !isLoggedIn) {
     return Response.redirect(new URL(DEFAULT_LOGIN_ROUTE, nextUrl));
   }
-  return null;
 });
 
 export const config = {

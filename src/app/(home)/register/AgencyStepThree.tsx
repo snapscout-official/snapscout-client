@@ -43,23 +43,24 @@ function AgencyStepThree({ globalStates }: { globalStates: States }) {
     <div className="space-y-5">
       <ScrollArea className="w-full h-[300px]">
         Jokester began sneaking into the castle in the middle of the night and
-        leaving jokes all over the place: under the king's pillow, in his soup,
-        even in the royal toilet. The king was furious, but he couldn't seem to
-        stop Jokester. And then, one day, the people of the kingdom discovered
-        that the jokes left by Jokester were so funny that they couldn't help
-        but laugh. And once they started laughing, they couldn't stop. Jokester
-        began sneaking into the castle in the middle of the night and leaving
-        jokes all over the place: under the king's pillow, in his soup, even in
-        the royal toilet. The king was furious, but he couldn't seem to stop
+        leaving jokes all over the place: under the king&apos;s pillow, in his
+        soup, even in the royal toilet. The king was furious, but he
+        couldn&apos;t seem to stop Jokester. And then, one day, the people of
+        the kingdom discovered that the jokes left by Jokester were so funny
+        that they couldn&apos;t help but laugh. And once they started laughing,
+        they couldn&apos;t stop. Jokester began sneaking into the castle in the
+        middle of the night and leaving jokes all over the place: under the
+        king&apos;s pillow, in his soup, even in the royal toilet. The king was
+        furious, but he couldn&apos;t seem to stop Jokester. And then, one day,
+        the people of the kingdom discovered that the jokes left by Jokester
+        were so funny that they couldn&apos;t help but laugh. And once they
+        started laughing, they couldn&apos;t stop.Jokester began sneaking into
+        the castle in the middle of the night and leaving jokes all over the
+        place: under the king&apos;s pillow, in his soup, even in the royal
+        toilet. The king was furious, but he couldn&apos;t seem to stop
         Jokester. And then, one day, the people of the kingdom discovered that
-        the jokes left by Jokester were so funny that they couldn't help but
-        laugh. And once they started laughing, they couldn't stop.Jokester began
-        sneaking into the castle in the middle of the night and leaving jokes
-        all over the place: under the king's pillow, in his soup, even in the
-        royal toilet. The king was furious, but he couldn't seem to stop
-        Jokester. And then, one day, the people of the kingdom discovered that
-        the jokes left by Jokester were so funny that they couldn't help but
-        laugh. And once they started laughing, they couldn't stop.
+        the jokes left by Jokester were so funny that they couldn&apos;t help
+        but laugh. And once they started laughing, they couldn&apos;t stop.
       </ScrollArea>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
