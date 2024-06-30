@@ -35,7 +35,7 @@ export default function Topnav() {
         />
       ) : null}
       <header
-        className={` ${roboto.className} flex items-center justify-between sticky bg-transparent w-full px-5 py-7  shadow-md `}
+        className={` ${roboto.className} flex items-center justify-between sticky bg-transparent w-full px-5 py-7 shadow-md `}
       >
         <div className="hidden md:flex items-center justify-between w-full">
           <div className="flex items-center w-full">

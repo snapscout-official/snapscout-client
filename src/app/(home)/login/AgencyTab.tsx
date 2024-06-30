@@ -25,7 +25,7 @@ const formSchema = z.object({
 });
 export default function AgencyTab() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState();
+  const [error, setError] = useState<string | undefined>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,7 +45,8 @@ export default function AgencyTab() {
       }
       setLoading(false);
     } catch (err) {
-      console.log(err);
+      setError("Something went wrong");
+      setLoading(false);
     }
   }
   return (

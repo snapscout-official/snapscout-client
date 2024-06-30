@@ -5,8 +5,8 @@ import {
   authRoutes,
   publicRoutes,
 } from "@/routes";
-export default auth((req, ctx) => {
-  const isLoggedIn = !!req.auth;
+export default auth((req, _) => {
+  const isLoggedIn = req.auth?.apiToken;
   const { nextUrl } = req;
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);

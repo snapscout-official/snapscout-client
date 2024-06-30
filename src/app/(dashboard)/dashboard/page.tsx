@@ -1,15 +1,20 @@
-import { foo, logoutUser } from "@/app/actions/authentication";
-import { Button } from "@/components/ui/button";
+import DashboardContainer from "@/componentUtils/DashboardContainer";
+import SideMenu from "./SideMenu";
+import MainContent from "./MainContent";
+import { auth } from "@/auth";
+import { cookies } from "next/headers";
 
 async function Dashboard() {
-  const data = await foo();
+  cookies();
+  const session = await auth();
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   return (
-    <div>
-      {JSON.stringify(data)}
-      <form action={logoutUser}>
-        <Button type="submit">Sign Out</Button>
-      </form>
-    </div>
+    <DashboardContainer>
+      <div className="grid grid-cols-1 gap-2 min-h-full xl:grid-cols-12">
+        <SideMenu />
+        <MainContent />
+      </div>
+    </DashboardContainer>
   );
 }
 

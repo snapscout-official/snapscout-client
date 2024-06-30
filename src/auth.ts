@@ -1,7 +1,7 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth";
 import { authConfig } from "./auth.config";
 import Credentials from "next-auth/providers/credentials";
-import { authenticate } from "./app/actions/authentication";
+import { authenticate, destroyApiToken } from "./app/actions/authentication";
 export const {
   handlers: { GET, POST },
   auth,
@@ -34,30 +34,44 @@ export const {
           const data = await res.json();
           return { ...data.user, apiToken: data.token };
         } catch (err) {
-          throw err;
+          console.log(err);
         }
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
-        const JwtToken = {
-          ...user,
-          ...token,
-        };
-        return JwtToken;
+      try {
+        if (user) {
+          const JwtToken = {
+            ...user,
+            ...token,
+          };
+          return JwtToken;
+        }
+        return token;
+      } catch (err) {
+        throw err;
       }
-      return token;
     },
     async session({ token, session }) {
+      const tokenHasNotExpired = getIsValidToken(token.apiToken);
+      if (!tokenHasNotExpired) {
+        const sessionData: Session = {
+          user: undefined,
+          apiToken: null,
+          expires: null,
+        };
+        return sessionData;
+      }
       const sanitizedToken = Object.keys(token).reduce((p, c) => {
-        if (c !== "iat" && c !== "exp" && c !== "jti" && c !== "apiToken") {
+        if (c !== "iat" && c !== "jti" && c !== "apiToken") {
           return { ...p, [c]: token[c] };
         } else {
           return p;
         }
       }, {});
+
       const data = {
         ...session,
         user: sanitizedToken,
@@ -66,4 +80,30 @@ export const {
       return data;
     },
   },
+  events: {
+    async signOut({ session, token }) {
+      await destroyApiToken(token.apiToken);
+    },
+  },
 });
+
+//checks wether the apitoken is not expired
+function getIsValidToken(token: string) {
+  if (!token) {
+    return false;
+  }
+  const parsedJWT = parseJWT(token);
+  const JWTExpirationDate = new Date(parsedJWT.exp * 1000);
+  if (JWTExpirationDate < new Date()) {
+    return false;
+  }
+  return true;
+}
+//functio that will parse the api token
+function parseJWT(token: string) {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (err) {
+    console.log(err);
+  }
+}

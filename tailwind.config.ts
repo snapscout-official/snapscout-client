@@ -19,7 +19,10 @@ const config = {
     },
     extend: {
       colors: {
+        snapGreen: "#16EF86",
         primaryText: "#FFFFFF",
+        lightText: "#64748B",
+        lightBorder: "#CBD5E1",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

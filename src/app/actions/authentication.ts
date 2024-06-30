@@ -5,12 +5,13 @@ import {
   DEFAULT_LOGIN_ROUTE,
   MERCHANT_DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
+import { fetchWithToken } from "@/services/fetchService";
 import { LoginStates, States } from "@/types/auth-types";
 import { AuthError } from "next-auth";
 export async function registerAgencyUser(formData: States) {
   try {
     const res = await fetch(
-      `${process.env.AUTH_SERVICE_URL}/api/v1/agency/signup`,
+      `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/signup`,
       {
         method: "POST",
         body: JSON.stringify({
@@ -68,7 +69,8 @@ export async function agencyLoginUser(formData: LoginStates) {
         case "CredentialsSignin":
           return { error: "Invalid Credentials" };
         default:
-          return { error: "Something went wrong" };
+          console.log("Cause:", err.cause);
+          return { error: "something went wrong" };
       }
     }
     throw err;
@@ -96,7 +98,7 @@ export async function registerMerchantUser(formData: FormData) {
   //persist in the db and wont be authenticated until not reviewed by the admin
   try {
     const res = await fetch(
-      `${process.env.AUTH_SERVICE_URL}/api/v1/merchant/signup`,
+      `${process.env.BACKEND_SERVICE_URL}/api/v1/merchant/signup`,
       {
         method: "POST",
         body: formData,
@@ -131,18 +133,21 @@ export async function authenticate(
 ) {
   try {
     if (role === "agency") {
-      const res = await fetch("http://localhost:8001/api/v1/agency/login", {
-        body: JSON.stringify({ email: email, password: password }),
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+      const res = await fetch(
+        `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/login`,
+        {
+          body: JSON.stringify({ email: email, password: password }),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
         },
-      });
+      );
       return res;
     }
     const res = await fetch(
-      `${process.env.AUTH_SERVICE_URL}/api/v1/merchant/login`,
+      `${process.env.BACKEND_SERVICE_URL}/api/v1/merchant/login`,
       {
         body: JSON.stringify({ email: email, password: password }),
         method: "POST",
@@ -189,7 +194,7 @@ export async function loginMerchantUser(credentialsData: {
 export async function foo() {
   const authResult = await auth();
   if (authResult) {
-    const res = await fetch(`${process.env.AUTH_SERVICE_URL}/api/v1/bar`, {
+    const res = await fetch(`${process.env.BACKEND_SERVICE_URL}/api/v1/bar`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -200,4 +205,17 @@ export async function foo() {
     return data;
   }
   return null;
+}
+export async function signOutUser() {
+  await signOut({ redirectTo: "/login" });
+}
+export async function destroyApiToken(apiToken: string) {
+  await fetchWithToken({
+    url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/signout`,
+    apiToken: apiToken,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
 }
