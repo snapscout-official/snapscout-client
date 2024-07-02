@@ -7,7 +7,7 @@ import ProductCardSheet, { ProductType } from "./ProductCardSheet";
 import MyPagination, { LinksProp } from "@/componentUtils/MyPagination";
 
 export default function ProductSection() {
-  const [products, setProducts] = useState<Array<ProductCardPropType>>();
+  const [products, setProducts] = useState<Array<Array<ProductType>>>();
   const [links, setLinks] = useState<Array<LinksProp>>([]);
   const [hasErrors, setHasErrors] = useState<boolean>(false);
   const [urls, setUrls] = useState<Array<string>>([]);
@@ -45,6 +45,7 @@ export default function ProductSection() {
       });
 
       setLinks(filteredLinks);
+      console.log(fetchResult.products.data);
       setProducts(fetchResult.products.data);
     };
     fetchProducts();
@@ -52,9 +53,11 @@ export default function ProductSection() {
   return products ? (
     <div className="bg-[#F8FAFC] p-5">
       <div className="grid gap-3 grid-cols-2 md:grid-cols-4 lg:grid-cols-5 ">
-        {products.map((product, idx) => (
-          <ProductCardSheet product={product} key={idx} />
-        ))}
+        {products
+          ? products.map((product: ProductType[], idx: number) => (
+              <ProductCardSheet product={product} key={idx} />
+            ))
+          : null}
       </div>
       <div className="flex justify-end mt-8">
         <MyPagination

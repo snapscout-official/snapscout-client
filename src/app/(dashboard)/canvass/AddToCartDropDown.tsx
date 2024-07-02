@@ -12,22 +12,26 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-export default function AddToCardDropDown() {
+import CartMenuItem from "@/componentUtils/CartMenuItem";
+import { ProductType } from "./ProductCardSheet";
+import { cookies } from "next/headers";
+export default function AddToCardDropDown({
+  product,
+}: {
+  product: ProductType;
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          className="py-6 px-8 bg-secondary hover:bg-primary text-primary-foreground"
-          size="icon"
-        >
-          <Image src={Add} alt="add-icon" width={100} height={100} />
+        <Button className=" py-2 px-2 bg-secondary  hover:bg-primary md:py-6 md:px-8">
+          <Image src={Add} alt="add-icon" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[250px] bg-white rounded-[.3rem]">
         <DropdownMenuLabel>My Carts</DropdownMenuLabel>
         <DropdownMenuSeparator className="border-[1px] border-lightText" />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <CartMenuItem product={product} cartName="Main Cart" quantity={11}>
             <Image
               src={User}
               alt="user-icon"
@@ -36,8 +40,12 @@ export default function AddToCardDropDown() {
               className="mr-2"
             />
             Main Cart
-          </DropdownMenuItem>
-          <DropdownMenuItem>
+          </CartMenuItem>
+          <CartMenuItem
+            product={product}
+            cartName="Miscellaneous"
+            quantity={11}
+          >
             <Image
               src={User}
               alt="user-icon"
@@ -46,7 +54,7 @@ export default function AddToCardDropDown() {
               className="mr-2"
             />
             Main Cart
-          </DropdownMenuItem>
+          </CartMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

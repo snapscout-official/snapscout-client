@@ -82,6 +82,7 @@ export const {
   },
   events: {
     async signOut({ session, token }) {
+      //event that calls signout endpoint
       await destroyApiToken(token.apiToken);
     },
   },
