@@ -58,7 +58,6 @@ export default function EditProfileForm({
 
     const data = await editProfile(formData);
     //should revalidate the session
-    console.log("Result we got from server action:", data);
     setCanEdit(false);
   }
   return (

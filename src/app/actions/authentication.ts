@@ -69,7 +69,6 @@ export async function agencyLoginUser(formData: LoginStates) {
         case "CredentialsSignin":
           return { error: "Invalid Credentials" };
         default:
-          console.log("Cause:", err.cause);
           return { error: "something went wrong" };
       }
     }

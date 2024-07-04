@@ -31,9 +31,11 @@ type Quote = {
   quantity: number;
   budget?: string | undefined;
   need?: string | undefined;
+  productId: string;
 };
 export default function RequestQuote({ product }: Props) {
   const [quotes, setQuotes] = useState<Quote[] | undefined>();
+  const [currentProduct, setCurrentProduct] = useState<ProductType>(product[0]);
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,23 +45,27 @@ export default function RequestQuote({ product }: Props) {
       need: "",
     },
   });
-  console.log(quotes);
   function handleAddQuote() {
     try {
       const quoteData = formSchema.parse(form.getValues());
-      if (quoteData.quantity <= 0) {
-        toast({
-          title: "Invalid Quantity",
-          description: "invalid quantity! must be above 0",
-          variant: "destructive",
-        });
-        return;
-      }
       if (!quotes) {
-        setQuotes([quoteData]);
+        setQuotes([{ ...quoteData, productId: currentProduct._id }]);
         return;
       }
-      setQuotes([...quotes, quoteData]);
+      const exists = quotes.find(
+        (quote: Quote) => quote.productId === currentProduct._id,
+      );
+      if (!exists) {
+        setQuotes([...quotes, { ...quoteData, productId: currentProduct._id }]);
+        return;
+      }
+      const filter = quotes.filter(
+        (quote: Quote) => quote.productId !== exists.productId,
+      );
+      setQuotes([
+        ...filter,
+        { ...exists, quantity: exists.quantity + quoteData.quantity },
+      ]);
     } catch (err) {
       toast({
         title: "Something went wrong",
@@ -69,19 +75,28 @@ export default function RequestQuote({ product }: Props) {
     }
   }
   return (
-    <div>
+    <div className="space-y-2">
       <div>Choose Product</div>
-      <p>Variety Name Here </p>
+      <p>{currentProduct._id}</p>
       <ScrollArea>
         <div className="p-3 flex gap-3">
-          {Array.from({ length: 5 }).map((_, idx) => (
-            <div className="h-[80px] w-[80px] bg-border" key={idx}></div>
+          {product.map((item: ProductType, _) => (
+            <Button
+              key={item._id}
+              asChild
+              className="bg-secondary hover:bg-secondary"
+              onClick={() => {
+                setCurrentProduct(item);
+              }}
+            >
+              <div className="h-[80px] w-[80px] bg-border"></div>
+            </Button>
           ))}
         </div>
 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      <div className="h-[100px] mt-2 p-4 border-border border-[1px]">
+      <div className="h-[200px] mt-2 p-4 border-border border-[1px]">
         <p>Description Content Here</p>
       </div>
       <Form {...form}>
@@ -145,7 +160,7 @@ export default function RequestQuote({ product }: Props) {
                       <div className="flex justify-between" key={idx}>
                         <div className="flex gap-x-3">
                           <Image src={Bag} alt="bag-icon" />
-                          <p> Variety Name here</p>
+                          <p> {quote.productId}</p>
                         </div>
                         <span>x{quote.quantity}</span>
                       </div>

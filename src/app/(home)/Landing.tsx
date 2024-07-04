@@ -77,7 +77,8 @@ function Landing() {
                       </Button>
                     </div>
                     <FormMessage />
-                  </FormItem>)}
+                  </FormItem>
+                )}
               />
             </form>
           </Form>
