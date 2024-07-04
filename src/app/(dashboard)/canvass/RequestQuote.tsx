@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import Bag from "@/public-assets/shopping-bag.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addToQuote } from "@/app/actions/products";
+import { usePathname } from "next/navigation";
 import { ProductType } from "./ProductCardSheet";
 import { useToast } from "@/components/ui/use-toast";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -20,6 +21,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { ToastAction } from "@/components/ui/toast";
 import HoverText from "@/componentUtils/HoverText";
+import { useQuotes } from "@/app/custom-hooks/useQuote";
 
 type Props = {
   product: ProductType[];
@@ -28,6 +30,7 @@ const formSchema = z.object({
   quantity: z.coerce.number().min(1).max(100),
   budget: z.string().optional(),
   need: z.string().optional(),
+  productId: z.string(),
 });
 export type Quote = {
   quantity: number;
@@ -36,8 +39,9 @@ export type Quote = {
   productId: string;
 };
 export default function RequestQuote({ product }: Props) {
-  const [quotes, setQuotes] = useState<Quote[] | undefined>();
+  const [quotes, setQuotes] = useQuotes(product[0].product_name);
   const [currentProduct, setCurrentProduct] = useState<ProductType>(product[0]);
+  const pathname = usePathname();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,29 +49,14 @@ export default function RequestQuote({ product }: Props) {
       quantity: 0,
       budget: "",
       need: "",
+      productId: currentProduct._id,
     },
   });
+  console.log(quotes);
   function handleAddQuote() {
     try {
-      const quoteData = formSchema.parse(form.getValues());
-      if (!quotes) {
-        setQuotes([{ ...quoteData, productId: currentProduct._id }]);
-        return;
-      }
-      const exists = quotes.find(
-        (quote: Quote) => quote.productId === currentProduct._id,
-      );
-      if (!exists) {
-        setQuotes([...quotes, { ...quoteData, productId: currentProduct._id }]);
-        return;
-      }
-      const filter = quotes.filter(
-        (quote: Quote) => quote.productId !== exists.productId,
-      );
-      setQuotes([
-        ...filter,
-        { ...exists, quantity: exists.quantity + quoteData.quantity },
-      ]);
+      const quoteData: Quote = formSchema.parse(form.getValues());
+      setQuotes(quoteData);
     } catch (err) {
       toast({
         title: "Something went wrong",
@@ -144,6 +133,17 @@ export default function RequestQuote({ product }: Props) {
                       {...field}
                       placeholder="What is your budget? (optional)"
                     />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="productId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input type="hidden" {...field} />
                   </FormControl>
                 </FormItem>
               )}
