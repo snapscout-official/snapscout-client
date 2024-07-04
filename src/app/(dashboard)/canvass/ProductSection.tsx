@@ -6,7 +6,11 @@ import { splitUrlString } from "@/services/fetchService";
 import ProductCardSheet, { ProductType } from "./ProductCardSheet";
 import MyPagination, { LinksProp } from "@/componentUtils/MyPagination";
 
-export default function ProductSection() {
+export default function ProductSection({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [products, setProducts] = useState<Array<Array<ProductType>>>();
   const [links, setLinks] = useState<Array<LinksProp>>([]);
   const [hasErrors, setHasErrors] = useState<boolean>(false);
@@ -68,5 +72,7 @@ export default function ProductSection() {
         />
       </div>
     </div>
-  ) : null;
+  ) : (
+    <div>{children}</div>
+  );
 }

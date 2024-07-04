@@ -10,6 +10,7 @@ export default async function Canvass() {
       console.log(cart.items);
     });
   }
+  //try to fetch the products here
   return (
     <div className="grid grid-cols-12 gap-x-4 mt-5">
       <RecentlyViewed />

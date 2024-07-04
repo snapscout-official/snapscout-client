@@ -5,6 +5,7 @@ import OcrIcon from "./OcrIcon";
 import SearchBox from "./SearchBox";
 import { fetchWithToken } from "@/services/fetchService";
 import ProductSection from "./ProductSection";
+import ProductsSkeleton from "./ProductsSkeleton";
 
 export default async function MainSection() {
   const session = await auth();
@@ -43,7 +44,9 @@ export default async function MainSection() {
           <CategoryCard key={idx} category={category} />
         ))}
       </div>
-      <ProductSection />
+      <ProductSection>
+        <ProductsSkeleton />
+      </ProductSection>
     </div>
   );
 }
