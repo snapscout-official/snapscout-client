@@ -6,6 +6,8 @@ import { fetchWithToken, splitUrlString } from "@/services/fetchService";
 import { auth } from "@/auth";
 import { LinksProp } from "@/componentUtils/MyPagination";
 import ProductSection from "./ProductSection";
+import { Suspense } from "react";
+import ProductsSkeleton from "./ProductsSkeleton";
 //might transfer the fetching to the ProductSection component since it is now server
 //component also in order to juice streaming
 export default async function Canvass({
@@ -50,13 +52,9 @@ export default async function Canvass({
     <div className="grid grid-cols-12 gap-x-4 mt-5">
       <RecentlyViewed />
       <MainSection>
-        <ProductSection
-          urls={[prevPage, nextPage]}
-          products={productData.products.data}
-          links={links}
-        >
-          <p>Loading....</p>
-        </ProductSection>
+        <Suspense fallback={<ProductsSkeleton />}>
+          <ProductSection searchParams={searchParams} />
+        </Suspense>
       </MainSection>
     </div>
   );

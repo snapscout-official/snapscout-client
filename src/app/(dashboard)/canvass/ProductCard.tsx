@@ -3,7 +3,6 @@ import Pin from "@/public-assets/map-pin.svg";
 import Image from "next/image";
 import { inter } from "@/app/ui/fonts";
 import HoverText from "@/componentUtils/HoverText";
-import { useEffect } from "react";
 type ProductProps = {
   productName: string;
 };
