@@ -52,7 +52,6 @@ export default function RequestQuote({ product }: Props) {
       productId: currentProduct._id,
     },
   });
-  console.log(quotes);
   function handleAddQuote() {
     try {
       const quoteData: Quote = formSchema.parse(form.getValues());
@@ -166,7 +165,7 @@ export default function RequestQuote({ product }: Props) {
             <ScrollArea className="h-[100px] md:h-[150px] md:max-h-[200px] ">
               <div className="space-y-3 md:p-3">
                 {quotes
-                  ? quotes.map((quote: Quote, idx) => (
+                  ? quotes.map((quote: Quote, idx: number) => (
                       <div
                         className="flex justify-between items-center"
                         key={idx}

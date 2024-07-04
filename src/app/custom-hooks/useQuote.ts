@@ -2,6 +2,11 @@ import { useState } from "react";
 import { Quote } from "../(dashboard)/canvass/RequestQuote";
 import { usePathname } from "next/navigation";
 
+/**
+ * custom hook that persists added quotes for a product across
+ * product card navigation.
+ * uses the window history state to store the quotes of a product
+ */
 export function useQuotes(
   productName: string,
 ): [Quote[] | undefined, (quote: Quote) => void] {
@@ -9,11 +14,16 @@ export function useQuotes(
   const [quotes, setQuotes] = useState<Quote[] | undefined>(
     window.history.state?.[productName],
   );
+  console.log(window.history.state);
   function setMyQuotes(quote: Quote) {
     try {
       if (!quotes) {
         const pushData = [quote];
-        window.history.replaceState({ [productName]: pushData }, "", pathname);
+        window.history.replaceState(
+          { ...window.history.state, [productName]: pushData },
+          "",
+          pathname,
+        );
         setQuotes(pushData);
         return;
       }
@@ -22,7 +32,11 @@ export function useQuotes(
       );
       if (!exists) {
         const pushData = [...quotes, quote];
-        window.history.replaceState({ [productName]: pushData }, "", pathname);
+        window.history.replaceState(
+          { ...window.history.state, [productName]: pushData },
+          "",
+          pathname,
+        );
         setQuotes(pushData);
         return;
       }
@@ -33,7 +47,11 @@ export function useQuotes(
         ...filter,
         { ...exists, quantity: exists.quantity + quote.quantity },
       ];
-      window.history.replaceState({ [productName]: pushData }, "", pathname);
+      window.history.replaceState(
+        { ...window.history.state, [productName]: pushData },
+        "",
+        pathname,
+      );
       setQuotes(pushData);
     } catch (err) {
       throw new Error("Error adding new quote");
