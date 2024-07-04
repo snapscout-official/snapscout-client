@@ -81,7 +81,7 @@ export default function ProductCardSheet({
                   </Button>
                 </div>
               </div>
-              <div className="w-full border-[1px] border-border h-[350px]"></div>
+              <div className="w-full border-[1px] border-border h-[300px]"></div>
             </div>
           )}
           {content === "inquire" && <InquireCard />}

@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import Image from "next/image";
+import { ToastAction } from "@/components/ui/toast";
 
 type Props = {
   product: ProductType[];
@@ -27,7 +28,7 @@ const formSchema = z.object({
   budget: z.string().optional(),
   need: z.string().optional(),
 });
-type Quote = {
+export type Quote = {
   quantity: number;
   budget?: string | undefined;
   need?: string | undefined;
@@ -74,6 +75,14 @@ export default function RequestQuote({ product }: Props) {
       });
     }
   }
+  function submitQuote(data: z.infer<typeof formSchema>) {
+    addToQuote(quotes);
+    toast({
+      title: "Quote Requested",
+      description: "View Notifications for Updates",
+      action: <ToastAction altText="Continue">Continue</ToastAction>,
+    });
+  }
   return (
     <div className="space-y-2">
       <div>Choose Product</div>
@@ -100,7 +109,7 @@ export default function RequestQuote({ product }: Props) {
         <p>Description Content Here</p>
       </div>
       <Form {...form}>
-        <form action={addToQuote}>
+        <form onSubmit={form.handleSubmit(submitQuote)}>
           <div className="space-y-3">
             <FormField
               control={form.control}
@@ -153,7 +162,7 @@ export default function RequestQuote({ product }: Props) {
               )}
             />
             <Separator />
-            <ScrollArea className="h-[200px] max-h-[200px] ">
+            <ScrollArea className="h-[150px] max-h-[200px] ">
               <div className="p-3 space-y-3">
                 {quotes
                   ? quotes.map((quote: Quote, idx) => (
@@ -167,7 +176,11 @@ export default function RequestQuote({ product }: Props) {
                     ))
                   : null}
               </div>
+              <ScrollBar orientation="vertical" />
             </ScrollArea>
+            <div className="flex justify-end">
+              <Button type="submit">Submit Quote</Button>
+            </div>
           </div>
         </form>
       </Form>

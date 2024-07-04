@@ -74,7 +74,7 @@ export default function InquireCard() {
           <ScheduleCard schedule="Saturday (9am - 9pm)" />
         </div>
       </div>
-      <div className="h-[300px] border-[1px] border-gray-600 p-4">
+      <div className="h-[250px] border-[1px] border-gray-600 p-4">
         Messaging Here
       </div>
     </div>

@@ -2,6 +2,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ProductType } from "../(dashboard)/canvass/ProductCardSheet";
+import { Quote } from "../(dashboard)/canvass/RequestQuote";
 
 export async function searchProducts(data: FormData) {
   const searchedProduct = data.get("search");
@@ -107,4 +108,6 @@ export async function addToCart(
   });
 }
 
-export async function addToQuote(data: FormData) {}
+export async function addToQuote(data: Quote[] | undefined) {
+  console.log(data);
+}
