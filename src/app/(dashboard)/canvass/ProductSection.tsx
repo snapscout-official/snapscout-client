@@ -45,7 +45,6 @@ export default function ProductSection() {
       });
 
       setLinks(filteredLinks);
-      console.log(fetchResult.products.data);
       setProducts(fetchResult.products.data);
     };
     fetchProducts();

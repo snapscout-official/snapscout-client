@@ -1,26 +1,12 @@
-import { ProductType } from "@/app/(dashboard)/canvass/ProductCardSheet";
-import { addToCart } from "@/app/actions/products";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 type CartButtonProp = {
-  cartName: string;
-  quantity: number;
-  product: ProductType;
   children: React.ReactNode;
+  clickHandler: () => {};
 };
 export default function CartMenuItem({
-  cartName,
-  quantity,
-  product,
   children,
+  clickHandler,
 }: CartButtonProp) {
-  return (
-    <DropdownMenuItem
-      onClick={async () => {
-        await addToCart(cartName, quantity, product);
-      }}
-    >
-      {children}
-    </DropdownMenuItem>
-  );
+  return <DropdownMenuItem onClick={clickHandler}>{children}</DropdownMenuItem>;
 }

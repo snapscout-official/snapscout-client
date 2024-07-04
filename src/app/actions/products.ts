@@ -10,6 +10,7 @@ export async function searchProducts(data: FormData) {
   }
   redirect(`/canvass/products?search=${searchedProduct}`);
 }
+//change not to add existing product
 export async function writeCookie(product: ProductType) {
   const recentlyViewedProducts = cookies().get("recentlyViewed");
   if (!recentlyViewedProducts?.value) {
@@ -43,6 +44,13 @@ interface CartItem {
   product: ProductType;
 }
 
+export async function getCookieValue(key: string) {
+  const cookie = cookies().get(key);
+  if (cookie?.value) {
+    const cookieValue = JSON.parse(cookie.value);
+    return cookieValue;
+  }
+}
 export async function addToCart(
   cartName: string,
   quantity: number,
@@ -98,3 +106,5 @@ export async function addToCart(
     sameSite: "lax",
   });
 }
+
+export async function addToQuote(data: FormData) {}

@@ -10,11 +10,12 @@ import {
 import ProductCard from "./ProductCard";
 import { inter } from "@/app/ui/fonts";
 import ProductCarousel from "./ProductCarousel";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import AddToCardDropDown from "./AddToCartDropDown";
+import AddToCartDropDown from "./AddToCartDropDown";
 import InquireCard from "./InquireCard";
 import { writeCookie } from "@/app/actions/products";
+import RequestQuote from "./RequestQuote";
 export type ProductType = {
   _id: string;
   barcode: number;
@@ -80,12 +81,13 @@ export default function ProductCardSheet({
                   </Button>
                 </div>
               </div>
-              <div className="w-full border-[1px] border-border h-[300px]"></div>
+              <div className="w-full border-[1px] border-border h-[350px]"></div>
             </div>
           )}
           {content === "inquire" && <InquireCard />}
-          <div className="flex w-full justify-evenly py-10">
-            <AddToCardDropDown product={currentProduct} />
+          {content === "request-quote" && <RequestQuote product={product} />}
+          <div className="flex w-full justify-evenly py-6">
+            <AddToCartDropDown product={currentProduct} />
             <Button
               onClick={async () => {
                 await writeCookie(product[0]);
@@ -95,11 +97,30 @@ export default function ProductCardSheet({
                 }
                 setContent("inquire");
               }}
-              className=" bg-secondary text-secondary-foreground focus:bg-primary focus:text-primary-foreground md:text-lg md:px-10 md:py-6"
+              className={
+                (content === "inquire"
+                  ? "bg-primary text-primary-foreground"
+                  : `bg-secondary text-secondary-foreground`) +
+                " md:text-lg md:px-10 md:py-6"
+              }
             >
               Inquire
             </Button>
-            <Button className=" bg-secondary text-secondary-foreground focus:bg-primary focus:text-primary-foreground md:text-lg md:px-8 md:py-6">
+            <Button
+              onClick={async () => {
+                if (content === "request-quote") {
+                  setContent("product");
+                  return;
+                }
+                setContent("request-quote");
+              }}
+              className={
+                (content === "request-quote"
+                  ? "bg-primary text-primary-foreground"
+                  : `bg-secondary text-secondary-foreground`) +
+                " md:text-lg md:px-8 md:py-6"
+              }
+            >
               Request Quote
             </Button>
           </div>
