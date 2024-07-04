@@ -40,12 +40,21 @@ export default function ProductCardSheet({
     //typescript always ruin my fucking coding style!!!!!!!
     setCurrentProduct(product.filter((product) => product._id === id)[0]);
   }
+  function handlePanelChange(panel: string) {
+    if (content === panel) {
+      setContent("product");
+      return;
+    }
+    setContent(panel);
+  }
   return (
     <Sheet>
       <SheetTrigger>
         <ProductCard productName={product[0].product_name} />
       </SheetTrigger>
-      <SheetContent className={`${inter.className} bg-white md:min-w-[500px]`}>
+      <SheetContent
+        className={`${inter.className} bg-white overflow-auto h-full p-4 md:min-w-[500px] md:overflow-hidden`}
+      >
         <SheetHeader>
           <SheetTitle className="text-xl">
             {currentProduct.product_name}
@@ -86,39 +95,34 @@ export default function ProductCardSheet({
           )}
           {content === "inquire" && <InquireCard />}
           {content === "request-quote" && <RequestQuote product={product} />}
-          <div className="flex w-full justify-evenly py-6">
-            <AddToCartDropDown product={currentProduct} />
+          <div className="flex w-full justify-evenly py-6 gap-x-2">
+            <AddToCartDropDown
+              disabled={content !== "product"}
+              product={currentProduct}
+            />
             <Button
               onClick={async () => {
                 await writeCookie(product[0]);
-                if (content === "inquire") {
-                  setContent("product");
-                  return;
-                }
-                setContent("inquire");
+                handlePanelChange("inquire");
               }}
               className={
                 (content === "inquire"
                   ? "bg-primary text-primary-foreground"
                   : `bg-secondary text-secondary-foreground`) +
-                " md:text-lg md:px-10 md:py-6"
+                " text-xs md:text-lg md:px-10 md:py-6"
               }
             >
               Inquire
             </Button>
             <Button
               onClick={async () => {
-                if (content === "request-quote") {
-                  setContent("product");
-                  return;
-                }
-                setContent("request-quote");
+                handlePanelChange("request-quote");
               }}
               className={
                 (content === "request-quote"
                   ? "bg-primary text-primary-foreground"
                   : `bg-secondary text-secondary-foreground`) +
-                " md:text-lg md:px-8 md:py-6"
+                " text-xs md:text-lg md:px-8 md:py-6"
               }
             >
               Request Quote

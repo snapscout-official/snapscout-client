@@ -19,6 +19,7 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import Image from "next/image";
 import { ToastAction } from "@/components/ui/toast";
+import HoverText from "@/componentUtils/HoverText";
 
 type Props = {
   product: ProductType[];
@@ -86,7 +87,7 @@ export default function RequestQuote({ product }: Props) {
   return (
     <div className="space-y-2">
       <div>Choose Product</div>
-      <p>{currentProduct._id}</p>
+      <p className="text-sm md:text-base">{currentProduct._id}</p>
       <ScrollArea>
         <div className="p-3 flex gap-3">
           {product.map((item: ProductType, _) => (
@@ -105,7 +106,7 @@ export default function RequestQuote({ product }: Props) {
 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      <div className="h-[200px] mt-2 p-4 border-border border-[1px]">
+      <div className="text-sm h-[150px] mt-2 p-4 border-border border-[1px] md:text-base md:h-[200px]">
         <p>Description Content Here</p>
       </div>
       <Form {...form}>
@@ -124,7 +125,7 @@ export default function RequestQuote({ product }: Props) {
                     <Button
                       onClick={handleAddQuote}
                       type="button"
-                      className="text-lg px-6 py-5"
+                      className="text-sm px-3 py-2 md:text-lg md:px-6 md:py-5"
                     >
                       Add Product
                     </Button>
@@ -162,16 +163,31 @@ export default function RequestQuote({ product }: Props) {
               )}
             />
             <Separator />
-            <ScrollArea className="h-[150px] max-h-[200px] ">
-              <div className="p-3 space-y-3">
+            <ScrollArea className="h-[100px] md:h-[150px] md:max-h-[200px] ">
+              <div className="space-y-3 md:p-3">
                 {quotes
                   ? quotes.map((quote: Quote, idx) => (
-                      <div className="flex justify-between" key={idx}>
-                        <div className="flex gap-x-3">
-                          <Image src={Bag} alt="bag-icon" />
-                          <p> {quote.productId}</p>
+                      <div
+                        className="flex justify-between items-center"
+                        key={idx}
+                      >
+                        <div className="flex gap-x-3 items-center">
+                          <Image
+                            src={Bag}
+                            alt="bag-icon"
+                            width={40}
+                            height={40}
+                            className="w-[15px] h-[15px] md:w-auto md:h-auto"
+                          />
+                          <HoverText>
+                            <p className="text-xs md:text-sm truncate">
+                              {quote.productId}
+                            </p>
+                          </HoverText>
                         </div>
-                        <span>x{quote.quantity}</span>
+                        <span className="text-xs md:text-sm">
+                          x{quote.quantity}
+                        </span>
                       </div>
                     ))
                   : null}
@@ -179,7 +195,9 @@ export default function RequestQuote({ product }: Props) {
               <ScrollBar orientation="vertical" />
             </ScrollArea>
             <div className="flex justify-end">
-              <Button type="submit">Submit Quote</Button>
+              <Button type="submit" className={quotes ? "block" : "hidden"}>
+                Submit Quote
+              </Button>
             </div>
           </div>
         </form>

@@ -10,7 +10,7 @@ export default function ScheduleCard({ schedule }: Prop) {
     <div>
       <Button
         disabled
-        className="border-[1px] border-secondary-foreground px-4 py-6 bg-transparent text-black gap-2"
+        className="border-[1px] border-secondary-foreground  bg-transparent text-black text-xs gap-2 p-2 md:text-md md:px-4 md:py-6 max-w-full truncate"
       >
         <Image src={Calendar} alt="schedule-icon" />
         {schedule}

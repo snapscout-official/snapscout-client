@@ -20,8 +20,10 @@ import { useEffect, useState } from "react";
 import { ToastAction } from "@/components/ui/toast";
 export default function AddToCartDropDown({
   product,
+  disabled,
 }: {
   product: ProductType;
+  disabled: boolean;
 }) {
   const { toast } = useToast();
   const [cookies, setCookies] = useState<Cart[] | undefined>();
@@ -37,7 +39,10 @@ export default function AddToCartDropDown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className=" py-2 px-2 bg-secondary  hover:bg-primary md:py-6 md:px-8">
+        <Button
+          disabled={disabled}
+          className=" py-2 px-2 bg-secondary  hover:bg-primary md:py-6 md:px-8"
+        >
           <Image src={Add} alt="add-icon" />
         </Button>
       </DropdownMenuTrigger>

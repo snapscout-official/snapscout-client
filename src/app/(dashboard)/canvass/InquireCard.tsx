@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import ScheduleCard from "./ScheduleCard";
 import { inter } from "@/app/ui/fonts";
 import { Separator } from "@/components/ui/separator";
+import HoverText from "@/componentUtils/HoverText";
 export default function InquireCard() {
   const { toast } = useToast();
   return (
@@ -24,7 +25,9 @@ export default function InquireCard() {
         </div>
         <div className="col-span-3">
           <div className="inline-flex gap-2 items-center">
-            <h1 className="text-lg">Merchant Name</h1>
+            <HoverText>
+              <h1 className="text-xs truncate md:text-lg">Merchant Name</h1>
+            </HoverText>
             <Image src={Verified} alt="verification-icon" />
             <Button
               size="sm"
@@ -40,13 +43,19 @@ export default function InquireCard() {
               <Image src={UserPlus} alt="add" />
             </Button>
           </div>
-          <p>Merchant Type</p>
-          <div className="inline-flex space-x-2 text-sm font-light ">
-            <div>4.9</div>
+          <HoverText>
+            <p className="text-xs md:text-lg">Merchant Type</p>
+          </HoverText>
+          <div className="inline-flex max-w-full space-x-2 text-sm font-light ">
+            <div className="text-xs md:text-sm">4.9</div>
             <Separator orientation="vertical" className="h-[20px]" />
-            <div>99 Ratings</div>
+            <HoverText>
+              <div className="text-xs truncate md:text-sm">99 Rating</div>
+            </HoverText>
             <Separator orientation="vertical" className="h-[20px]" />
-            <div>99 Sold</div>
+            <HoverText>
+              <div className="text-xs truncate md:text-sm">99 Sold</div>
+            </HoverText>
           </div>
         </div>
       </div>
@@ -67,9 +76,9 @@ export default function InquireCard() {
           Show Map Review
         </Button>
       </div>
-      <div>
+      <div className="max-w-full">
         <p>Open Hours</p>
-        <div className="grid grid-cols-1 gap-y-3 mt-2">
+        <div className="grid grid-cols-1 gap-y-3 mt-2 max-w-full">
           <ScheduleCard schedule="Monday - Thursday(7am - 10pm)" />
           <ScheduleCard schedule="Saturday (9am - 9pm)" />
         </div>
