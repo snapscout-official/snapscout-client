@@ -2,6 +2,12 @@
 import User from "@/public-assets/user.svg";
 import Add from "@/public-assets/plus.svg";
 import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import CartMenuItem from "@/componentUtils/CartMenuItem";
+import { ProductType, Cart } from "@/types/product-types";
+import { addToCart } from "@/app/actions/products";
+import { ToastAction } from "@/components/ui/toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,31 +17,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import CartMenuItem from "@/componentUtils/CartMenuItem";
-import { ProductType } from "./ProductCardSheet";
-import { Cart, addToCart, getCookieValue } from "@/app/actions/products";
-import { useEffect, useState } from "react";
-import { ToastAction } from "@/components/ui/toast";
+
 export default function AddToCartDropDown({
   product,
   disabled,
+  cartData,
 }: {
   product: ProductType;
   disabled: boolean;
+  cartData: Cart[];
 }) {
   const { toast } = useToast();
-  const [cookies, setCookies] = useState<Cart[] | undefined>();
-  useEffect(() => {
-    async function getCookie() {
-      const cartCookie = await getCookieValue("carts");
-      if (cartCookie) {
-        setCookies(cartCookie);
-      }
-    }
-    getCookie();
-  }, []);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -50,15 +42,15 @@ export default function AddToCartDropDown({
         <DropdownMenuLabel>My Carts</DropdownMenuLabel>
         <DropdownMenuSeparator className="border-[1px] border-lightText" />
         <DropdownMenuGroup>
-          {cookies ? (
-            cookies.map((cookie: Cart, idx: number) => (
+          {cartData ? (
+            cartData.map((cart: Cart, idx: number) => (
               <CartMenuItem
                 key={idx}
                 clickHandler={async () => {
-                  await addToCart(cookie.cartName, 12, product);
+                  await addToCart(cart.cartName, 12, product);
                   toast({
-                    title: `Product Added to Cart ${cookie.cartName}`,
-                    description: `Product ${product.product_name} has been added to cart ${cookie.cartName}`,
+                    title: `Product Added to Cart ${cart.cartName}`,
+                    description: `Product ${product.product_name} has been added to cart ${cart.cartName}`,
                     action: <ToastAction altText="done">Done</ToastAction>,
                   });
                 }}
@@ -70,7 +62,7 @@ export default function AddToCartDropDown({
                   height={25}
                   className="mr-2"
                 />
-                {cookie.cartName}
+                {cart.cartName}
               </CartMenuItem>
             ))
           ) : (

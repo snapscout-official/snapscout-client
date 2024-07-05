@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { fetchWithToken } from "@/services/fetchService";
 import ProductsSection from "./ProductsSection";
 import MyPagination from "@/componentUtils/MyPagination";
-import { LinksProp } from "./ProductPagination";
+import { LinksProp } from "@/types/product-types";
 import { splitUrlString } from "@/services/fetchService";
 import NoProductAlert from "./NoSearchAlert";
 import { Suspense } from "react";

@@ -4,7 +4,7 @@ import Bag from "@/public-assets/shopping-bag.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addToQuote } from "@/app/actions/products";
 import { usePathname } from "next/navigation";
-import { ProductType } from "./ProductCardSheet";
+import { ProductType } from "@/types/product-types";
 import { useToast } from "@/components/ui/use-toast";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {

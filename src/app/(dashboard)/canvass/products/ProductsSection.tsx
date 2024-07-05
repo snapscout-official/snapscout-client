@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { fetchWithToken } from "@/services/fetchService";
-import ProductCardSheet, { ProductType } from "../ProductCardSheet";
+import ProductCardSheet from "../ProductCardSheet";
+import { ProductType } from "@/types/product-types";
 type ProductSectionProps = {
   search?: string | string[] | undefined;
   page: string | string[] | undefined;

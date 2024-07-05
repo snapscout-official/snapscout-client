@@ -1,7 +1,10 @@
 import { auth } from "@/auth";
-import ProductCardSheet, { ProductType } from "./ProductCardSheet";
-import MyPagination, { LinksProp } from "@/componentUtils/MyPagination";
+import ProductCardSheet from "./ProductCardSheet";
+import { ProductType } from "@/types/product-types";
+import MyPagination from "@/componentUtils/MyPagination";
+import { LinksProp } from "@/types/product-types";
 import { fetchWithToken, splitUrlString } from "@/services/fetchService";
+import { getCookieValue } from "@/app/actions/products";
 type ProductSectionProp = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
@@ -11,6 +14,7 @@ export default async function ProductSection({
   await new Promise((resolve) => setTimeout(resolve, 2000));
   const session = await auth();
   let { category, page } = searchParams;
+  //add error handling right here
   let result = await fetchWithToken({
     url:
       `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/products?category=` +
@@ -23,7 +27,6 @@ export default async function ProductSection({
       Accept: "application/json",
     },
   });
-
   let links: LinksProp[] | [] = [];
   const productData = await result.json();
   const products: ProductType[][] | [] = productData.products.data;
@@ -34,14 +37,15 @@ export default async function ProductSection({
       return link.label !== "&laquo; Previous" && link.label !== "Next &raquo;";
     });
   }
+  //add error handling
+  const cartCookie = await getCookieValue("carts");
+
   return (
     <div className="bg-[#F8FAFC] p-5">
       <div className="grid gap-3 grid-cols-2 md:grid-cols-4 lg:grid-cols-5 ">
-        {products
-          ? products.map((product: ProductType[], idx: number) => (
-              <ProductCardSheet product={product} key={idx} />
-            ))
-          : null}
+        {products.map((product: ProductType[], idx: number) => (
+          <ProductCardSheet product={product} key={idx} cartData={cartCookie} />
+        ))}
       </div>
       <div className="flex justify-end mt-8">
         <MyPagination

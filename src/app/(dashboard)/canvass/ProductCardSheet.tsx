@@ -16,23 +16,13 @@ import AddToCartDropDown from "./AddToCartDropDown";
 import InquireCard from "./InquireCard";
 import { writeCookie } from "@/app/actions/products";
 import RequestQuote from "./RequestQuote";
-export type ProductType = {
-  _id: string;
-  barcode: number;
-  created_at: string;
-  is_available: boolean;
-  merchant_id?: number;
-  price: number;
-  product_name: string;
-  quantity: number;
-  specs?: Array<String> | null;
-  subcategory_id: number;
-  updated_at: string;
-};
+import { Cart, ProductType } from "@/types/product-types";
 export default function ProductCardSheet({
   product,
+  cartData,
 }: {
   product: ProductType[];
+  cartData: Cart[];
 }) {
   const [currentProduct, setCurrentProduct] = useState<ProductType>(product[0]);
   const [content, setContent] = useState<string>("product");
@@ -99,6 +89,7 @@ export default function ProductCardSheet({
             <AddToCartDropDown
               disabled={content !== "product"}
               product={currentProduct}
+              cartData={cartData}
             />
             <Button
               onClick={async () => {

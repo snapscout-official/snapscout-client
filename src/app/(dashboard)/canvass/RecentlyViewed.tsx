@@ -1,7 +1,7 @@
 import { inter } from "@/app/ui/fonts";
 import RecentlyCard from "./RecentlyCard";
 import { cookies } from "next/headers";
-import { ProductType } from "./ProductCardSheet";
+import { ProductType } from "@/types/product-types";
 
 export default async function RecentlyViewed() {
   const recentlyViewedCookies = cookies().get("recentlyViewed")?.value;

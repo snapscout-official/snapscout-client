@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { ProductType } from "../(dashboard)/canvass/ProductCardSheet";
+import { ProductType, Cart, CartItem } from "@/types/product-types";
 import { Quote } from "../(dashboard)/canvass/RequestQuote";
 
 export async function searchProducts(data: FormData) {
@@ -44,14 +44,6 @@ export async function writeCookie(product: ProductType) {
     });
     return;
   }
-}
-export interface Cart {
-  cartName: string;
-  items: CartItem[];
-}
-interface CartItem {
-  quantity: number;
-  product: ProductType;
 }
 
 export async function getCookieValue(key: string) {
