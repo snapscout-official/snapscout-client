@@ -46,13 +46,15 @@ export async function writeCookie(product: ProductType) {
   }
 }
 
-export async function getCookieValue(key: string) {
+export async function getCookieValue(key: string): Promise<Cart[]> {
   const cookie = cookies().get(key);
   if (cookie?.value) {
     const cookieValue = JSON.parse(cookie.value);
     return cookieValue;
   }
+  return [];
 }
+//can also be used for creating new cookie
 export async function setCartCookie(cartItem: Cart[]) {
   cookies().set({
     name: "carts",
@@ -83,7 +85,7 @@ export async function addToCart(
   let isCartItem = deserializedCartData.find((cart: Cart) => {
     return cart.cartName === cartName;
   });
-  //if there is cart but the cart does not exist
+  //if there is cart but the new cart does not exist
   if (!isCartItem) {
     setCartCookie([
       ...deserializedCartData,
