@@ -9,11 +9,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useSearchParams } from "next/navigation";
-export type LinksProp = {
-  active: boolean;
-  label: string;
-  url?: string;
-};
+import { LinksProp } from "@/types/product-types";
+
 export default function MyPagination({
   links,
   prevPage,

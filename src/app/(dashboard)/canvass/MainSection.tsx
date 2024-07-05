@@ -5,8 +5,13 @@ import OcrIcon from "./OcrIcon";
 import SearchBox from "./SearchBox";
 import { fetchWithToken } from "@/services/fetchService";
 import ProductSection from "./ProductSection";
+import ProductsSkeleton from "./ProductsSkeleton";
 
-export default async function MainSection() {
+export default async function MainSection({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const session = await auth();
   //fetches categories from the backend
   async function fetchCategories() {
@@ -43,7 +48,7 @@ export default async function MainSection() {
           <CategoryCard key={idx} category={category} />
         ))}
       </div>
-      <ProductSection />
+      {children}
     </div>
   );
 }

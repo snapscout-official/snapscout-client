@@ -18,6 +18,7 @@ export async function GET(request: Request) {
     const data = await res.json();
     return Response.json({ data }, { status: res.status });
   }
+
   //we accept a paginated result for this
   const data = await res.json();
   return Response.json(data);

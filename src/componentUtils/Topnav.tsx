@@ -54,7 +54,7 @@ export default function Topnav() {
               className="text-[#030538] bg-white hover:bg-gray-200 rounded-lg"
               asChild
             >
-              <Link href="#">Get Started</Link>
+              <Link href="/login">Login</Link>
             </Button>
           </div>
           <div></div>

@@ -19,7 +19,6 @@ export async function editProfile(formData: UpdateFormData) {
 
   if (!res.ok) {
     const data = await res.json();
-    console.log(data);
     return "We got error in update profile";
   }
   //signouts user for invalidating the session
