@@ -3,7 +3,10 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ProductType, Cart, CartItem } from "@/types/product-types";
 import { Quote } from "../(dashboard)/canvass/RequestQuote";
-
+import { fetchWithToken } from "@/services/fetchService";
+import { string } from "zod";
+import { auth } from "@/auth";
+import { revalidatePath } from "next/cache";
 export async function searchProducts(data: FormData) {
   const searchedProduct = data.get("search");
   if (!searchedProduct) {
@@ -46,75 +49,81 @@ export async function writeCookie(product: ProductType) {
   }
 }
 
-export async function getCookieValue(key: string): Promise<Cart[]> {
+export async function getCookieValue(key: string) {
   const cookie = cookies().get(key);
+  console.log(cookie?.value);
   if (cookie?.value) {
     const cookieValue = JSON.parse(cookie.value);
     return cookieValue;
   }
   return [];
 }
-//can also be used for creating new cookie
-export async function setCartCookie(cartItem: Cart[]) {
-  cookies().set({
-    name: "carts",
-    value: JSON.stringify(cartItem),
-    // 1 day
-    expires: new Date(Date.now() + 1000 * 60 * 1440),
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
+export async function getCartProducts(cart_name: string): Promise<Cart[][]> {
+  const session = await auth();
+  if (!session?.apiToken) {
+    throw new Error("You are not authenticated");
+  }
+  const result = await fetchWithToken({
+    url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/carts/${cart_name}`,
+    method: "GET",
+    apiToken: session.apiToken,
+    headers: {
+      Accept: "application/json",
+    },
   });
+
+  if (!result.ok) {
+    throw new Error("Something went wrong on the server");
+  }
+  const data = await result.json();
+  return data.cart_data;
 }
+export async function getCarts(): Promise<Cart[]> {
+  const session = await auth();
+  if (!session?.apiToken) {
+    throw new Error("You are not authenticated");
+  }
+  const result = await fetchWithToken({
+    url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/carts`,
+    method: "GET",
+    apiToken: session.apiToken,
+    headers: {
+      Accept: "application/json",
+    },
+  });
+  if (!result.ok) {
+    throw new Error("Something went wrong on the server");
+  }
+  const data = await result.json();
+  return data.carts;
+}
+//can also be used for creating new cookie
+//refactor. remove from cookies and store to db
 export async function addToCart(
   cartName: string,
-  quantity: number,
-  product: ProductType,
+  item?: { quantity: number; product_id: string } | null,
 ) {
-  const cartItems = cookies().get("carts");
-  //if cart exist in the cookie
-  if (!cartItems?.value) {
-    let firstItem: Cart = {
-      cartName: cartName,
-      items: [{ quantity: quantity, product: product }],
-    };
-    setCartCookie([firstItem]);
-    return;
+  const session = await auth();
+  if (!session?.apiToken) {
+    throw new Error("You are not authenticated");
   }
-  let deserializedCartData: Cart[] = JSON.parse(cartItems.value);
-  let isCartItem = deserializedCartData.find((cart: Cart) => {
-    return cart.cartName === cartName;
+  const result = await fetchWithToken({
+    url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/carts`,
+    method: "POST",
+    apiToken: session.apiToken,
+    body: JSON.stringify({
+      cart_name: cartName,
+      items: item ? item : [],
+    }),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
   });
-  //if there is cart but the new cart does not exist
-  if (!isCartItem) {
-    setCartCookie([
-      ...deserializedCartData,
-      {
-        cartName: cartName,
-        items: [{ quantity: quantity, product: product }],
-      },
-    ]);
-
-    return;
+  if (!result.ok) {
+    throw new Error("Something went wrong on the server");
   }
-  const cartItem = isCartItem.items.find(
-    (item: CartItem) => item.product._id === product._id,
-  );
-  //if product does not exist in the cart we found
-  if (!cartItem) {
-    //just push the product
-    isCartItem.items.push({ product: product, quantity: quantity });
-    setCartCookie([...deserializedCartData]);
-    return;
-  }
-  const filter = isCartItem.items.filter(
-    (item: CartItem) => item.product._id !== product._id,
-  );
-  isCartItem.items = [
-    ...filter,
-    { product: cartItem?.product, quantity: cartItem?.quantity + quantity },
-  ];
-  setCartCookie([...deserializedCartData]);
+  revalidatePath("/canvass");
 }
 export async function addToQuote(data: Quote[] | undefined) {
   console.log(data);

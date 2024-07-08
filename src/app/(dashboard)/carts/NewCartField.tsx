@@ -4,8 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SheetClose } from "@/components/ui/sheet";
 import { useRef } from "react";
-import { Cart } from "@/types/product-types";
-import { getCookieValue, setCartCookie } from "@/app/actions/products";
+import { addToCart } from "@/app/actions/products";
 export default function NewCartField() {
   const cartRef = useRef<HTMLInputElement>(null);
   async function addCartCookie() {
@@ -13,12 +12,7 @@ export default function NewCartField() {
       //toast some error right here
       return;
     }
-    const cartData: Cart = {
-      cartName: cartRef.current.value,
-      items: [],
-    };
-    const cookieData: Cart[] = await getCookieValue("carts");
-    await setCartCookie([...cookieData, cartData]);
+    await addToCart(cartRef.current.value);
     cartRef.current.value = "";
     //toast success
   }

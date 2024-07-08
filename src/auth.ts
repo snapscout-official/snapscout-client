@@ -2,6 +2,7 @@ import NextAuth, { Session } from "next-auth";
 import { authConfig } from "./auth.config";
 import Credentials from "next-auth/providers/credentials";
 import { authenticate, destroyApiToken } from "./app/actions/authentication";
+import { setCartCookie } from "./app/actions/products";
 export const {
   handlers: { GET, POST },
   auth,
@@ -85,6 +86,10 @@ export const {
       //event that calls signout endpoint
       await destroyApiToken(token.apiToken);
     },
+    // async signIn({ user }) {
+    //   const result = await setCartCookie(null, user.apiToken);
+    //   console.log(result);
+    // },
   },
 });
 

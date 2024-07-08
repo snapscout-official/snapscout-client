@@ -17,10 +17,10 @@ export type ProductType = {
   updated_at: string;
 };
 export interface Cart {
-  cartName: string;
+  cart_name: string;
   items: CartItem[];
 }
 export interface CartItem {
   quantity: number;
-  product: ProductType;
+  product_id: string;
 }
