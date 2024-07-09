@@ -25,7 +25,9 @@ export default function NewCartField() {
         <SheetClose asChild>
           <Button variant="destructive">Cancel</Button>
         </SheetClose>
-        <Button onClick={addCartCookie}>Continue</Button>
+        <SheetClose asChild>
+          <Button onClick={addCartCookie}>Continue</Button>
+        </SheetClose>
       </div>
     </div>
   );

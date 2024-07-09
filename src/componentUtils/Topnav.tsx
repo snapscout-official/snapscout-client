@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import SnapscoutSmall from "@/public-assets/snapscout-small.svg";
 import Menu from "@/public-assets/menu.svg";
-import { roboto, inter400 } from "@/app/ui/fonts";
+import { inter_semilight, roboto } from "@/app/ui/fonts";
 import { Button } from "@/components/ui/button";
 import Sidebar from "./Sidebar";
 import Link from "next/link";
@@ -44,7 +44,7 @@ export default function Topnav() {
           </div>
           <div className="flex  justify-between w-full text-lg text-white">
             {navList.map((item, index) => (
-              <h1 key={index} className={`${inter400.className}`}>
+              <h1 key={index} className={`${inter_semilight.className}`}>
                 {item.name}
               </h1>
             ))}

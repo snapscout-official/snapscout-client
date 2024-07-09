@@ -11,7 +11,7 @@ export const inter = Inter({
   subsets: ["latin"],
   preload: false,
 });
-export const inter400 = Inter({
+export const inter_semilight = Inter({
   weight: ["400"],
   style: "normal",
   subsets: ["latin"],

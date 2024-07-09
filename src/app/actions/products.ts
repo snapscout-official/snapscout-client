@@ -1,10 +1,9 @@
 "use server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { ProductType, Cart, CartItem } from "@/types/product-types";
+import { ProductType, Cart } from "@/types/product-types";
 import { Quote } from "../(dashboard)/canvass/RequestQuote";
 import { fetchWithToken } from "@/services/fetchService";
-import { string } from "zod";
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 export async function searchProducts(data: FormData) {
@@ -58,7 +57,9 @@ export async function getCookieValue(key: string) {
   }
   return [];
 }
-export async function getCartProducts(cart_name: string): Promise<Cart[][]> {
+export async function getCartProducts(
+  cart_name: string,
+): Promise<ProductType[][]> {
   const session = await auth();
   if (!session?.apiToken) {
     throw new Error("You are not authenticated");
@@ -125,6 +126,31 @@ export async function addToCart(
   }
   revalidatePath("/canvass");
 }
+
+export async function deleteCartProduct(product_id: string, cart_name: string) {
+  const session = await auth();
+  if (!session?.apiToken) {
+    throw new Error("You are not authenticated");
+  }
+  const result = await fetchWithToken({
+    url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/carts/destroy-product`,
+    method: "POST",
+    apiToken: session.apiToken,
+    body: JSON.stringify({
+      cart_name: cart_name,
+      product_id: product_id,
+    }),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  if (!result.ok) {
+    throw new Error("Something went wrong in the service. Try again next time");
+  }
+  revalidatePath("/carts");
+}
+
 export async function addToQuote(data: Quote[] | undefined) {
   console.log(data);
 }

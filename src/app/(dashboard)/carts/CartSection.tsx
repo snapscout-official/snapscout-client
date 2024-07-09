@@ -1,4 +1,4 @@
-import { getCarts, getCookieValue } from "@/app/actions/products";
+import { getCarts } from "@/app/actions/products";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Cart } from "@/types/product-types";
