@@ -1,14 +1,19 @@
+import { auth } from "@/auth";
+
 type FetchParams = {
   url: string;
-  apiToken?: string | null;
   headers?: HeadersInit;
   method: string;
   body?: BodyInit;
 };
 export async function fetchWithToken(params: FetchParams) {
+  const session = await auth();
   return await fetch(params.url, {
     method: params.method,
-    headers: { ...params.headers, Authorization: `Bearer ${params.apiToken}` },
+    headers: {
+      ...params.headers,
+      Authorization: `Bearer ${session?.apiToken}`,
+    },
     body: params.body,
   });
 }

@@ -8,12 +8,12 @@ import Link from "next/link";
 export default function DashboardNav() {
   return (
     <header
-      className={`${inter.className} flex mx-[20px] justify-between text-[#030538] text-xl  border-b-[#E2E2E2] border-b-1 xl:mx-[150px] `}
+      className={`${inter.className} flex mx-[20px] justify-between text-[#030538] text-xl xl:mx-[150px] `}
     >
       <div className="flex items-center gap-x-[3rem]">
         <div className="flex items-center ">
           <Image src={SnapscoutSmall} alt="snapscoutlogo" />
-          <Link href="/dashboard"> SnapScout</Link>
+          <Link href="/"> SnapScout</Link>
         </div>
         <ul className="flex items-center gap-x-5">
           <Link href="/canvass"> Canvass</Link>
