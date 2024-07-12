@@ -19,14 +19,16 @@ export default async function AllTab({ tab }: { tab?: string | undefined }) {
   const data = await res.json();
   const orders: Order[] = data.orders.flat();
   return orders.length !== 0 ? (
-    <ScrollArea className="h-[750px]">
-      <div className="bg-[#F8FAFC] p-5 space-y-7">
-        {orders.map((order: Order, idx: number) => (
-          <TabItem key={idx} order={order} />
-        ))}
-      </div>
-      <ScrollBar orientation="vertical" />
-    </ScrollArea>
+    <div className="bg-[#F8FAFC] p-5">
+      <ScrollArea className="h-[730px]">
+        <div className="space-y-7">
+          {orders.map((order: Order, idx: number) => (
+            <TabItem key={idx} order={order} />
+          ))}
+        </div>
+        <ScrollBar orientation="vertical" />
+      </ScrollArea>
+    </div>
   ) : (
     <div className=" font-bold text-2xl text-red-500 flex justify-center items-center h-[300px]">
       No current orders

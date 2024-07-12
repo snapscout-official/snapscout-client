@@ -27,6 +27,7 @@ export interface CartItem {
 
 export type Order = {
   order_id: string;
+  merchant_name: string;
   agency_id: number;
   merchant_id: number;
   status: string;

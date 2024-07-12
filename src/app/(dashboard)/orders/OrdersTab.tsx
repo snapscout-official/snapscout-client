@@ -43,7 +43,6 @@ export default function OrdersTab() {
         fullWidth: true,
         aria_label: "Order Tabs",
       }}
-      //we can pass some shape with a component right here
       tab_items={tab_items}
     />
   );
