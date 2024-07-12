@@ -1,7 +1,6 @@
-"use client";
-import { Tab, Tabs } from "@nextui-org/tabs";
 import React from "react";
 import AllTab from "./AllTab";
+import MyTabs from "./MyTabs";
 
 export default function OrdersTab() {
   const tab_items = [
@@ -13,42 +12,39 @@ export default function OrdersTab() {
     {
       label: "TO SHIP",
       id: "to-ship",
-      component: <AllTab />,
+      component: <AllTab tab="ship" />,
     },
     {
       label: "IN TRANSIT",
       id: "in-transit",
-      component: <AllTab />,
+      component: <AllTab tab="transit" />,
     },
     {
       label: "COMPLETED",
       id: "completed",
-      component: <AllTab />,
+      component: <AllTab tab="completed" />,
     },
     {
       label: "CANCELLED",
       id: "cancelled",
-      component: <AllTab />,
+      component: <AllTab tab="cancelled" />,
     },
     {
       label: "RETURN/REFUND",
       id: "return-refund",
-      component: <AllTab />,
+      component: <AllTab tab="return" />,
     },
   ];
   return (
-    <Tabs
-      aria-label="category"
-      variant="underlined"
-      color="success"
-      fullWidth
-      items={tab_items}
-    >
-      {(item) => (
-        <Tab key={item.id} aria-label="Tabs" title={item.label}>
-          {item.component}
-        </Tab>
-      )}
-    </Tabs>
+    <MyTabs
+      prop={{
+        variant: "underlined",
+        color: "success",
+        fullWidth: true,
+        aria_label: "Order Tabs",
+      }}
+      //we can pass some shape with a component right here
+      tab_items={tab_items}
+    />
   );
 }

@@ -5,11 +5,13 @@ type FetchParams = {
   headers?: HeadersInit;
   method: string;
   body?: BodyInit;
+  option?: NextFetchRequestConfig | undefined;
 };
 export async function fetchWithToken(params: FetchParams) {
   const session = await auth();
   return await fetch(params.url, {
     method: params.method,
+    next: params.option,
     headers: {
       ...params.headers,
       Authorization: `Bearer ${session?.apiToken}`,
