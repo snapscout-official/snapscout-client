@@ -5,6 +5,7 @@ export default function Orders({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  //if we fetch all orders data in here
   return (
     <DashboardContainer>
       <div className="flex flex-col">

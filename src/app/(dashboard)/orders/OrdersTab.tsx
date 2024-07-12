@@ -1,12 +1,9 @@
 "use client";
 import { Tab, Tabs } from "@nextui-org/tabs";
-import { useSearchParams } from "next/navigation";
-import React, { useCallback } from "react";
+import React from "react";
 import AllTab from "./AllTab";
 
 export default function OrdersTab() {
-  const searchParam = useSearchParams();
-
   const tab_items = [
     {
       label: "ALL",

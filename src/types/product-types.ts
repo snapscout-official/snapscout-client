@@ -24,3 +24,11 @@ export interface CartItem {
   quantity: number;
   product_id: string;
 }
+
+export type Order = {
+  order_id: string;
+  agency_id: number;
+  merchant_id: number;
+  status: string;
+  order_items: ProductType[];
+};
