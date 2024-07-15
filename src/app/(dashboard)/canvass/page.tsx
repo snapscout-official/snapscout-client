@@ -5,6 +5,7 @@ import ProductSection from "./ProductSection";
 import { Suspense } from "react";
 import ProductsSkeleton from "./ProductsSkeleton";
 import { Cart } from "@/types/product-types";
+import DatePicker from "./DatePicker";
 export default async function Canvass({
   searchParams,
 }: {
@@ -14,7 +15,7 @@ export default async function Canvass({
   if (cartCookie) {
     const cartData: Cart[] = JSON.parse(cartCookie.value);
     cartData.forEach((cart) => {
-      console.log(cart.cartName, cart.items);
+      console.log(cart.cart_name, cart.items);
     });
   }
   return (
@@ -24,6 +25,7 @@ export default async function Canvass({
         <Suspense fallback={<ProductsSkeleton />}>
           <ProductSection searchParams={searchParams} />
         </Suspense>
+        <DatePicker />
       </MainSection>
     </div>
   );

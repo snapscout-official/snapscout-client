@@ -3,9 +3,10 @@
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
 import { useEffect } from "react";
+//sets a global echo instance into the window
 export default function Client() {
   useEffect(() => {
-    const echo = new Echo({
+    window.Echo = new Echo({
       broadcaster: "pusher",
       wsHost: "realtime-pusher.ably.io",
       client: new Pusher(`${process.env.NEXT_PUBLIC_ABLY_PUBLIC_KEY}`, {
@@ -18,8 +19,7 @@ export default function Client() {
       disableStats: true,
       encrypted: true,
     });
-    echo
-      .channel("public.community")
+    window.Echo.channel("public.community")
       .subscribed(() => {
         console.log("we have subscribed/connected to the channel");
       })
@@ -28,7 +28,7 @@ export default function Client() {
       });
     return () => {
       console.log("leaving the public community channel");
-      echo.leaveChannel("public.community");
+      window.Echo.leaveChannel("public.community");
     };
   });
   return <div>Client Component for WS</div>;
