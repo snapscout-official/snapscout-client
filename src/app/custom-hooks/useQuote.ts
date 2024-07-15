@@ -14,7 +14,6 @@ export function useQuotes(
   const [quotes, setQuotes] = useState<Quote[] | undefined>(
     window.history.state?.[productName],
   );
-  console.log(window.history.state);
   function setMyQuotes(quote: Quote) {
     try {
       if (!quotes) {

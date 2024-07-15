@@ -1,5 +1,4 @@
 "use client";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Sheet,
   SheetContent,
@@ -9,7 +8,6 @@ import {
 } from "@/components/ui/sheet";
 import ProductCard from "./ProductCard";
 import { inter } from "@/app/ui/fonts";
-import ProductCarousel from "./ProductCarousel";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import AddToCartDropDown from "./AddToCartDropDown";
@@ -17,6 +15,7 @@ import InquireCard from "./InquireCard";
 import { writeCookie } from "@/app/actions/products";
 import RequestQuote from "./RequestQuote";
 import { Cart, ProductType } from "@/types/product-types";
+import ProductInformation from "./ProductInformation";
 export default function ProductCardSheet({
   product,
   cartData,
@@ -50,38 +49,12 @@ export default function ProductCardSheet({
             {currentProduct.product_name}
           </SheetTitle>
         </SheetHeader>
-        <div className="flex flex-col space-y-3 h-full">
+        <div className="flex flex-col space-y-2 h-full">
           {content == "product" && (
-            <div>
-              <div className="flex justify-center w-full">
-                <ProductCarousel />
-              </div>
-              <div>
-                <p>Varities</p>
-                <ScrollArea className="mt-3 w-full">
-                  <div className="flex space-x-7 w-max py-4">
-                    {product.map((product, idx) => (
-                      <Button
-                        onClick={() => {
-                          changeProduct(product._id);
-                        }}
-                        key={product._id}
-                        className="p-3 rounded-[.3rem] bg-secondary text-secondary-foreground hover:bg-secondary"
-                      >
-                        {"variety " + (idx + 1)}
-                      </Button>
-                    ))}
-                  </div>
-                  <ScrollBar orientation="horizontal" />
-                </ScrollArea>
-                <div className="flex justify-end w-full">
-                  <Button variant="link" className="text-lightText">
-                    View ratings
-                  </Button>
-                </div>
-              </div>
-              <div className="w-full border-[1px] border-border h-[300px]"></div>
-            </div>
+            <ProductInformation
+              product={product}
+              changeProduct={changeProduct}
+            />
           )}
           {content === "inquire" && <InquireCard />}
           {content === "request-quote" && <RequestQuote product={product} />}

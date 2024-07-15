@@ -51,7 +51,11 @@ export default function TabItem({ order }: { order: Order }) {
       <Separator orientation="horizontal" />
       <div className="space-y-2">
         {order.order_items.map((order_item: ProductType) => (
-          <ProductItem key={order_item._id} product={order_item} />
+          <ProductItem
+            key={order_item._id}
+            product={order_item}
+            can_rate={order.status === "completed"}
+          />
         ))}
       </div>
     </div>

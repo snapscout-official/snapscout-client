@@ -41,7 +41,6 @@ export type Quote = {
 export default function RequestQuote({ product }: Props) {
   const [quotes, setQuotes] = useQuotes(product[0].product_name);
   const [currentProduct, setCurrentProduct] = useState<ProductType>(product[0]);
-  const pathname = usePathname();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,6 +51,7 @@ export default function RequestQuote({ product }: Props) {
       productId: currentProduct._id,
     },
   });
+
   function handleAddQuote() {
     try {
       const quoteData: Quote = formSchema.parse(form.getValues());
@@ -94,7 +94,7 @@ export default function RequestQuote({ product }: Props) {
 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      <div className="text-sm h-[150px] mt-2 p-4 border-border border-[1px] md:text-base md:h-[200px]">
+      <div className="text-sm h-[150px] mt-2 p-4 border-border border-[1px] md:text-base md:h-[150px]">
         <p>Description Content Here</p>
       </div>
       <Form {...form}>
@@ -155,7 +155,7 @@ export default function RequestQuote({ product }: Props) {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="What is your budget? (optional)"
+                      placeholder="When do you need this product/service? (optional)"
                     />
                   </FormControl>
                 </FormItem>

@@ -7,7 +7,6 @@ export default async function AllTab({ tab }: { tab?: string | undefined }) {
   const res = await fetchWithToken({
     url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/orders?status=${tab ? tab : null}`,
     method: "GET",
-    option: { revalidate: 10800 },
     headers: {
       Accept: "application/json",
     },
