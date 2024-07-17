@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { ProductType, Cart } from "@/types/product-types";
 import { Quote } from "../(dashboard)/canvass/RequestQuote";
 import { fetchWithToken } from "@/services/fetchService";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 export async function searchProducts(data: FormData) {
   const searchedProduct = data.get("search");
@@ -60,14 +59,10 @@ export async function getCookieValue(key: string) {
 export async function getCartProducts(
   cart_name: string,
 ): Promise<ProductType[][]> {
-  const session = await auth();
-  if (!session?.apiToken) {
-    throw new Error("You are not authenticated");
-  }
   const result = await fetchWithToken({
     url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/carts/${cart_name}`,
     method: "GET",
-    apiToken: session.apiToken,
+
     headers: {
       Accept: "application/json",
     },
@@ -80,14 +75,10 @@ export async function getCartProducts(
   return data.cart_data;
 }
 export async function getCarts(): Promise<Cart[]> {
-  const session = await auth();
-  if (!session?.apiToken) {
-    throw new Error("You are not authenticated");
-  }
   const result = await fetchWithToken({
     url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/carts`,
     method: "GET",
-    apiToken: session.apiToken,
+
     headers: {
       Accept: "application/json",
     },
@@ -104,14 +95,10 @@ export async function addToCart(
   cartName: string,
   item?: { quantity: number; product_id: string } | null,
 ) {
-  const session = await auth();
-  if (!session?.apiToken) {
-    throw new Error("You are not authenticated");
-  }
   const result = await fetchWithToken({
     url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/carts`,
     method: "POST",
-    apiToken: session.apiToken,
+
     body: JSON.stringify({
       cart_name: cartName,
       items: item ? item : [],
@@ -128,14 +115,9 @@ export async function addToCart(
 }
 
 export async function deleteCartProduct(product_id: string, cart_name: string) {
-  const session = await auth();
-  if (!session?.apiToken) {
-    throw new Error("You are not authenticated");
-  }
   const result = await fetchWithToken({
     url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/carts/destroy-product`,
     method: "POST",
-    apiToken: session.apiToken,
     body: JSON.stringify({
       cart_name: cart_name,
       product_id: product_id,

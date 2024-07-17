@@ -1,35 +1,46 @@
 "use client";
 
+import cluster from "cluster";
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
 import { useEffect } from "react";
 //sets a global echo instance into the window
-export default function Client() {
+interface ClientComponentProp {
+  apiToken: string;
+}
+export default function Client({ apiToken }: ClientComponentProp) {
   useEffect(() => {
-    window.Echo = new Echo({
+    window.Pusher = Pusher;
+    const echo = new Echo({
       broadcaster: "pusher",
+      key: process.env.NEXT_PUBLIC_ABLY_PUBLIC_KEY,
       wsHost: "realtime-pusher.ably.io",
-      client: new Pusher(`${process.env.NEXT_PUBLIC_ABLY_PUBLIC_KEY}`, {
-        cluster: "Nan",
-        wsPort: 443,
-        wsHost: "realtime-pusher.ably.io",
-        disableStats: true,
-      }),
-
+      wsPort: 443,
+      cluster: "NaN",
       disableStats: true,
       encrypted: true,
+      authEndpoint: `${process.env.NEXT_PUBLIC_BACKEND_SERVICE_URL}/broadcasting/auth`,
+      auth: {
+        headers: {
+          Authorization: `Bearer ${apiToken}`,
+          Accept: "application/json",
+        },
+      },
     });
-    window.Echo.channel("public.community")
+
+    echo
+      .private("notifications.1")
       .subscribed(() => {
-        console.log("we have subscribed/connected to the channel");
+        console.log("we have subscribed/connected to the private channel");
       })
-      .listen("PublicMessageEvent", function (e: any) {
+      .listen(".orders.update", function (e: any) {
         console.log(e);
       });
+
     return () => {
       console.log("leaving the public community channel");
-      window.Echo.leaveChannel("public.community");
+      echo.leaveChannel("pubs");
     };
-  });
+  }, []);
   return <div>Client Component for WS</div>;
 }

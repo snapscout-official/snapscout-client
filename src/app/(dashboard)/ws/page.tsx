@@ -1,9 +1,12 @@
+import DashboardContainer from "@/componentUtils/DashboardContainer";
 import Client from "./Client";
+import { auth } from "@/auth";
 
-export default function WebSocket() {
+export default async function WebSocket() {
+  const { apiToken } = await auth();
   return (
-    <div>
-      <Client />
-    </div>
+    <DashboardContainer>
+      <Client apiToken={apiToken} />
+    </DashboardContainer>
   );
 }

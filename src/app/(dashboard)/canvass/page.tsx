@@ -5,7 +5,6 @@ import ProductSection from "./ProductSection";
 import { Suspense } from "react";
 import ProductsSkeleton from "./ProductsSkeleton";
 import { Cart } from "@/types/product-types";
-import DatePicker from "./DatePicker";
 export default async function Canvass({
   searchParams,
 }: {
@@ -25,7 +24,6 @@ export default async function Canvass({
         <Suspense fallback={<ProductsSkeleton />}>
           <ProductSection searchParams={searchParams} />
         </Suspense>
-        <DatePicker />
       </MainSection>
     </div>
   );
