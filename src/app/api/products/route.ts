@@ -8,7 +8,6 @@ export async function GET(request: Request) {
   const res = await fetchWithToken({
     url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/products?category=${category}&page=${page}`,
     method: "GET",
-    apiToken: session?.apiToken,
     headers: {
       Accept: "application/json",
     },

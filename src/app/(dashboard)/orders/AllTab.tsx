@@ -2,6 +2,7 @@ import TabItem from "./TabItem";
 import { Order } from "@/types/product-types";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { fetchWithToken } from "@/services/fetchService";
+import ProductDialog from "./ProductDialog";
 
 export default async function AllTab({ tab }: { tab?: string | undefined }) {
   const res = await fetchWithToken({
@@ -18,11 +19,14 @@ export default async function AllTab({ tab }: { tab?: string | undefined }) {
   const data = await res.json();
   const orders: Order[] = data.orders.flat();
   return orders.length !== 0 ? (
-    <div className="bg-[#F8FAFC] p-5">
-      <ScrollArea className="h-[730px]">
+    <div className="bg-[#F8FAFC] ">
+      <ScrollArea className="h-[730px] max-h-[730px] p-5">
         <div className="space-y-7">
           {orders.map((order: Order, idx: number) => (
             <TabItem key={idx} order={order} />
+          ))}
+          {orders.map((order: Order, idx: number) => (
+            <ProductDialog key={idx} order={order} />
           ))}
         </div>
         <ScrollBar orientation="vertical" />

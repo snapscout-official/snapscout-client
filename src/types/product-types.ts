@@ -33,3 +33,16 @@ export type Order = {
   status: string;
   order_items: ProductType[];
 };
+
+export type Notification = {
+  id: string;
+  notification_data: { order_id: string } | { quote_id: string };
+  notification_type: string;
+  description: string;
+  sender: number;
+  receiver: number;
+  opened: boolean;
+  created_at: string;
+  updated_at: string;
+  data: Order;
+};

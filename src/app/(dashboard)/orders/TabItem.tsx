@@ -16,6 +16,7 @@ export default function TabItem({ order }: { order: Order }) {
   return (
     <div
       className={`${inter.className} bg-white shadow-md rounded-sm text-[#64748B]`}
+      id={order.order_id}
     >
       <div
         className={` ${inter_semilight.className} flex justify-between px-5 py-2 text-sm`}

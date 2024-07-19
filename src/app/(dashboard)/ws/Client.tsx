@@ -1,17 +1,16 @@
 "use client";
 
-import cluster from "cluster";
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
 import { useEffect } from "react";
-//sets a global echo instance into the window
 interface ClientComponentProp {
   apiToken: string;
 }
 export default function Client({ apiToken }: ClientComponentProp) {
   useEffect(() => {
     window.Pusher = Pusher;
-    const echo = new Echo({
+    //lets test how to make echo instance global first
+    window.Echo = new Echo({
       broadcaster: "pusher",
       key: process.env.NEXT_PUBLIC_ABLY_PUBLIC_KEY,
       wsHost: "realtime-pusher.ably.io",
@@ -28,18 +27,13 @@ export default function Client({ apiToken }: ClientComponentProp) {
       },
     });
 
-    echo
-      .private("notifications.1")
-      .subscribed(() => {
-        console.log("we have subscribed/connected to the private channel");
-      })
-      .listen(".orders.update", function (e: any) {
-        console.log(e);
-      });
+    window.Echo.private("notifications.1").subscribed(() => {
+      console.log("we have subscribed/connected to the private channel");
+    });
 
     return () => {
       console.log("leaving the public community channel");
-      echo.leaveChannel("pubs");
+      window.Echo.leaveChannel("pubs");
     };
   }, []);
   return <div>Client Component for WS</div>;
