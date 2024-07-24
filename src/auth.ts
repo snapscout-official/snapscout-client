@@ -85,6 +85,10 @@ export const {
       //event that calls signout endpoint
       await destroyApiToken(token.apiToken);
     },
+    // async signIn({ user }) {
+    //   const result = await setCartCookie(null, user.apiToken);
+    //   console.log(result);
+    // },
   },
 });
 

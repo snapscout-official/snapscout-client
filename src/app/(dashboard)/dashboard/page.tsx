@@ -6,7 +6,6 @@ import { cookies } from "next/headers";
 
 async function Dashboard() {
   cookies();
-  const session = await auth();
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return (
     <DashboardContainer>

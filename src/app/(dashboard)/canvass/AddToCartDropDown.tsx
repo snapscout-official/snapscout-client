@@ -47,10 +47,13 @@ export default function AddToCartDropDown({
               <CartMenuItem
                 key={idx}
                 clickHandler={async () => {
-                  await addToCart(cart.cartName, 12, product);
+                  await addToCart(cart.cart_name, {
+                    quantity: 12,
+                    product_id: product._id,
+                  });
                   toast({
-                    title: `Product Added to Cart ${cart.cartName}`,
-                    description: `Product ${product.product_name} has been added to cart ${cart.cartName}`,
+                    title: `Product Added to Cart ${cart.cart_name}`,
+                    description: `Product ${product.product_name} has been added to cart ${cart.cart_name}`,
                     action: <ToastAction altText="done">Done</ToastAction>,
                   });
                 }}
@@ -62,7 +65,7 @@ export default function AddToCartDropDown({
                   height={25}
                   className="mr-2"
                 />
-                {cart.cartName}
+                {cart.cart_name}
               </CartMenuItem>
             ))
           ) : (

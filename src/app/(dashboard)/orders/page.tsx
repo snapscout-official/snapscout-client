@@ -1,20 +1,16 @@
-"use client";
-
-import { useEffect } from "react";
-
-export default function Orders() {
-  useEffect(() => {
-    async function fetchCookie() {
-      const result = await fetch("http://localhost:3000/api/cookies", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-      });
-      console.log(result);
-    }
-    fetchCookie();
-  }, []);
-
-  return <div>Testing</div>;
+import DashboardContainer from "@/componentUtils/DashboardContainer";
+import OrdersTab from "./OrdersTab";
+export default function Orders({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  //if we fetch all orders data in here
+  return (
+    <DashboardContainer>
+      <div className="flex flex-col h-[814px]">
+        <OrdersTab />
+      </div>
+    </DashboardContainer>
+  );
 }

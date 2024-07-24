@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import Bag from "@/public-assets/shopping-bag.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addToQuote } from "@/app/actions/products";
-import { usePathname } from "next/navigation";
 import { ProductType } from "@/types/product-types";
 import { useToast } from "@/components/ui/use-toast";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -22,6 +21,13 @@ import Image from "next/image";
 import { ToastAction } from "@/components/ui/toast";
 import HoverText from "@/componentUtils/HoverText";
 import { useQuotes } from "@/app/custom-hooks/useQuote";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
 
 type Props = {
   product: ProductType[];
@@ -29,29 +35,33 @@ type Props = {
 const formSchema = z.object({
   quantity: z.coerce.number().min(1).max(100),
   budget: z.string().optional(),
-  need: z.string().optional(),
+  need: z
+    .date({
+      required_error: "input must be a date",
+    })
+    .optional(),
   productId: z.string(),
 });
 export type Quote = {
   quantity: number;
   budget?: string | undefined;
-  need?: string | undefined;
+  need?: Date | undefined;
   productId: string;
 };
 export default function RequestQuote({ product }: Props) {
   const [quotes, setQuotes] = useQuotes(product[0].product_name);
   const [currentProduct, setCurrentProduct] = useState<ProductType>(product[0]);
-  const pathname = usePathname();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       quantity: 0,
       budget: "",
-      need: "",
+      need: undefined,
       productId: currentProduct._id,
     },
   });
+
   function handleAddQuote() {
     try {
       const quoteData: Quote = formSchema.parse(form.getValues());
@@ -94,7 +104,7 @@ export default function RequestQuote({ product }: Props) {
 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      <div className="text-sm h-[150px] mt-2 p-4 border-border border-[1px] md:text-base md:h-[200px]">
+      <div className="text-sm h-[150px] mt-2 p-4 border-border border-[1px] md:text-base md:h-[150px]">
         <p>Description Content Here</p>
       </div>
       <Form {...form}>
@@ -152,12 +162,31 @@ export default function RequestQuote({ product }: Props) {
               name="need"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="What is your budget? (optional)"
-                    />
-                  </FormControl>
+                  <Popover modal>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          type="button"
+                          className="w-full"
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>When do you need it? (optional)</span>
+                          )}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </FormItem>
               )}
             />

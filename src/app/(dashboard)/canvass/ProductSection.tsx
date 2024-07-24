@@ -1,18 +1,15 @@
-import { auth } from "@/auth";
 import ProductCardSheet from "./ProductCardSheet";
 import { ProductType } from "@/types/product-types";
 import MyPagination from "@/componentUtils/MyPagination";
 import { LinksProp } from "@/types/product-types";
 import { fetchWithToken, splitUrlString } from "@/services/fetchService";
-import { getCookieValue } from "@/app/actions/products";
+import { getCarts, getCookieValue } from "@/app/actions/products";
 type ProductSectionProp = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 export default async function ProductSection({
   searchParams,
 }: ProductSectionProp) {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-  const session = await auth();
   let { category, page } = searchParams;
   //add error handling right here
   let result = await fetchWithToken({
@@ -22,7 +19,6 @@ export default async function ProductSection({
       "&page=" +
       (page ? `${page}` : null),
     method: "GET",
-    apiToken: session?.apiToken,
     headers: {
       Accept: "application/json",
     },
@@ -38,7 +34,7 @@ export default async function ProductSection({
     });
   }
   //add error handling
-  const cartCookie = await getCookieValue("carts");
+  const cartCookie = await getCarts();
 
   return (
     <div className="bg-[#F8FAFC] p-5">

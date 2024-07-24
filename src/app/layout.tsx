@@ -2,7 +2,10 @@ import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-
+import { Providers } from "@/lib/providers";
+import { SessionContext } from "./custom-hooks/sessionContext";
+import { auth } from "@/auth";
+import SessionContextProvider from "@/componentUtils/SessionContextProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -14,14 +17,17 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }): Promise<any> {
+  const session = await auth();
   return (
     <html lang="en">
       <head>
         <title>Snapscout</title>
       </head>
       <body className={`${inter.className} antialiased`}>
-        {children}
-        <Toaster />
+        <SessionContextProvider value={session}>
+          <Providers>{children}</Providers>
+          <Toaster />
+        </SessionContextProvider>
       </body>
     </html>
   );

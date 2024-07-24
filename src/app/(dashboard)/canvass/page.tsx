@@ -14,7 +14,7 @@ export default async function Canvass({
   if (cartCookie) {
     const cartData: Cart[] = JSON.parse(cartCookie.value);
     cartData.forEach((cart) => {
-      console.log(cart.items);
+      console.log(cart.cart_name, cart.items);
     });
   }
   return (

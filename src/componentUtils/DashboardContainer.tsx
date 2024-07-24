@@ -6,7 +6,7 @@ type ContainerProps = {
 
 export default function DashboardContainer({ children }: ContainerProps) {
   return (
-    <div className="mx-[20px] pt-7 max-h-full xl:mx-[150px] lg:pt-[8rem] xl:min-h-full xl:max-h-[700px]">
+    <div className="mx-[20px] w-auto py-4 mt-7 xl:mx-[150px] lg:mt-[7rem] ">
       {children}
     </div>
   );

@@ -12,13 +12,13 @@ export default async function MainContent() {
   const session = await auth();
   const user = session?.user;
   return (
-    <div className="col-span-12 p-2 flex overflow-auto flex-col space-y-2 min-h-full max-h-full xl:col-span-9">
+    <div className="col-span-12 flex overflow-auto flex-col space-y-2 min-h-full max-h-full xl:col-span-9">
       <div className="grid grid-cols-12 px-3 gap-x-4 py-3 min-h-[300px] bg-white shadow-md rounded-[.5rem] md:px-7">
-        <div className="flex col-span-4 items-center 2xl:col-span-3 ">
+        <div className="flex col-span-4 items-center lg:col-span-3 2xl:col-span-3 ">
           <Image
             src={MyImage}
             alt="profile"
-            className="rounded-full aspect-square object-cover lg:h-auto w-auto"
+            className="rounded-full aspect-square object-cover lg:h-auto w-full"
             placeholder="blur"
           />
         </div>
