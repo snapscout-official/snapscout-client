@@ -1,12 +1,14 @@
+import { MessageType } from "@/types/product-types";
 import { type ReactElement } from "react";
 
 type MessageProps = {
-  content: string;
+  message: MessageType;
 };
-export function Message({ content }: MessageProps): ReactElement {
+export function Message({ message }: MessageProps): ReactElement {
   return (
     <div>
-      <p>{content}</p>
+      <p>{message.content}</p>
+      <p>{message.sending ? "Sending" : ""}</p>
     </div>
   );
 }

@@ -10,12 +10,16 @@ type MessageBoxProps = {
 };
 export default function MessageBox({ initialMessages }: MessageBoxProps) {
   const [messages, setMessages] = useState<MessageType[]>(initialMessages);
-  async function sendMessage({ message }: { message: string }) {
-    await deliverMessage("Hello world");
+  async function sendMessage(message: string) {
+    const returnedMessage = await deliverMessage(message);
+    setMessages((messages) => [
+      ...messages,
+      { content: returnedMessage, creator: 1, sending: false },
+    ]);
   }
   return (
-    <div className="col-span-9">
-      <Thread messages={messages} />
+    <div className="col-span-9 max-h-[816px]">
+      <Thread messages={messages} setMessage={sendMessage} />
     </div>
   );
 }

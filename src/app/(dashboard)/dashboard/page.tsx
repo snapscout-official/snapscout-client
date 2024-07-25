@@ -1,7 +1,6 @@
 import DashboardContainer from "@/componentUtils/DashboardContainer";
 import SideMenu from "./SideMenu";
 import MainContent from "./MainContent";
-import { auth } from "@/auth";
 import { cookies } from "next/headers";
 
 async function Dashboard() {
