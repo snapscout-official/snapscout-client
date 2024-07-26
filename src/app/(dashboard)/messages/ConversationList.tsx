@@ -21,27 +21,9 @@ export default function ConversationList() {
       date: new Date(Date.now()),
       recentMessage: "Hello world",
     },
-    {
-      image: "",
-      participant: "Merchant Name",
-      date: new Date(Date.now()),
-      recentMessage: "Hello world",
-    },
-    {
-      image: "",
-      participant: "Merchant Name",
-      date: new Date(Date.now()),
-      recentMessage: "Hello world",
-    },
-    {
-      image: "",
-      participant: "Merchant Name",
-      date: new Date(Date.now()),
-      recentMessage: "Hello world",
-    },
   ];
   return (
-    <ScrollArea className="bg-white col-span-3 h-[814px]">
+    <ScrollArea className="bg-white col-span-3 h-[816px]">
       <div className="space-y-3 py-3 px-4">
         {conversationItems.map((conversation, idx) => (
           <ConversationItem

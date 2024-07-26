@@ -13,8 +13,8 @@ export default function MessageBox({ initialMessages }: MessageBoxProps) {
   async function sendMessage(message: string) {
     const newMessage = await deliverMessage(message);
     setMessages((messages) => [
-      ...messages,
       { content: newMessage, sending: false, creator: 1 },
+      ...messages,
     ]);
   }
   return (
