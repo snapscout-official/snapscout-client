@@ -11,10 +11,10 @@ type MessageBoxProps = {
 export default function MessageBox({ initialMessages }: MessageBoxProps) {
   const [messages, setMessages] = useState<MessageType[]>(initialMessages);
   async function sendMessage(message: string) {
-    const returnedMessage = await deliverMessage(message);
+    const newMessage = await deliverMessage(message);
     setMessages((messages) => [
       ...messages,
-      { content: returnedMessage, creator: 1, sending: false },
+      { content: newMessage, sending: false, creator: 1 },
     ]);
   }
   return (
