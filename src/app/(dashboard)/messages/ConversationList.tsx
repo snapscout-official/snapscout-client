@@ -23,7 +23,7 @@ export default function ConversationList() {
     },
   ];
   return (
-    <ScrollArea className="bg-white col-span-3 h-[816px]">
+    <ScrollArea className="bg-white col-span-3 h-[816px] border-[1px] border-gray-300">
       <div className="space-y-3 py-3 px-4">
         {conversationItems.map((conversation, idx) => (
           <ConversationItem
