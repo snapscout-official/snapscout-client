@@ -24,7 +24,11 @@ export default auth((req, _) => {
   if (!isPublicRoute && !isLoggedIn) {
     return Response.redirect(new URL(DEFAULT_LOGIN_ROUTE, nextUrl));
   }
-  return NextResponse.next({ headers });
+  //nextjs server actions returns undefined when doing the one below
+  /* return NextResponse.next({ headers}); */
+
+  //this fixed the problem
+  return NextResponse.next({ request: { headers: headers } });
 });
 
 export const config = {

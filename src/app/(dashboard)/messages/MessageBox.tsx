@@ -15,9 +15,9 @@ export default function MessageBox({
   initialMessages,
   conversationId,
 }: MessageBoxProps) {
-  useEcho(listenEvents, echoCleaner);
-  console.log(conversationId);
+  const [echo] = useEcho(listenEvents, echoCleaner);
   const [messages, setMessages] = useState<MessageType[]>(initialMessages);
+  //fixed our typings
   function listenEvents(echo: Echo) {
     echo
       .join(`conversation.${conversationId}`)
@@ -34,16 +34,21 @@ export default function MessageBox({
   function echoCleaner(echo: Echo) {
     echo.leave(`conversation.${conversationId}`);
   }
-  async function sendMessage(message: string) {
-    const newMessage = await deliverMessage(message);
-    setMessages((messages) => [
-      { content: newMessage, sending: false, creator: 1 },
-      ...messages,
-    ]);
+  async function sendMessage(message: string): Promise<void> {
+    if (!echo) {
+      throw new Error("websocket error:Echo instance is not found");
+    }
+    const newMessage = await deliverMessage(
+      message,
+      conversationId,
+      echo.socketId(),
+    );
+    console.log(newMessage);
+    setMessages((messages) => [newMessage, ...messages]);
   }
   return (
     <div className="col-span-9 max-h-[816px]">
-      <Thread messages={messages} setMessage={sendMessage} />
+      <Thread messages={messages} sendMessage={sendMessage} />
     </div>
   );
 }

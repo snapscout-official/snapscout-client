@@ -51,4 +51,5 @@ export type MessageType = {
   content: string;
   creator: number;
   sending: boolean;
+  is_read: boolean;
 };

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Pusher from "pusher-js";
 import Echo from "laravel-echo";
 import { useMySession } from "./sessionContext";
@@ -8,13 +8,14 @@ export function useEcho(
   executor: (echo: Echo) => void,
   cleaner: (echo: Echo) => void,
 ) {
-  // const [echo, setEcho] = useState();
+  const [echo, setEcho] = useState<Echo>();
   const { token } = useMySession();
   useEffect(() => {
     if (!window.Echo) {
       bootEcho(token);
     }
     const echo: Echo = window.Echo;
+    setEcho(echo);
     //executor will register the listen callback and what channel to listen
     executor(echo);
     return () => {
@@ -41,4 +42,5 @@ export function useEcho(
       },
     });
   }
+  return [echo];
 }

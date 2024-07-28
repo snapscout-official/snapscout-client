@@ -9,14 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 type ThreadProps = {
   messages: MessageType[];
-  setMessage: (message: string) => Promise<void>;
+  sendMessage: (message: string) => Promise<void>;
 };
 const messageSchema = z.object({
   message: z.string().min(1),
 });
-export function Thread({ messages, setMessage }: ThreadProps): ReactElement {
+export function Thread({ messages, sendMessage }: ThreadProps): ReactElement {
   const formRef = useRef<HTMLFormElement>(null);
-
+  //refactor
   async function formAction(data: FormData) {
     const formData = Object.fromEntries(data);
     const parsed = messageSchema.safeParse(formData);
@@ -27,13 +27,13 @@ export function Thread({ messages, setMessage }: ThreadProps): ReactElement {
     addOptimisticMessage(message);
     form.reset();
     formRef.current?.reset();
-    await setMessage(message);
+    await sendMessage(message);
   }
   const [optimisticMessages, addOptimisticMessage] = useOptimistic<
     MessageType[],
     string
   >(messages, (state, newMessage) => [
-    { content: newMessage, creator: 1, sending: true },
+    { content: newMessage, creator: 1, sending: true, is_read: false },
     ...state,
   ]);
   const form = useForm<z.infer<typeof messageSchema>>({
