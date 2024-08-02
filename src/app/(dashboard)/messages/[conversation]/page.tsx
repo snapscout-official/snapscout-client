@@ -16,6 +16,7 @@ export default function Conversation(): ReactElement {
     {
       content: "Hello World",
       creator: 1,
+      is_read: true,
       sending: false,
     },
   ];

@@ -4,9 +4,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Notification } from "@/types/product-types";
 import { useState } from "react";
 
-import { useEcho } from "@/app/custom-hooks/useEcho";
-import Echo from "laravel-echo";
+import Echo from "@ably/laravel-echo";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import useAbly from "@/app/custom-hooks/useAbly";
 
 export default function Notifications({
   initialNotifications,
@@ -15,14 +15,15 @@ export default function Notifications({
 }) {
   const [notifications, setNotifications] =
     useState<Notification[]>(initialNotifications);
-  useEcho(executor, cleaner);
+  useAbly(executor, cleaner);
   function cleaner(echo: Echo) {
     console.log("We are leaving ");
-    echo.leave("notifications.1");
+    echo.leaveChannel("private:notifications.1");
   }
   function executor(echo: Echo) {
     echo
       .private("notifications.1")
+
       .listen(
         ".orders.update",
         function (newNotifData: { data: Notification; socket: null }) {

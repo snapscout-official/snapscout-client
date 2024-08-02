@@ -50,6 +50,14 @@ export type Notification = {
 export type MessageType = {
   content: string;
   creator: number;
-  sending: boolean;
-  is_read: boolean;
+  status: "unread" | "seen" | "sending";
+};
+export type ConversationType = {
+  uuid: string;
+  participants: number[];
+  created_at: Date;
+  updated_at: Date;
+  participant_user: string;
+  image: string;
+  recent_message: string;
 };

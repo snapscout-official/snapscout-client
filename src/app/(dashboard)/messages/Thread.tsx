@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useMySession } from "@/app/custom-hooks/sessionContext";
 type ThreadProps = {
   messages: MessageType[];
   sendMessage: (message: string) => Promise<void>;
@@ -16,7 +17,9 @@ const messageSchema = z.object({
 });
 export function Thread({ messages, sendMessage }: ThreadProps): ReactElement {
   const formRef = useRef<HTMLFormElement>(null);
+  const { user } = useMySession();
   //refactor
+
   async function formAction(data: FormData) {
     const formData = Object.fromEntries(data);
     const parsed = messageSchema.safeParse(formData);
@@ -33,7 +36,7 @@ export function Thread({ messages, sendMessage }: ThreadProps): ReactElement {
     MessageType[],
     string
   >(messages, (state, newMessage) => [
-    { content: newMessage, creator: 1, sending: true, is_read: false },
+    { content: newMessage, creator: 1, status: "sending" },
     ...state,
   ]);
   const form = useForm<z.infer<typeof messageSchema>>({
@@ -49,7 +52,7 @@ export function Thread({ messages, sendMessage }: ThreadProps): ReactElement {
       <div className="w-full border-[1px] border-gray-300 flex-1 flex flex-col-reverse overflow-y-auto p-3 ">
         <div className="flex flex-col-reverse gap-y-4 ">
           {optimisticMessages.map((message: MessageType, idx: number) => (
-            <Message key={idx} message={message} />
+            <Message key={idx} message={message} userId={user.id} />
           ))}
         </div>
       </div>
