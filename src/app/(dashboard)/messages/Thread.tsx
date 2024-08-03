@@ -36,7 +36,7 @@ export function Thread({ messages, sendMessage }: ThreadProps): ReactElement {
     MessageType[],
     string
   >(messages, (state, newMessage) => [
-    { content: newMessage, creator: 1, status: "sending" },
+    { content: newMessage, creator: user.id, status: "sending" },
     ...state,
   ]);
   const form = useForm<z.infer<typeof messageSchema>>({

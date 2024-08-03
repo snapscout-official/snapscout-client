@@ -41,7 +41,8 @@ export default function MessageBox({
     if (!echo) {
       throw new Error("websocket error: Echo instance is not found");
     }
-    const newMessage = await deliverMessage(message, conversationId);
+    //if message fail add some error handling right here
+    await deliverMessage(message, conversationId);
   }
   return (
     <div className="col-span-9 max-h-[816px]">

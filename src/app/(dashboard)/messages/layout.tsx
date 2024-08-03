@@ -8,7 +8,7 @@ export default function layout({
 }): ReactElement {
   return (
     <DashboardContainer>
-      <div className="grid grid-cols-12  ">
+      <div className="grid grid-cols-12">
         <ConversationList />
         {children}
       </div>

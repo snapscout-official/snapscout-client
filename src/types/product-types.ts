@@ -59,5 +59,5 @@ export type ConversationType = {
   updated_at: Date;
   participant_user: string;
   image: string;
-  recent_message: string;
+  recent_message: MessageType;
 };

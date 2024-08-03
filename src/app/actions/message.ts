@@ -1,11 +1,8 @@
 "use server";
 import { fetchWithToken } from "@/services/fetchService";
-import { MessageType } from "@/types/product-types";
+import { revalidatePath } from "next/cache";
 
-export async function deliverMessage(
-  message: string,
-  conversation_id: string,
-): Promise<MessageType> {
+export async function deliverMessage(message: string, conversation_id: string) {
   const result = await fetchWithToken({
     url: `${process.env.BACKEND_SERVICE_URL}/api/v1/send-message`,
     method: "POST",
@@ -23,7 +20,6 @@ export async function deliverMessage(
     console.log(errorData.message);
     throw new Error("something went wrong in the service");
   }
-  const data: MessageType = await result.json();
-
-  return data;
+  await result.json();
+  revalidatePath("/messages");
 }
