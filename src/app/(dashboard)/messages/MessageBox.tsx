@@ -10,27 +10,27 @@ import useAbly from "@/app/custom-hooks/useAbly";
 type MessageBoxProps = {
   initialMessages: MessageType[];
   conversationId: string;
+  participantName: string;
 };
 export default function MessageBox({
   initialMessages,
   conversationId,
+  participantName,
 }: MessageBoxProps) {
-  const [echo] = useAbly(listenEvents, echoCleaner);
+  useAbly(listenEvents, echoCleaner);
   const [messages, setMessages] = useState<MessageType[]>(initialMessages);
-  //fixed our typings
-
   function listenEvents(echo: Echo) {
     echo
       .join(`conversation.${conversationId}`)
       .subscribed(() => {
         console.log("Subscribed to the presence channel");
       })
-      //event type might change base on the information needed
-      .listen(".message.sent", function (e: MessageType) {
+      .listen(".message.sent", function (e: { message: MessageType }) {
         //if we are listening we can then make an api call to mark the message as read(not sure)
-        setMessages((messages) => [e, ...messages]);
+        setMessages((messages) => [e.message, ...messages]);
       })
       .error((error: Error) => {
+        //handle message error
         console.log(error);
       });
   }
@@ -38,15 +38,15 @@ export default function MessageBox({
     echo.leaveChannel(`presence:conversation.${conversationId}`);
   }
   async function sendMessage(message: string): Promise<void> {
-    if (!echo) {
-      throw new Error("websocket error: Echo instance is not found");
-    }
-    //if message fail add some error handling right here
     await deliverMessage(message, conversationId);
   }
   return (
     <div className="col-span-9 max-h-[816px]">
-      <Thread messages={messages} sendMessage={sendMessage} />
+      <Thread
+        messages={messages}
+        sendMessage={sendMessage}
+        merchantName={participantName}
+      />
     </div>
   );
 }

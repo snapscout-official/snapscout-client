@@ -1,6 +1,6 @@
 import { type ReactElement } from "react";
 import MessageBox from "../MessageBox";
-import { MessageType } from "@/types/product-types";
+import { ConversationType, MessageType } from "@/types/product-types";
 import { headers } from "next/headers";
 import { fetchWithToken } from "@/services/fetchService";
 
@@ -21,7 +21,12 @@ export default async function Conversation(): Promise<ReactElement> {
   }
   const data = await result.json();
   const messages: MessageType[] = data.messages;
+  const conversation_data: ConversationType = data.conversation_data;
   return (
-    <MessageBox initialMessages={messages} conversationId={conversationId} />
+    <MessageBox
+      initialMessages={messages}
+      conversationId={conversationId}
+      participantName={conversation_data.participant_user}
+    />
   );
 }

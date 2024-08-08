@@ -1,13 +1,14 @@
 import Topnav from "@/componentUtils/Topnav";
+import { ReactNode } from "react";
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}): Promise<any> {
+}): Promise<ReactNode> {
   return (
-    <div>
+    <div className="h-dvh">
       <Topnav />
-      <main className=" w-full min-h-full max-h-full ">{children}</main>
+      <main className=" w-full">{children}</main>
     </div>
   );
 }

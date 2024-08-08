@@ -11,11 +11,16 @@ import { useMySession } from "@/app/custom-hooks/sessionContext";
 type ThreadProps = {
   messages: MessageType[];
   sendMessage: (message: string) => Promise<void>;
+  merchantName: string;
 };
 const messageSchema = z.object({
   message: z.string().min(1),
 });
-export function Thread({ messages, sendMessage }: ThreadProps): ReactElement {
+export function Thread({
+  messages,
+  sendMessage,
+  merchantName,
+}: ThreadProps): ReactElement {
   const formRef = useRef<HTMLFormElement>(null);
   const { user } = useMySession();
   //refactor
@@ -48,7 +53,7 @@ export function Thread({ messages, sendMessage }: ThreadProps): ReactElement {
 
   return (
     <Card className="h-full max-h-full flex flex-col rounded-none">
-      <div className="p-4 border-[1px] border-gray-300">Merchant Name here</div>
+      <div className="p-4 border-[1px] border-gray-300">{merchantName}</div>
       <div className="w-full border-[1px] border-gray-300 flex-1 flex flex-col-reverse overflow-y-auto p-3 ">
         <div className="flex flex-col-reverse gap-y-4 ">
           {optimisticMessages.map((message: MessageType, idx: number) => (

@@ -1,6 +1,5 @@
 "use server";
 import { fetchWithToken } from "@/services/fetchService";
-import { revalidatePath } from "next/cache";
 
 export async function deliverMessage(message: string, conversation_id: string) {
   const result = await fetchWithToken({
@@ -21,5 +20,4 @@ export async function deliverMessage(message: string, conversation_id: string) {
     throw new Error("something went wrong in the service");
   }
   await result.json();
-  revalidatePath("/messages");
 }

@@ -54,6 +54,10 @@ export type MessageType = {
 };
 export type ConversationType = {
   uuid: string;
+  participants_data: {
+    id: string;
+    name: string;
+  }[];
   participants: number[];
   created_at: Date;
   updated_at: Date;
