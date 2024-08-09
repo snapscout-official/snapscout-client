@@ -15,7 +15,21 @@ export default function ConversationList({
 }: ConversationListProps) {
   const [conversations, setConversations] =
     useState<ConversationType[]>(conversationItems);
-  // console.log("id we got:", conversationId);
+  function testSort() {
+    const dates: Date[] = [
+      new Date(Date.now()),
+      new Date(Date.now() - 1000 * 60 * 60 * 24),
+    ];
+    console.log(
+      "We got this:",
+      dates.toSorted((a, b) => {
+        if (a > b) return -1;
+        if (a < b) return 1;
+        return 0;
+      }),
+    );
+  }
+  testSort();
   const executor = (echo: Echo) => {
     echo
       .private(`conversation_user.${userId}`)
@@ -52,8 +66,8 @@ export default function ConversationList({
   //sorts conversation based on updated_at
   function sortByKey<T>(items: T[], key: keyof T): T[] {
     return items.toSorted((a, b) => {
-      if (a[key] > b[key]) return 1;
-      if (a[key] < b[key]) return -1;
+      if (a[key] > b[key]) return -1;
+      if (a[key] < b[key]) return 1;
       return 0;
     });
   }

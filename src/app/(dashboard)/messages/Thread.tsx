@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useMySession } from "@/app/custom-hooks/sessionContext";
+import EmojiPicker from "emoji-picker-react";
 type ThreadProps = {
   messages: MessageType[];
   sendMessage: (message: string) => Promise<void>;
@@ -75,6 +76,7 @@ export function Thread({
                 }
               }}
             />
+            <EmojiPicker open={false} />
             <Button type="submit">Send</Button>
           </div>
         </form>

@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { headers } from "next/headers";
 import { fetchWithToken } from "@/services/fetchService";
 import { ConversationType } from "@/types/product-types";
+import Conversation from "./[conversation]/page";
 export default async function layout({
   children,
 }: {
@@ -27,11 +28,17 @@ export default async function layout({
   }
   const fetchData = await result.json();
   const conversationItems: ConversationType[] = fetchData.conversations;
+  const updatedConversation: ConversationType[] = conversationItems.map(
+    (conversation) => ({
+      ...conversation,
+      updated_at: new Date(conversation.updated_at),
+    }),
+  );
   return (
     <DashboardContainer>
       <div className="grid grid-cols-12">
         <ConversationList
-          conversationItems={conversationItems}
+          conversationItems={updatedConversation}
           userId={session.user.id}
         />
         {children}
