@@ -7,17 +7,15 @@ import useAbly from "@/app/custom-hooks/useAbly";
 import Echo from "@ably/laravel-echo";
 type ConversationListProps = {
   conversationItems: ConversationType[];
-  conversationId: string;
   userId: string;
 };
 export default function ConversationList({
   conversationItems,
-  conversationId,
   userId,
 }: ConversationListProps) {
   const [conversations, setConversations] =
     useState<ConversationType[]>(conversationItems);
-  // console.log(conversations);
+  // console.log("id we got:", conversationId);
   const executor = (echo: Echo) => {
     echo
       .private(`conversation_user.${userId}`)
@@ -54,8 +52,8 @@ export default function ConversationList({
   //sorts conversation based on updated_at
   function sortByKey<T>(items: T[], key: keyof T): T[] {
     return items.toSorted((a, b) => {
-      if (a[key] < b[key]) return 1;
-      if (a[key] > b[key]) return -1;
+      if (a[key] > b[key]) return 1;
+      if (a[key] < b[key]) return -1;
       return 0;
     });
   }
@@ -68,7 +66,6 @@ export default function ConversationList({
       <div className="space-y-3 py-3 px-1 max-w-full">
         {conversations.map((conversation, _) => (
           <ConversationItem
-            active={conversationId === conversation.uuid}
             key={conversation.uuid}
             userId={userId}
             conversationData={conversation}

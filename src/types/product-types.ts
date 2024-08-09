@@ -61,7 +61,6 @@ export type ConversationType = {
   participants: number[];
   created_at: Date;
   updated_at: Date;
-  participant_user: string;
   image: string;
   recent_message: MessageType;
 };

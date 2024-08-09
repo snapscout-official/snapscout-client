@@ -11,13 +11,10 @@ export default async function layout({
   children: React.ReactNode;
 }): Promise<ReactElement> {
   const session = await auth();
-  const headerList = headers();
-  const currentPath = headerList.get("x-current-path");
-  if (!currentPath || !session || !session.user) {
+  if (!session || !session.user) {
     throw new Error("Why is there no path?");
   }
 
-  const conversationId = currentPath.split("/")[2];
   const result = await fetchWithToken({
     url: `${process.env.BACKEND_SERVICE_URL}/api/v1/conversations`,
     method: "GET",
@@ -34,7 +31,6 @@ export default async function layout({
     <DashboardContainer>
       <div className="grid grid-cols-12">
         <ConversationList
-          conversationId={conversationId}
           conversationItems={conversationItems}
           userId={session.user.id}
         />

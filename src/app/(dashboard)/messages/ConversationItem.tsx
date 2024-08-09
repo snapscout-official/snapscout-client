@@ -1,19 +1,22 @@
+"use client";
 import CsuLogo from "@/public-assets/csu-logo.png";
 import Image from "next/image";
 import { format } from "date-fns";
 import Link from "next/link";
 import { ConversationType } from "@/types/product-types";
 import { cn } from "@/lib/utils";
+import { useParams } from "next/navigation";
 type ConversationItemProps = {
   conversationData: ConversationType;
-  active: boolean;
   userId?: string;
 };
 export default function ConversationItem({
   conversationData,
   userId,
-  active,
 }: ConversationItemProps) {
+  const params = useParams<{ conversation: string }>();
+  const active = params.conversation === conversationData.uuid;
+
   return (
     <Link
       href={`/messages/${conversationData.uuid}`}
