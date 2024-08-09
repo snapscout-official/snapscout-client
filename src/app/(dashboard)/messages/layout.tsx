@@ -2,10 +2,8 @@ import React, { type ReactElement } from "react";
 import DashboardContainer from "@/componentUtils/DashboardContainer";
 import ConversationList from "./ConversationList";
 import { auth } from "@/auth";
-import { headers } from "next/headers";
 import { fetchWithToken } from "@/services/fetchService";
 import { ConversationType } from "@/types/product-types";
-import Conversation from "./[conversation]/page";
 export default async function layout({
   children,
 }: {
@@ -27,18 +25,13 @@ export default async function layout({
     throw new Error("Error getting the conversations");
   }
   const fetchData = await result.json();
+  console.log(fetchData.conversations);
   const conversationItems: ConversationType[] = fetchData.conversations;
-  const updatedConversation: ConversationType[] = conversationItems.map(
-    (conversation) => ({
-      ...conversation,
-      updated_at: new Date(conversation.updated_at),
-    }),
-  );
   return (
     <DashboardContainer>
       <div className="grid grid-cols-12">
         <ConversationList
-          conversationItems={updatedConversation}
+          conversationItems={conversationItems}
           userId={session.user.id}
         />
         {children}
