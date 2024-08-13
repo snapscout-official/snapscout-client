@@ -4,7 +4,7 @@ import { type ReactElement } from "react";
 
 type MessageProps = {
   message: MessageType;
-  userId: number;
+  userId: number | undefined;
 };
 export function Message({ message, userId }: MessageProps): ReactElement {
   return (

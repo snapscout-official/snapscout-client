@@ -7,9 +7,11 @@ export default function useAbly(
   executor: (echo: Echo) => void,
   cleaner: (echo: Echo) => void,
 ) {
+  const [echoInstance, setEchoInstance] = useState<Echo>();
   const { token } = useMySession();
   useEffect(() => {
     const echo = bootEcho(token);
+    setEchoInstance(echo);
     executor(echo);
     return () => {
       cleaner(echo);
@@ -32,6 +34,8 @@ export default function useAbly(
         return res.data;
       },
     });
+
     return echo;
   }
+  return echoInstance;
 }

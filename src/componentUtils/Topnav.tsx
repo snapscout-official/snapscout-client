@@ -7,7 +7,9 @@ import { inter_semilight, roboto } from "@/app/ui/fonts";
 import { Button } from "@/components/ui/button";
 import Sidebar from "./Sidebar";
 import Link from "next/link";
+import { useMySession } from "@/app/custom-hooks/sessionContext";
 export default function Topnav() {
+  const { user } = useMySession();
   const [showSideNav, setShowSideNav] = useState<boolean>(false);
   const navList = [
     {
@@ -54,7 +56,9 @@ export default function Topnav() {
               className="text-[#030538] bg-white hover:bg-gray-200 rounded-lg"
               asChild
             >
-              <Link href="/login">Login</Link>
+              <Link href={user ? "/dashboard" : "/login"}>
+                {user ? "Dashboard" : "login"}
+              </Link>
             </Button>
           </div>
           <div></div>

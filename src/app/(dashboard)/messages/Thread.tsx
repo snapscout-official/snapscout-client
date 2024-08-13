@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useMySession } from "@/app/custom-hooks/sessionContext";
-import EmojiPicker from "emoji-picker-react";
+// import EmojiPicker fom "emoji-picker-react";
 type ThreadProps = {
   messages: MessageType[];
   sendMessage: (message: string) => Promise<void>;
@@ -41,10 +41,15 @@ export function Thread({
   const [optimisticMessages, addOptimisticMessage] = useOptimistic<
     MessageType[],
     string
-  >(messages, (state, newMessage) => [
-    { content: newMessage, creator: user.id, status: "sending" },
-    ...state,
-  ]);
+  >(messages, (state, newMessage) => {
+    if (!user) {
+      throw new Error("Something is wrong");
+    }
+    return [
+      { content: newMessage, creator: user.id, status: "sending" },
+      ...state,
+    ];
+  });
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
     defaultValues: {
@@ -58,7 +63,7 @@ export function Thread({
       <div className="w-full border-[1px] border-gray-300 flex-1 flex flex-col-reverse overflow-y-auto p-3 ">
         <div className="flex flex-col-reverse gap-y-4 ">
           {optimisticMessages.map((message: MessageType, idx: number) => (
-            <Message key={idx} message={message} userId={user.id} />
+            <Message key={idx} message={message} userId={user?.id} />
           ))}
         </div>
       </div>
@@ -76,7 +81,7 @@ export function Thread({
                 }
               }}
             />
-            <EmojiPicker open={false} />
+            {/* <EmojiPicker open={false} /> */}
             <Button type="submit">Send</Button>
           </div>
         </form>

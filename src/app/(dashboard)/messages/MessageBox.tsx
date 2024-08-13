@@ -17,7 +17,7 @@ export default function MessageBox({
   conversationId,
   participantName,
 }: MessageBoxProps) {
-  useAbly(listenEvents, echoCleaner);
+  const echo = useAbly(listenEvents, echoCleaner);
   const [messages, setMessages] = useState<MessageType[]>(initialMessages);
   function listenEvents(echo: Echo) {
     echo
@@ -38,7 +38,9 @@ export default function MessageBox({
     echo.leaveChannel(`presence:conversation.${conversationId}`);
   }
   async function sendMessage(message: string): Promise<void> {
-    await deliverMessage(message, conversationId);
+    const socketId = echo ? echo.socketId() : "";
+    await deliverMessage(message, conversationId, socketId);
+    console.log("Done");
   }
   return (
     <div className="col-span-9 max-h-[816px]">
