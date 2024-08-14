@@ -2,26 +2,27 @@ import { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
-    user?: DefaultSession["user"] & {
-      id: string;
-      first_name: string;
-      last_name: string;
-      birth_date: string;
-      tin_number: string;
-      gender: string;
-      phone_number: string;
-      email: string;
-      email_verified_at?: string | unknown;
-      created_at: string;
-      updated_at: string;
-      role_id: number;
-      role: string;
-      sub?: string;
-    };
+    user?: DefaultSession["user"] & MyUser;
     apiToken: string | null;
     expires: string | null;
   }
 }
+export type MyUser = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  birth_date: string;
+  tin_number: string;
+  gender: string;
+  phone_number: string;
+  email: string;
+  email_verified_at?: string | unknown;
+  created_at: string;
+  updated_at: string;
+  role_id: number;
+  role: string;
+  sub?: string;
+};
 export type States = {
   firstName?: string;
   lastName?: string;
