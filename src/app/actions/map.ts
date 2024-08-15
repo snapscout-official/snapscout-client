@@ -2,6 +2,10 @@
 
 export async function getLocations(search: string): Promise<string[]> {
   console.log("Getting locations");
+
+  if (search.length === 0) {
+    return [];
+  }
   const result = await fetch(
     `https://api.locationiq.com/v1/autocomplete?key=${process.env.LOCATION_IQ_TOKEN}&q=${search}&limit=5&dedupe=1&`,
     {

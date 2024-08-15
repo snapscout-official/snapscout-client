@@ -42,12 +42,13 @@ export default function MerchantSteptwo({
   const [locations, setLocations] = useState<string[]>();
   const [selectedLocation, setSelectedLocation] = useState<string>();
   const searchLocationRef = useRef<HTMLInputElement>(null);
+
   const LazyMap = useMemo(
     () =>
       dynamic(() => import("@/componentUtils/LeafletMap"), {
         ssr: false,
       }),
-    [],
+    [selectedLocation],
   );
 
   const form = useForm<z.infer<typeof merchantTwoSchema>>({
@@ -129,6 +130,7 @@ export default function MerchantSteptwo({
                   <Input
                     onChange={(event) => {
                       searchLocations(event.target.value);
+                      field.onChange(event);
                     }}
                     ref={searchLocationRef}
                     value={field.value}
@@ -136,8 +138,8 @@ export default function MerchantSteptwo({
                     type="text"
                   />
                 </FormControl>
-                {locations ? (
-                  <Command>
+                {locations && locations?.length !== 0 ? (
+                  <Command className="rounded-lg shadow-md h-[100px]">
                     <CommandList>
                       <CommandGroup>
                         {locations.map((location, idx) => (
@@ -145,6 +147,8 @@ export default function MerchantSteptwo({
                             key={idx}
                             onSelect={() => {
                               setSelectedLocation(location);
+                              form.setValue("location", location);
+                              setLocations([]);
                             }}
                           >
                             {location}
@@ -161,7 +165,6 @@ export default function MerchantSteptwo({
           <div className="w-full">
             <LazyMap className="w-full h-[200px]" />
           </div>
-          {/* <div className="w-full bg-[#0F172A] h-[200px]"></div> */}
         </div>
         <div className="mt-5 flex justify-end w-full">
           <Button
