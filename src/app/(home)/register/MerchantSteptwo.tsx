@@ -67,13 +67,15 @@ export default function MerchantSteptwo({
     setLocations(locationsResult);
   };
 
-  const reverseGeocoding = async (coordinates: {
-    lat: number;
-    lon: number;
-  }) => {
-    await getLocationFromLatLon(coordinates);
+  const reverseGeocoding = async (coordinates: LatLng) => {
+    const codedLocation = await getLocationFromLatLon({
+      lat: coordinates.lat,
+      lon: coordinates.lng,
+    });
+    console.log(codedLocation.display_address);
+    setSelectedLocation(codedLocation);
+    form.setValue("location", codedLocation.display_address);
   };
-
   function handleSubmit(formData: z.infer<typeof merchantTwoSchema>) {
     try {
       //handleNextStep from the parent component
@@ -158,11 +160,6 @@ export default function MerchantSteptwo({
                             key={idx}
                             onSelect={() => {
                               setSelectedLocation(location);
-                              console.log(
-                                "Our new coordinates: ",
-                                location.lat,
-                                location.lon,
-                              );
                               mapRef.current?.flyTo(
                                 new LatLng(location.lat, location.lon),
                                 mapRef.current.getZoom(),
@@ -188,6 +185,7 @@ export default function MerchantSteptwo({
           <div className="w-full">
             <LazyMap className="w-full h-[200px]" mapRef={mapRef}>
               <PinMapRegister
+                handleMapClick={reverseGeocoding}
                 positionProp={
                   !selectedLocation
                     ? new LatLng(51.505, -0.09)

@@ -8,13 +8,16 @@ import { LatLng } from "leaflet";
 import { useState } from "react";
 type PinMapProps = {
   positionProp: LatLng;
+  handleMapClick: (coordinates: LatLng) => Promise<void>;
 };
 export const PinMapRegister = ({
   positionProp,
+  handleMapClick,
 }: PinMapProps): ReactElement | null => {
   const [position, setPosition] = useState<LatLng>(positionProp);
   const map = useMapEvents({
     click: (mouseEvent) => {
+      handleMapClick(mouseEvent.latlng);
       setPosition(mouseEvent.latlng);
     },
   });
