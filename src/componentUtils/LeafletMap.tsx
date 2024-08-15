@@ -12,6 +12,7 @@ import { PinMap } from "./RegiterMap";
 
 type LeafletMapProps = {
   className: string;
+  position: LatLng;
 };
 function LocationMarker(): ReactElement | null {
   const [position, setPosition] = useState<LatLng>();
@@ -37,8 +38,9 @@ function LocationMarker(): ReactElement | null {
 }
 export default function LeafletMap({
   className,
+  position,
 }: LeafletMapProps): ReactElement {
-  const position: LatLngExpression = [51.505, -0.09];
+  /* const position: LatLngExpression = [51.505, -0.09]; */
   return (
     <MapContainer
       center={position}
@@ -47,7 +49,7 @@ export default function LeafletMap({
       className={className}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <PinMap />
+      <PinMap parentPosition={position} />
     </MapContainer>
   );
 }

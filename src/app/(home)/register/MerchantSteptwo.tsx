@@ -27,20 +27,21 @@ import {
 } from "@/types/auth-types";
 import dynamic from "next/dynamic";
 import { getLocations } from "@/app/actions/map";
+import { LocationType } from "@/types/map-types";
+import { LatLng } from "leaflet";
 
 type MerchantStepTwoProps = {
-  children: React.ReactNode;
+  // children: React.ReactNode;
   handleNextStep: (
     formData: StageOneFormData | MerchantStageTwo | MerchantStageThree,
   ) => void;
 };
 
 export default function MerchantSteptwo({
-  children,
   handleNextStep,
 }: MerchantStepTwoProps) {
-  const [locations, setLocations] = useState<string[]>();
-  const [selectedLocation, setSelectedLocation] = useState<string>();
+  const [locations, setLocations] = useState<LocationType[]>();
+  const [selectedLocation, setSelectedLocation] = useState<LocationType>();
   const searchLocationRef = useRef<HTMLInputElement>(null);
 
   const LazyMap = useMemo(
@@ -59,9 +60,12 @@ export default function MerchantSteptwo({
   });
 
   const searchLocations = async (location: string) => {
-    const searchedLocations = await getLocations(location);
-    setLocations(searchedLocations);
+    const locationsResult = await getLocations(location);
+    console.log(locationsResult);
+    setLocations(locationsResult);
   };
+
+  const reverseGeocoding = async () => {};
 
   function handleSubmit(formData: z.infer<typeof merchantTwoSchema>) {
     try {
@@ -147,11 +151,14 @@ export default function MerchantSteptwo({
                             key={idx}
                             onSelect={() => {
                               setSelectedLocation(location);
-                              form.setValue("location", location);
+                              form.setValue(
+                                "location",
+                                location.display_address,
+                              );
                               setLocations([]);
                             }}
                           >
-                            {location}
+                            {location.display_address}
                           </CommandItem>
                         ))}
                       </CommandGroup>
@@ -163,7 +170,14 @@ export default function MerchantSteptwo({
             )}
           />
           <div className="w-full">
-            <LazyMap className="w-full h-[200px]" />
+            <LazyMap
+              className="w-full h-[200px]"
+              position={
+                !selectedLocation
+                  ? new LatLng(51.505, -0.09)
+                  : new LatLng(selectedLocation.lat, selectedLocation.lon)
+              }
+            />
           </div>
         </div>
         <div className="mt-5 flex justify-end w-full">

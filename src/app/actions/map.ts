@@ -1,6 +1,6 @@
 "use server";
-
-export async function getLocations(search: string): Promise<string[]> {
+import { LocationType } from "@/types/map-types";
+export async function getLocations(search: string): Promise<LocationType[]> {
   console.log("Getting locations");
 
   if (search.length === 0) {
@@ -20,10 +20,12 @@ export async function getLocations(search: string): Promise<string[]> {
     throw new Error("We have an error fetching the locations");
   }
   const data = await result.json();
-
+  console.log(data);
   //any for now
-  const locations = data.map(
-    (locationData: any) => locationData.display_address,
-  );
+  const locations: LocationType[] = data.map((locationData: any) => ({
+    display_address: locationData.display_address,
+    lat: locationData.lat,
+    lon: locationData.lon,
+  }));
   return locations;
 }

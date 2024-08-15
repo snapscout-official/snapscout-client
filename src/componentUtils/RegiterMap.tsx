@@ -4,13 +4,20 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
-import { LatLng } from "leaflet";
+import { LatLng, LatLngExpression } from "leaflet";
 import { useState } from "react";
-export function PinMap(): ReactElement | null {
-  const [position, setPosition] = useState<LatLng>();
+type PinMapProps = {
+  parentPosition: LatLng;
+};
+export const PinMap = ({
+  parentPosition,
+}: PinMapProps): ReactElement | null => {
+  const [position, setPosition] = useState<LatLng | LatLngExpression>(
+    parentPosition,
+  );
+
   const map = useMapEvents({
     click: (mouseEvent) => {
-      console.log(mouseEvent.latlng);
       setPosition(mouseEvent.latlng);
     },
   });
@@ -23,12 +30,13 @@ export function PinMap(): ReactElement | null {
       </Popup>
     </Marker>
   ) : null;
-}
+};
+
 export function RegisterMap(): ReactElement {
   return (
     <MapContainer>
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <PinMap />
+      <PinMap parentPosition={new LatLng(51.505, -0.09)} />
     </MapContainer>
   );
 }
