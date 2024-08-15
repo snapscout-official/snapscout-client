@@ -1,4 +1,10 @@
-import React from "react";
+import React, { useMemo, useRef, useState } from "react";
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import {
   Form,
   FormControl,
@@ -14,16 +20,48 @@ import { useForm } from "react-hook-form";
 import { inter } from "@/app/ui/fonts";
 import { merchantTwoSchema } from "@/types/schema";
 import { Input } from "@/components/ui/input";
-import { MerchantStageComponentProps } from "@/types/auth-types";
+import {
+  MerchantStageThree,
+  MerchantStageTwo,
+  StageOneFormData,
+} from "@/types/auth-types";
+import dynamic from "next/dynamic";
+import { getLocations } from "@/app/actions/map";
+
+type MerchantStepTwoProps = {
+  children: React.ReactNode;
+  handleNextStep: (
+    formData: StageOneFormData | MerchantStageTwo | MerchantStageThree,
+  ) => void;
+};
+
 export default function MerchantSteptwo({
+  children,
   handleNextStep,
-}: MerchantStageComponentProps) {
+}: MerchantStepTwoProps) {
+  const [locations, setLocations] = useState<string[]>();
+  const [selectedLocation, setSelectedLocation] = useState<string>();
+  const searchLocationRef = useRef<HTMLInputElement>(null);
+  const LazyMap = useMemo(
+    () =>
+      dynamic(() => import("@/componentUtils/LeafletMap"), {
+        ssr: false,
+      }),
+    [],
+  );
+
   const form = useForm<z.infer<typeof merchantTwoSchema>>({
     resolver: zodResolver(merchantTwoSchema),
     defaultValues: {
       buildingName: "",
     },
   });
+
+  const searchLocations = async (location: string) => {
+    const searchedLocations = await getLocations(location);
+    setLocations(searchedLocations);
+  };
+
   function handleSubmit(formData: z.infer<typeof merchantTwoSchema>) {
     try {
       //handleNextStep from the parent component
@@ -35,8 +73,7 @@ export default function MerchantSteptwo({
         country: "Philippines",
       });
     } catch (err) {
-      //just console initially should be changed to proper error handling
-      console.log(err);
+      //just console initially should be changed to proper error handling console.log(err);
     }
   }
   return (
@@ -82,25 +119,49 @@ export default function MerchantSteptwo({
             )}
           />
           <FormField
-            name="street"
+            name="location"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className={`${inter.className} font-bold`}>
-                  Street
+                  Location
                 </FormLabel>
                 <FormControl>
                   <Input
-                    onChange={field.onChange}
+                    onChange={(event) => {
+                      searchLocations(event.target.value);
+                    }}
+                    ref={searchLocationRef}
                     value={field.value}
                     className="bg-white border-[#CBD5E1] rounded-[.5rem]"
                     type="text"
                   />
                 </FormControl>
+                {locations ? (
+                  <Command>
+                    <CommandList>
+                      <CommandGroup>
+                        {locations.map((location, idx) => (
+                          <CommandItem
+                            key={idx}
+                            onSelect={() => {
+                              setSelectedLocation(location);
+                            }}
+                          >
+                            {location}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                ) : null}
                 <FormMessage className="text-red-600" />
               </FormItem>
             )}
           />
-          <div className="w-full bg-[#0F172A] h-[200px]"></div>
+          <div className="w-full">
+            <LazyMap className="w-full h-[200px]" />
+          </div>
+          {/* <div className="w-full bg-[#0F172A] h-[200px]"></div> */}
         </div>
         <div className="mt-5 flex justify-end w-full">
           <Button

@@ -8,6 +8,7 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useMap, useMapEvents } from "react-leaflet/hooks";
 import { LatLng, LatLngExpression } from "leaflet";
 import { useState } from "react";
+import { PinMap } from "./RegiterMap";
 
 type LeafletMapProps = {
   className: string;
@@ -46,7 +47,7 @@ export default function LeafletMap({
       className={className}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <LocationMarker />
+      <PinMap />
     </MapContainer>
   );
 }

@@ -79,7 +79,7 @@ type Gender = "male" | "female";
 export interface MerchantStageTwo {
   businessName: string;
   buildingName: string;
-  street: string;
+  location: string;
   barangay: string;
   city: string;
   province: string;

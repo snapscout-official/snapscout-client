@@ -6,7 +6,7 @@ export const merchantTwoSchema = z.object({
   buildingName: z
     .string({ required_error: "Must be a string" })
     .min(1, { message: "building name is required" }),
-  street: z
+  location: z
     .string({ required_error: "Must be a string" })
     .min(1, { message: "street name is required" }),
   // barangay: z
