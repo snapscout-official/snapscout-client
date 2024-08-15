@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import ProductSection from "./ProductSection";
 import { Suspense } from "react";
 import ProductsSkeleton from "./ProductsSkeleton";
+import { MapDialog } from "@/componentUtils/MapDialog";
 import { Cart } from "@/types/product-types";
 
 import dynamic from "next/dynamic";
@@ -25,7 +26,10 @@ export default async function Canvass({
   return (
     <div className="grid grid-cols-12 gap-x-4 mt-5">
       <RecentlyViewed>
-        <LazyMap />
+        <LazyMap className="w-full h-[200px] rounded-lg" />
+        <MapDialog>
+          <LazyMap className="w-full h-full" />
+        </MapDialog>
       </RecentlyViewed>
       <MainSection>
         <Suspense fallback={<ProductsSkeleton />}>

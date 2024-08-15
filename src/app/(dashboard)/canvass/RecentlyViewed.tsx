@@ -22,7 +22,7 @@ export default async function RecentlyViewed({
         {products.map((product, idx) => (
           <RecentlyCard key={idx} />
         ))}
-        {children}
+        <div>{children}</div>
       </div>
     </div>
   );

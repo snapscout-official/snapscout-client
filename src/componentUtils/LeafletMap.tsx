@@ -9,6 +9,9 @@ import { useMap, useMapEvents } from "react-leaflet/hooks";
 import { LatLng, LatLngExpression } from "leaflet";
 import { useState } from "react";
 
+type LeafletMapProps = {
+  className: string;
+};
 function LocationMarker(): ReactElement | null {
   const [position, setPosition] = useState<LatLng>();
   const map = useMapEvents({
@@ -20,28 +23,30 @@ function LocationMarker(): ReactElement | null {
       map.flyTo(location.latlng, map.getZoom());
     },
   });
-  return null;
-}
-export default function LeafletMap(): ReactElement {
-  const position: LatLngExpression = [51.505, -0.09];
-  return (
-    <MapContainer
-      center={position}
-      zoom={11}
-      scrollWheelZoom={true}
-      className="h-[250px] w-full"
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <LocationMarker />
+  return position ? (
+    <>
       <Marker position={position}>
         <Popup>
           This Marker icon is displayed correctly with{" "}
           <i>leaflet-defaulticon-compatibility</i>.
         </Popup>
       </Marker>
+    </>
+  ) : null;
+}
+export default function LeafletMap({
+  className,
+}: LeafletMapProps): ReactElement {
+  const position: LatLngExpression = [51.505, -0.09];
+  return (
+    <MapContainer
+      center={position}
+      zoom={15}
+      scrollWheelZoom={true}
+      className={className}
+    >
+      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <LocationMarker />
     </MapContainer>
   );
 }
