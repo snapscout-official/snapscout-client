@@ -29,3 +29,24 @@ export async function getLocations(search: string): Promise<LocationType[]> {
   }));
   return locations;
 }
+export async function getLocationFromLatLon(coordinates: {
+  lat: number;
+  lon: number;
+}) {
+  console.log("Getting locations by numbers");
+  const result = await fetch(
+    `https://us1.locationiq.com/v1/reverse?key=${process.env.LOCATION_IQ_TOKEN}&lat=${coordinates.lat}&lon=${coordinates.lon}&format=json&`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    },
+  );
+  if (!result.ok) {
+    console.log("We have an error");
+    throw new Error("We have an error fetching the locations");
+  }
+  const data = await result.json();
+  console.log(data);
+}

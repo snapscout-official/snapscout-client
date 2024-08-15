@@ -5,14 +5,14 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import "leaflet-defaulticon-compatibility";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { useMap, useMapEvents } from "react-leaflet/hooks";
-import { LatLng, LatLngExpression } from "leaflet";
+import { useMapEvents } from "react-leaflet/hooks";
+import { LatLng, LatLngExpression, Map } from "leaflet";
 import { useState } from "react";
-import { PinMap } from "./RegiterMap";
-
+import { LegacyRef } from "react";
 type LeafletMapProps = {
   className: string;
-  position: LatLng;
+  children: React.ReactNode;
+  mapRef: LegacyRef<Map>;
 };
 function LocationMarker(): ReactElement | null {
   const [position, setPosition] = useState<LatLng>();
@@ -38,18 +38,21 @@ function LocationMarker(): ReactElement | null {
 }
 export default function LeafletMap({
   className,
-  position,
+  mapRef,
+  children,
 }: LeafletMapProps): ReactElement {
-  /* const position: LatLngExpression = [51.505, -0.09]; */
+  //change the default position to Butuan's coordinates
+  const position: LatLngExpression = [51.505, -0.09];
   return (
     <MapContainer
       center={position}
       zoom={15}
       scrollWheelZoom={true}
       className={className}
+      ref={mapRef}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <PinMap parentPosition={position} />
+      {children}
     </MapContainer>
   );
 }

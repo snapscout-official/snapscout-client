@@ -26,9 +26,10 @@ import {
   StageOneFormData,
 } from "@/types/auth-types";
 import dynamic from "next/dynamic";
-import { getLocations } from "@/app/actions/map";
+import { getLocationFromLatLon, getLocations } from "@/app/actions/map";
 import { LocationType } from "@/types/map-types";
-import { LatLng } from "leaflet";
+import { LatLng, Map } from "leaflet";
+import { PinMapRegister } from "@/componentUtils/RegiterMap";
 
 type MerchantStepTwoProps = {
   // children: React.ReactNode;
@@ -42,6 +43,7 @@ export default function MerchantSteptwo({
 }: MerchantStepTwoProps) {
   const [locations, setLocations] = useState<LocationType[]>();
   const [selectedLocation, setSelectedLocation] = useState<LocationType>();
+  const mapRef = useRef<Map>(null);
   const searchLocationRef = useRef<HTMLInputElement>(null);
 
   const LazyMap = useMemo(
@@ -49,7 +51,7 @@ export default function MerchantSteptwo({
       dynamic(() => import("@/componentUtils/LeafletMap"), {
         ssr: false,
       }),
-    [selectedLocation],
+    [],
   );
 
   const form = useForm<z.infer<typeof merchantTwoSchema>>({
@@ -61,11 +63,16 @@ export default function MerchantSteptwo({
 
   const searchLocations = async (location: string) => {
     const locationsResult = await getLocations(location);
-    console.log(locationsResult);
+    // console.log(locationsResult);
     setLocations(locationsResult);
   };
 
-  const reverseGeocoding = async () => {};
+  const reverseGeocoding = async (coordinates: {
+    lat: number;
+    lon: number;
+  }) => {
+    await getLocationFromLatLon(coordinates);
+  };
 
   function handleSubmit(formData: z.infer<typeof merchantTwoSchema>) {
     try {
@@ -151,6 +158,15 @@ export default function MerchantSteptwo({
                             key={idx}
                             onSelect={() => {
                               setSelectedLocation(location);
+                              console.log(
+                                "Our new coordinates: ",
+                                location.lat,
+                                location.lon,
+                              );
+                              mapRef.current?.flyTo(
+                                new LatLng(location.lat, location.lon),
+                                mapRef.current.getZoom(),
+                              );
                               form.setValue(
                                 "location",
                                 location.display_address,
@@ -170,14 +186,15 @@ export default function MerchantSteptwo({
             )}
           />
           <div className="w-full">
-            <LazyMap
-              className="w-full h-[200px]"
-              position={
-                !selectedLocation
-                  ? new LatLng(51.505, -0.09)
-                  : new LatLng(selectedLocation.lat, selectedLocation.lon)
-              }
-            />
+            <LazyMap className="w-full h-[200px]" mapRef={mapRef}>
+              <PinMapRegister
+                positionProp={
+                  !selectedLocation
+                    ? new LatLng(51.505, -0.09)
+                    : new LatLng(selectedLocation.lat, selectedLocation.lon)
+                }
+              />
+            </LazyMap>
           </div>
         </div>
         <div className="mt-5 flex justify-end w-full">

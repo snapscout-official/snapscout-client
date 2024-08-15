@@ -1,29 +1,29 @@
-import { type ReactElement } from "react";
+import { useEffect, type ReactElement } from "react";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import "leaflet-defaulticon-compatibility";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
-import { LatLng, LatLngExpression } from "leaflet";
+import { LatLng } from "leaflet";
 import { useState } from "react";
 type PinMapProps = {
-  parentPosition: LatLng;
+  positionProp: LatLng;
 };
-export const PinMap = ({
-  parentPosition,
+export const PinMapRegister = ({
+  positionProp,
 }: PinMapProps): ReactElement | null => {
-  const [position, setPosition] = useState<LatLng | LatLngExpression>(
-    parentPosition,
-  );
-
+  const [position, setPosition] = useState<LatLng>(positionProp);
   const map = useMapEvents({
     click: (mouseEvent) => {
       setPosition(mouseEvent.latlng);
     },
   });
+  useEffect(() => {
+    setPosition(positionProp);
+  }, [positionProp]);
+
   return position ? (
     <Marker position={position}>
-      {" "}
       <Popup>
         This Marker icon is displayed correctly with{" "}
         <i>leaflet-defaulticon-compatibility</i>.
@@ -36,7 +36,7 @@ export function RegisterMap(): ReactElement {
   return (
     <MapContainer>
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <PinMap parentPosition={new LatLng(51.505, -0.09)} />
+      {/* <PinMap parentPosition={new LatLng(51.505, -0.09)} /> */}
     </MapContainer>
   );
 }
