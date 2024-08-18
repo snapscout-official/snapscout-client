@@ -78,12 +78,9 @@ export type StageOneFormData = {
 type Gender = "male" | "female";
 export interface MerchantStageTwo {
   businessName: string;
-  buildingName: string;
   location: string;
-  barangay: string;
-  city: string;
-  province: string;
-  country: string;
+  longitude: number;
+  latitude: number;
 }
 export interface MerchantStageThree {
   accepts: boolean;

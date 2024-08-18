@@ -3,24 +3,11 @@ export const merchantTwoSchema = z.object({
   businessName: z
     .string({ required_error: "Must be a string" })
     .min(4, { message: "Business name must be 4 characters long" }),
-  buildingName: z
-    .string({ required_error: "Must be a string" })
-    .min(1, { message: "building name is required" }),
   location: z
     .string({ required_error: "Must be a string" })
     .min(1, { message: "street name is required" }),
-  // barangay: z
-  //   .string({ required_error: "Must be a string" })
-  //   .min(1, { message: "barangay name is required" }),
-  // city: z
-  //   .string({ required_error: "Must be a string" })
-  //   .min(1, { message: "city is required" }),
-  // province: z
-  //   .string({ required_error: "Must be a string" })
-  //   .min(1, { message: "province is required" }),
-  // country: z
-  //   .string({ required_error: "Must be a string" })
-  //   .min(1, { message: "country is required" }),
+  latitude: z.number(),
+  longitude: z.number(),
 });
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [

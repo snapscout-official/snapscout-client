@@ -32,7 +32,6 @@ import { LatLng, Map } from "leaflet";
 import { PinMapRegister } from "@/componentUtils/RegiterMap";
 
 type MerchantStepTwoProps = {
-  // children: React.ReactNode;
   handleNextStep: (
     formData: StageOneFormData | MerchantStageTwo | MerchantStageThree,
   ) => void;
@@ -57,37 +56,41 @@ export default function MerchantSteptwo({
   const form = useForm<z.infer<typeof merchantTwoSchema>>({
     resolver: zodResolver(merchantTwoSchema),
     defaultValues: {
-      buildingName: "",
+      //set initial default values for lat lon
+      location: "",
+      longitude: 1,
+      latitude: 1
+
     },
   });
 
   const searchLocations = async (location: string) => {
     const locationsResult = await getLocations(location);
-    // console.log(locationsResult);
     setLocations(locationsResult);
   };
 
+  const setCoordinate = (coordinate: LocationType) => {
+    form.setValue("latitude", Number(coordinate.lat))
+    form.setValue("longitude", Number(coordinate.lon))
+  }
   const reverseGeocoding = async (coordinates: LatLng) => {
     const codedLocation = await getLocationFromLatLon({
       lat: coordinates.lat,
       lon: coordinates.lng,
     });
-    console.log(codedLocation.display_address);
     setSelectedLocation(codedLocation);
+
+    setCoordinate(codedLocation)
+
     form.setValue("location", codedLocation.display_address);
   };
-  function handleSubmit(formData: z.infer<typeof merchantTwoSchema>) {
+
+  const handleSubmit = (formData: z.infer<typeof merchantTwoSchema>) => {
     try {
       //handleNextStep from the parent component
-      handleNextStep({
-        ...formData,
-        barangay: "San Vicente",
-        city: "Butuan City",
-        province: "Agusan Del Norte",
-        country: "Philippines",
-      });
+      handleNextStep(formData);
     } catch (err) {
-      //just console initially should be changed to proper error handling console.log(err);
+      console.log(err)
     }
   }
   return (
@@ -100,25 +103,6 @@ export default function MerchantSteptwo({
               <FormItem>
                 <FormLabel className={`${inter.className} font-bold`}>
                   Business Name
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    onChange={field.onChange}
-                    value={field.value}
-                    className="bg-white border-[#CBD5E1] rounded-[.5rem]"
-                    type="text"
-                  />
-                </FormControl>
-                <FormMessage className="text-red-600" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="buildingName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className={`${inter.className} font-bold`}>
-                  Building Name
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -160,6 +144,7 @@ export default function MerchantSteptwo({
                             key={idx}
                             onSelect={() => {
                               setSelectedLocation(location);
+                              setCoordinate(location);
                               mapRef.current?.flyTo(
                                 new LatLng(location.lat, location.lon),
                                 mapRef.current.getZoom(),
@@ -183,7 +168,7 @@ export default function MerchantSteptwo({
             )}
           />
           <div className="w-full">
-            <LazyMap className="w-full h-[200px]" mapRef={mapRef}>
+            <LazyMap className="w-full h-[300px]" mapRef={mapRef}>
               <PinMapRegister
                 handleMapClick={reverseGeocoding}
                 positionProp={
