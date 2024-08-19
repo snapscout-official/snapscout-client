@@ -96,8 +96,9 @@ export async function logoutUser() {
 export async function registerMerchantUser(formData: FormData) {
   //persist in the db and wont be authenticated until not reviewed by the admin
   try {
+    console.log(formData);
     const res = await fetch(
-      `${process.env.BACKEND_SERVICE_URL}/api/v1/merchant/signup`,
+      `${process.env.BACKEND_SERVICE_URL}/api/v1/merchant/register`,
       {
         method: "POST",
         body: formData,
@@ -107,6 +108,8 @@ export async function registerMerchantUser(formData: FormData) {
       },
     );
     if (!res.ok) {
+      const data = await res.json();
+      console.log(data);
       throw new Error(
         `Something went wrong in the server, status code:  ${res.status}`,
       );
@@ -211,7 +214,6 @@ export async function signOutUser() {
 export async function destroyApiToken(apiToken: string) {
   await fetchWithToken({
     url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/signout`,
-    apiToken: apiToken,
     headers: {
       "Content-Type": "application/json",
     },
