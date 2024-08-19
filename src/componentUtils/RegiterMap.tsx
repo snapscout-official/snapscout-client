@@ -8,7 +8,8 @@ import { LatLng } from "leaflet";
 import { useState } from "react";
 type PinMapProps = {
   positionProp: LatLng;
-  handleMapClick: (coordinates: LatLng) => Promise<void>;
+  //can be undefined since agency registration does not need to pin
+  handleMapClick?: (coordinates: LatLng) => Promise<void>;
 };
 export const PinMapRegister = ({
   positionProp,
@@ -17,8 +18,11 @@ export const PinMapRegister = ({
   const [position, setPosition] = useState<LatLng>(positionProp);
   const map = useMapEvents({
     click: (mouseEvent) => {
-      handleMapClick(mouseEvent.latlng);
-      setPosition(mouseEvent.latlng);
+
+      if (handleMapClick) {
+        handleMapClick(mouseEvent.latlng);
+        setPosition(mouseEvent.latlng);
+      }
     },
   });
   useEffect(() => {

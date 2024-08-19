@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,10 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import SubmitButton from "@/componentUtils/SubmitButton";
 import { forwardGeolocation } from "@/app/actions/map";
+import dynamic from "next/dynamic";
+import { LatLng, Map } from "leaflet";
+import { PinMapRegister } from "@/componentUtils/RegiterMap";
+import { LocationType } from "@/types/map-types";
 
 const stageTwoSchema = z.object({
   agency: z.string({ required_error: "Must select an agency" }),
@@ -45,6 +49,11 @@ const stageTwoSchema = z.object({
   }),
 });
 function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
+  const LazyMap = useMemo(() => dynamic(() => import('@/componentUtils/LeafletMap'), { ssr: false }), []);
+
+  const [selectedLocation, setSelectedLocation] = useState<LocationType>();
+  const mapRef = useRef<Map>(null);
+
   const form = useForm<z.infer<typeof stageTwoSchema>>({
     resolver: zodResolver(stageTwoSchema),
   });
@@ -54,6 +63,12 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
     form.setValue('location', locationResult.display_address)
     form.setValue('latitude', locationResult.lat)
     form.setValue('longitude', locationResult.lon)
+
+    //how can we assure that this wont be undefined since we will need to fly on location change?
+    if (mapRef) {
+      setSelectedLocation(locationResult);
+      mapRef.current?.flyTo(new LatLng(locationResult.lat, locationResult.lon), mapRef.current.getZoom());
+    }
     console.log("Done setting the values");
   }
   function onSubmit(data: StageTwoFormData) {
@@ -112,7 +127,11 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
               </FormItem>
             )}
           />
-          <div className="w-full bg-[#0F172A] h-[200px]"></div>
+          <div className="w-full h-[200px]">
+            <LazyMap className="w-full h-full" mapRef={mapRef}>
+              <PinMapRegister positionProp={selectedLocation ? new LatLng(selectedLocation.lat, selectedLocation.lon) : new LatLng(8.951549, 125.527725)} />
+            </LazyMap>
+          </div>
           <FormField
             control={form.control}
             name="gender"
