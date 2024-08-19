@@ -31,11 +31,15 @@ import { PopoverTrigger } from "@radix-ui/react-popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import SubmitButton from "@/componentUtils/SubmitButton";
+import { forwardGeolocation } from "@/app/actions/map";
 
 const stageTwoSchema = z.object({
   agency: z.string({ required_error: "Must select an agency" }),
   dateOfBirth: z.string({ required_error: "Must select date of birth" }),
   gender: z.string({ required_error: "Must select gender" }),
+  location: z.string({ required_error: "this must be filled" }).min(1),
+  latitude: z.number(),
+  longitude: z.number(),
   contactNumber: z.string().min(11, {
     message: "Contact number must be atleast 11 characters long",
   }),
@@ -45,10 +49,26 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
     resolver: zodResolver(stageTwoSchema),
   });
 
+  const queryLocation = async (location: string) => {
+    const locationResult = await forwardGeolocation(location);
+    form.setValue('location', locationResult.display_address)
+    form.setValue('latitude', locationResult.lat)
+    form.setValue('longitude', locationResult.lon)
+    console.log("Done setting the values");
+  }
   function onSubmit(data: StageTwoFormData) {
     handleNextStep(data);
   }
-  const agencies = ["Navigatu", "Minegears", "Marvel"];
+  const agencies = [{
+    agency: "Navigatu",
+    location: "Caraga State University, Butuan City"
+  }, {
+    agency: "SumMo",
+    location: "Agusan National High School, Butuan City",
+  }, {
+    agency: "Mine Gears",
+    location: "San Vicente, Butuan City",
+  }];
   const genders = ["male", "female"];
   return (
     <Form {...form}>
@@ -62,7 +82,15 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
                 <div className="space-y-2">
                   <FormLabel>Agency Name</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value)
+                      const agency = agencies.find((item) => item.agency === value)
+                      if (agency) {
+                        queryLocation(agency.location)
+                      }
+
+
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -70,10 +98,11 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
                         <SelectValue placeholder="Select an agency" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="bg-[#18C873] text-white">
-                      {agencies.map((agency, index) => (
-                        <SelectItem value={agency} key={index}>
-                          {agency}
+                    <SelectContent className="bg-[#18C873] text-white" >
+                      {agencies.map((item, index) => (
+                        <SelectItem value={item.agency} key={index}
+                        >
+                          {item.agency}
                         </SelectItem>
                       ))}
                     </SelectContent>

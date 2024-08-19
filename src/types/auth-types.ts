@@ -26,11 +26,17 @@ export type MyUser = {
 export type States = {
   firstName?: string;
   lastName?: string;
+  dateOfBirth?: string;
+  tinNumber?: string;
+  email?: string;
   password?: string;
   confirmPassword?: string;
   agency?: string;
   contactNumber?: string;
   gender?: string;
+  location?: string;
+  longitude?: number;
+  latitude?: number;
 };
 export type StageThreeFormData = {
   buildingName: string;
@@ -61,6 +67,9 @@ export interface MerchantGlobalStates {
 export type StageTwoFormData = {
   agency: string;
   contactNumber: string;
+  location: string;
+  longitude: number;
+  latitude: number;
   gender: string;
   dateOfBirth: string;
 };

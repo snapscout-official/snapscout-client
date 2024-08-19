@@ -43,7 +43,6 @@ export default function MerchantSteptwo({
   const [locations, setLocations] = useState<LocationType[]>();
   const [selectedLocation, setSelectedLocation] = useState<LocationType>();
   const mapRef = useRef<Map>(null);
-  const searchLocationRef = useRef<HTMLInputElement>(null);
 
   const LazyMap = useMemo(
     () =>
@@ -56,7 +55,7 @@ export default function MerchantSteptwo({
   const form = useForm<z.infer<typeof merchantTwoSchema>>({
     resolver: zodResolver(merchantTwoSchema),
     defaultValues: {
-      //set initial default values for lat lon
+      //just added one as initial values since it will be changed through validating the client to have location inputted
       location: "",
       longitude: 1,
       latitude: 1
@@ -65,7 +64,7 @@ export default function MerchantSteptwo({
   });
 
   const searchLocations = async (location: string) => {
-    const locationsResult = await getLocations(location);
+    const locationsResult = await getLocations(location, 10);
     setLocations(locationsResult);
   };
 
@@ -129,7 +128,6 @@ export default function MerchantSteptwo({
                       searchLocations(event.target.value);
                       field.onChange(event);
                     }}
-                    ref={searchLocationRef}
                     value={field.value}
                     className="bg-white border-[#CBD5E1] rounded-[.5rem]"
                     type="text"

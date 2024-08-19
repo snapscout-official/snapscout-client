@@ -9,23 +9,16 @@ import { fetchWithToken } from "@/services/fetchService";
 import { LoginStates, States } from "@/types/auth-types";
 import { AuthError } from "next-auth";
 export async function registerAgencyUser(formData: States) {
+  console.log("submitted form data:", formData);
   try {
     const res = await fetch(
-      `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/signup`,
+      `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/register`,
       {
         method: "POST",
         body: JSON.stringify({
           ...formData,
-          email: "gio.gonzales@carsu.edu.ph",
-          buildingName: "Test",
-          street: "Testing",
-          barangay: "San Vicente",
-          city: "Butuan City",
-          province: "Testing",
-          tinNumber: "1331231313",
-          country: "Philippines",
-          agencyCategory: "Test",
-          position: "Manager",
+          agencyCategory: "Testing123",
+          position: "CEO",
         }),
         headers: {
           Accept: "application/json",
@@ -35,10 +28,12 @@ export async function registerAgencyUser(formData: States) {
     );
 
     if (!res.ok) {
+      const data = await res.json();
+      console.log(data);
       throw new Error("Auth service has error authenticating");
     }
     await signIn("credentials", {
-      email: "gio.gonzales@carsu.edu.ph",
+      email: formData.email,
       password: formData.password,
       role: "agency",
       redirectTo: AGENCY_DEFAULT_LOGIN_REDIRECT,
