@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 type FetchParams = {
   url: string;
   headers?: HeadersInit;
-  method: string;
+  method: "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
   body?: BodyInit;
   option?: NextFetchRequestConfig | undefined;
 };

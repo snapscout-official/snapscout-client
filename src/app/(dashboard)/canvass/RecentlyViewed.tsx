@@ -2,8 +2,12 @@ import { inter } from "@/app/ui/fonts";
 import RecentlyCard from "./RecentlyCard";
 import { cookies } from "next/headers";
 import { ProductType } from "@/types/product-types";
-
-export default async function RecentlyViewed() {
+type RecentlyViewedProps = {
+  children: React.ReactNode;
+};
+export default async function RecentlyViewed({
+  children,
+}: RecentlyViewedProps) {
   const recentlyViewedCookies = cookies().get("recentlyViewed")?.value;
   if (!recentlyViewedCookies) {
     return <div className="col-span-3 text-center text-xl">No Product</div>;
@@ -18,6 +22,7 @@ export default async function RecentlyViewed() {
         {products.map((product, idx) => (
           <RecentlyCard key={idx} />
         ))}
+        <div>{children}</div>
       </div>
     </div>
   );

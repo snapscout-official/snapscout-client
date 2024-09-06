@@ -5,6 +5,7 @@ import AgencyTab from "./AgencyTab";
 import CenterContainer from "@/componentUtils/CenterContainer";
 import Link from "next/link";
 import MerchantTab from "./MerchantTab";
+import dynamic from "next/dynamic";
 async function Register() {
   return (
     <CenterContainer>
@@ -27,7 +28,7 @@ async function Register() {
           <AgencyTab />
         </TabsContent>
         <TabsContent value="merchant">
-          <MerchantTab />
+          <MerchantTab>Hello</MerchantTab>
         </TabsContent>
         <Link
           href="/login"

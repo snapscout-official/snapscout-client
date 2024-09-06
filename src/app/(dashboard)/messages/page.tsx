@@ -1,35 +1,12 @@
-import DashboardContainer from "@/componentUtils/DashboardContainer";
-import ConversationList from "./ConversationList";
-import MessageBox from "./MessageBox";
-type MessagesProps = {
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-export default function Messages({ searchParams }: MessagesProps) {
-  //we can fetch the conversation right here
+import { inter } from "@/app/ui/fonts";
+import { Card } from "@/components/ui/card";
+
+export default function Messages() {
   return (
-    <DashboardContainer>
-      <div className="grid grid-cols-12">
-        <ConversationList />
-        <MessageBox
-          initialMessages={[
-            {
-              content: "Hello",
-              creator: 1,
-              sending: false,
-            },
-            {
-              content: "Hello",
-              creator: 1,
-              sending: false,
-            },
-            {
-              content: "Testing",
-              creator: 1,
-              sending: false,
-            },
-          ]}
-        />
+    <Card className="col-span-9 bg-gray-300 rounded-none flex items-center justify-center">
+      <div className={`${inter.className} text-xl`}>
+        Select a conversation to start messaging
       </div>
-    </DashboardContainer>
+    </Card>
   );
 }

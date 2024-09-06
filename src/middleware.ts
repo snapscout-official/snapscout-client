@@ -5,11 +5,14 @@ import {
   authRoutes,
   publicRoutes,
 } from "@/routes";
+import { NextResponse } from "next/server";
 export default auth((req, _) => {
   const isLoggedIn = req.auth?.apiToken;
   const { nextUrl } = req;
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const headers = new Headers(req.headers);
+  headers.set("x-current-path", req.nextUrl.pathname);
 
   //auth type of middleware
   if (isLoggedIn) {
@@ -21,6 +24,11 @@ export default auth((req, _) => {
   if (!isPublicRoute && !isLoggedIn) {
     return Response.redirect(new URL(DEFAULT_LOGIN_ROUTE, nextUrl));
   }
+  //nextjs server actions returns undefined when doing the one below
+  /* return NextResponse.next({ headers}); */
+
+  //this fixed the problem
+  return NextResponse.next({ request: { headers: headers } });
 });
 
 export const config = {
