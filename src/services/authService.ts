@@ -18,12 +18,12 @@ export async function toArrayBuffer(files: File[] | File) {
 
 export function generateNewFormData(globalFormValues: MerchantGlobalStates) {
   const newFormData = new FormData();
-  Object.keys(globalFormValues).forEach((keys: string) => {
-    if (!(globalFormValues[keys] instanceof FileList)) {
-      newFormData.append(keys, globalFormValues[keys]);
+  Object.keys(globalFormValues).forEach((key: string) => {
+    if (!(globalFormValues[key] instanceof FileList)) {
+      newFormData.append(key, globalFormValues[key]);
       return;
     }
-    newFormData.append(keys, globalFormValues[keys][0]);
+    newFormData.append(key, globalFormValues[key][0]);
   });
   return newFormData;
 }

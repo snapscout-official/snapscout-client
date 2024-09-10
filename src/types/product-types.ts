@@ -3,6 +3,7 @@ export type LinksProp = {
   label: string;
   url?: string;
 };
+//merchant information should be added for every product
 export type ProductType = {
   _id: string;
   barcode: number;
@@ -12,7 +13,7 @@ export type ProductType = {
   price: number;
   product_name: string;
   quantity: number;
-  specs?: Array<String> | null;
+  specs?: Array<String>;
   subcategory_id: number;
   updated_at: string;
 };
@@ -50,5 +51,21 @@ export type Notification = {
 export type MessageType = {
   content: string;
   creator: number;
-  sending: boolean;
+  status: "unread" | "seen" | "sending";
+};
+export type ConversationType = {
+  uuid: string;
+  participants_data: {
+    id: string;
+    name: string;
+  }[];
+  participants: number[];
+  created_at: Date;
+  updated_at: Date;
+  image: string;
+  recent_message: MessageType;
+};
+export type ProductSearchResultType = {
+  products: string[];
+  merchants: string[];
 };

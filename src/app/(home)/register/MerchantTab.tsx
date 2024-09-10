@@ -12,7 +12,11 @@ import MerchantSteptwo from "./MerchantSteptwo";
 import MerchantStepThree from "./MerchantStepThree";
 import MerchantStepFour from "./MerchantStepFour";
 
-export default function MerchantTab() {
+type MerchantTabProps = {
+  children: React.ReactNode;
+};
+
+export default function MerchantTab({ children }: MerchantTabProps) {
   const [step, setStep] = useState<number>(1);
   const [globalFormValues, setGlobalFormValues] =
     useState<MerchantGlobalStates>({});
@@ -23,7 +27,11 @@ export default function MerchantTab() {
       stage: 1,
     },
     {
-      component: <MerchantSteptwo key={2} handleNextStep={handleNextStep} />,
+      component: (
+        <MerchantSteptwo key={2} handleNextStep={handleNextStep}>
+          {children}
+        </MerchantSteptwo>
+      ),
       stage: 2,
     },
     {

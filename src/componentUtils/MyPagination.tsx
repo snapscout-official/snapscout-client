@@ -32,7 +32,7 @@ export default function MyPagination({
     return params.toString();
   }, []);
   return (
-    <Pagination className="justify-end">
+    <Pagination className="flex-1 justify-end">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
@@ -42,8 +42,8 @@ export default function MyPagination({
               "?" +
               (paramResult
                 ? createQueryString(queryParam, paramResult) +
-                  "&" +
-                  `${prevPage}`
+                "&" +
+                `${prevPage}`
                 : `${prevPage}`)
             }
           />
@@ -58,8 +58,8 @@ export default function MyPagination({
                 "?" +
                 (paramResult
                   ? createQueryString(queryParam, paramResult) +
-                    "&" +
-                    `page=${link.label}`
+                  "&" +
+                  `page=${link.label}`
                   : `page=${link.label}`)
               }
             >
@@ -75,8 +75,8 @@ export default function MyPagination({
               "?" +
               (paramResult
                 ? createQueryString(queryParam, paramResult) +
-                  "&" +
-                  `${nextPage}`
+                "&" +
+                `${nextPage}`
                 : `${nextPage}`)
             }
           />

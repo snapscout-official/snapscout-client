@@ -1,17 +1,15 @@
 "use server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { ProductType, Cart } from "@/types/product-types";
+import {
+  ProductType,
+  Cart,
+  ProductSearchResultType,
+} from "@/types/product-types";
 import { Quote } from "../(dashboard)/canvass/RequestQuote";
 import { fetchWithToken } from "@/services/fetchService";
 import { revalidatePath } from "next/cache";
-export async function searchProducts(data: FormData) {
-  const searchedProduct = data.get("search");
-  if (!searchedProduct) {
-    return;
-  }
-  redirect(`/canvass/products?search=${searchedProduct}`);
-}
+
 export async function writeCookie(product: ProductType) {
   const recentlyViewedProducts = cookies().get("recentlyViewed");
   if (!recentlyViewedProducts?.value) {
@@ -19,7 +17,7 @@ export async function writeCookie(product: ProductType) {
       name: "recentlyViewed",
       value: JSON.stringify([product]),
       //1 sec == 1000 milli
-      expires: new Date(Date.now() + 1000 * 60 * 60),
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 60),
       httpOnly: true,
       secure: true,
       sameSite: "lax",
@@ -93,7 +91,7 @@ export async function getCarts(): Promise<Cart[]> {
 //refactor. remove from cookies and store to db
 export async function addToCart(
   cartName: string,
-  item?: { quantity: number; product_id: string } | null,
+  item?: { quantity: number; product_id: string },
 ) {
   const result = await fetchWithToken({
     url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/carts`,
@@ -135,4 +133,31 @@ export async function deleteCartProduct(product_id: string, cart_name: string) {
 
 export async function addToQuote(data: Quote[] | undefined) {
   console.log(data);
+}
+
+export async function searchProductsInServer(
+  queryString: string,
+): Promise<ProductSearchResultType | undefined> {
+  if (queryString.length === 0) {
+    return;
+  }
+  const result = await fetchWithToken({
+    url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/search`,
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: queryString,
+    }),
+  });
+
+  //fix error handling here
+  if (!result.ok) {
+    const errorData = await result.json();
+    console.log("fetching with search has an error", errorData);
+    return;
+  }
+  const data = await result.json();
+  return { products: data.products, merchants: data.merchants };
 }

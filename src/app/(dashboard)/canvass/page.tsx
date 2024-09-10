@@ -10,6 +10,7 @@ export default async function Canvass({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+
   const cartCookie = cookies().get("carts");
   if (cartCookie) {
     const cartData: Cart[] = JSON.parse(cartCookie.value);

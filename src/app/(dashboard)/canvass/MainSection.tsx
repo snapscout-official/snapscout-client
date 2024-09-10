@@ -4,8 +4,6 @@ import MyComboBox from "./MyComboBox";
 import OcrIcon from "./OcrIcon";
 import SearchBox from "./SearchBox";
 import { fetchWithToken } from "@/services/fetchService";
-import ProductSection from "./ProductSection";
-import ProductsSkeleton from "./ProductsSkeleton";
 
 export default async function MainSection({
   children,
@@ -21,7 +19,6 @@ export default async function MainSection({
     const result = await fetchWithToken({
       url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/categories`,
       method: "GET",
-      apiToken: session.apiToken,
       headers: {
         Accept: "application/json",
       },
@@ -34,7 +31,7 @@ export default async function MainSection({
   }
   const { categories } = await fetchCategories();
   return (
-    <div className="col-span-12 lg:col-span-9 ">
+    <div className="col-span-12 lg:col-span-9 flex flex-col">
       <div className="grid gap-1 items-center grid-cols-12 lg:gap-x-8">
         <MyComboBox />
         <SearchBox />

@@ -2,7 +2,7 @@
 import { inter } from "@/app/ui/fonts";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-export default function NoProductAlert() {
+export default function NoSearchAlert() {
   const router = useRouter();
   return (
     <div className="h-[500px] flex flex-col justify-center items-center">

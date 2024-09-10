@@ -27,6 +27,7 @@ function AgencyStepThree({ globalStates }: { globalStates: States }) {
   });
   async function signUser(formData: States) {
     try {
+
       await registerAgencyUser(formData);
     } catch (err) {
       console.log(err);
