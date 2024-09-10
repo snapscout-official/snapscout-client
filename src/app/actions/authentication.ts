@@ -1,5 +1,5 @@
 "use server";
-import { auth, signIn, signOut } from "@/auth";
+import { auth, decodeJWTClaims, login, setSessionToken } from "@/auth";
 import {
   AGENCY_DEFAULT_LOGIN_REDIRECT,
   DEFAULT_LOGIN_ROUTE,
@@ -7,69 +7,51 @@ import {
 } from "@/routes";
 import { fetchWithToken } from "@/services/fetchService";
 import { LoginStates, States } from "@/types/auth-types";
-import { AuthError } from "next-auth";
+import { redirect } from "next/navigation";
 export async function registerAgencyUser(formData: States) {
   console.log("submitted form data:", formData);
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/register`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          ...formData,
-          agencyCategory: "Testing123",
-          position: "CEO",
-        }),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
+  const res = await fetch(
+    `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/register`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        ...formData,
+        agencyCategory: "Testing123",
+        position: "CEO",
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-    );
+    },
+  );
 
-    if (!res.ok) {
-      const data = await res.json();
-      console.log(data);
-      throw new Error("Auth service has error authenticating");
-    }
-    await signIn("credentials", {
-      email: formData.email,
-      password: formData.password,
-      role: "agency",
-      redirectTo: AGENCY_DEFAULT_LOGIN_REDIRECT,
-    });
-  } catch (err) {
-    if (err instanceof AuthError) {
-      switch (err.type) {
-        case "CredentialsSignin":
-          return { error: "Invalid Credentials" };
-        default:
-          return { error: "Something went wrong" };
-      }
-    }
-    throw err;
+  if (!res.ok) {
+    const errorData = await res.json();
+    return { error: "an error during fetching data", errorData: errorData };
   }
+  const successResultData = await res.json();
+  const tokenClaims = decodeJWTClaims(successResultData.token);
+
+  //sets token in the session cookie and sets its expiration
+  setSessionToken(successResultData.token, new Date(Date.now() + 60 * 1000));
 }
 export async function agencyLoginUser(formData: LoginStates) {
-  try {
-    await signIn("credentials", {
-      email: formData.email,
-      password: formData.password,
-      role: "agency",
-      redirectTo: AGENCY_DEFAULT_LOGIN_REDIRECT,
-    });
-  } catch (err) {
-    if (err instanceof AuthError) {
-      switch (err.type) {
-        case "CredentialsSignin":
-          return { error: "Invalid Credentials" };
-        default:
-          return { error: "something went wrong" };
-      }
-    }
-    throw err;
+  const loginResult = await login({
+    email: formData.email,
+    password: formData.password,
+    role: "agency",
+  });
+  if (!loginResult.ok) {
+    const errorLoginData = await loginResult.json();
+    return { error: "Error logging agency in", errorData: errorLoginData };
   }
+  const successLoginData = await loginResult.json();
+  setSessionToken(successLoginData.token, new Date(Date.now() + 60 * 1000));
+  redirect(AGENCY_DEFAULT_LOGIN_REDIRECT);
 }
+
+//revoke apiToken or the sessionToken
 export async function logoutUser() {
   try {
     await signOut({

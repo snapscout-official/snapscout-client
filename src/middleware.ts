@@ -1,19 +1,24 @@
-import { auth } from "@/auth";
+import { auth, isAuthenticated } from "@/auth";
 import {
   AGENCY_DEFAULT_LOGIN_REDIRECT,
   DEFAULT_LOGIN_ROUTE,
   authRoutes,
   publicRoutes,
 } from "@/routes";
-import { NextResponse } from "next/server";
-export default auth((req, _) => {
-  const isLoggedIn = req.auth?.apiToken;
+import { NextRequest, NextResponse } from "next/server";
+
+export const config = {
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};
+export function middleware(req: NextRequest) {
+  const isLoggedIn = isAuthenticated(req);
   const { nextUrl } = req;
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const headers = new Headers(req.headers);
   headers.set("x-current-path", nextUrl.pathname);
   //auth type of middleware
+  const res = NextResponse.next();
   if (isLoggedIn) {
     if (isAuthRoute) {
       return Response.redirect(new URL(AGENCY_DEFAULT_LOGIN_REDIRECT, nextUrl));
@@ -28,8 +33,4 @@ export default auth((req, _) => {
 
   //this fixed the problem
   return NextResponse.next({ request: { headers: headers } });
-});
-
-export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
-};
+}
