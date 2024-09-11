@@ -60,13 +60,13 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
   const queryLocation = async (location: string) => {
     const locationResult = await forwardGeolocation(location);
     form.setValue('location', locationResult.display_address)
-    form.setValue('latitude', locationResult.lat)
-    form.setValue('longitude', locationResult.lon)
+    form.setValue('latitude', locationResult.latitude)
+    form.setValue('longitude', locationResult.longitude)
 
     //how can we assure that this wont be undefined since we will need to fly on location change?
     if (mapRef) {
       setSelectedLocation(locationResult);
-      mapRef.current?.flyTo(new LatLng(locationResult.lat, locationResult.lon), mapRef.current.getZoom());
+      mapRef.current?.flyTo(new LatLng(locationResult.latitude, locationResult.longitude), mapRef.current.getZoom());
     }
     console.log("Done setting the values");
   }
@@ -127,7 +127,7 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
           />
           <div className="w-full h-[200px]">
             <LazyMap className="w-full h-full" mapRef={mapRef}>
-              <PinMapRegister positionProp={selectedLocation ? new LatLng(selectedLocation.lat, selectedLocation.lon) : new LatLng(8.951549, 125.527725)} />
+              <PinMapRegister positionProp={selectedLocation ? new LatLng(selectedLocation.latitude, selectedLocation.longitude) : new LatLng(8.951549, 125.527725)} />
             </LazyMap>
           </div>
           <FormField

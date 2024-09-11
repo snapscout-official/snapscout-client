@@ -1,4 +1,4 @@
-import { auth, isAuthenticated } from "@/auth";
+import { isAuthenticated } from "@/auth";
 import {
   AGENCY_DEFAULT_LOGIN_REDIRECT,
   DEFAULT_LOGIN_ROUTE,
@@ -18,14 +18,14 @@ export function middleware(req: NextRequest) {
   const headers = new Headers(req.headers);
   headers.set("x-current-path", nextUrl.pathname);
   //auth type of middleware
-  const res = NextResponse.next();
   if (isLoggedIn) {
     if (isAuthRoute) {
       return Response.redirect(new URL(AGENCY_DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
+    return NextResponse.next({ request: { headers: headers } });
   }
-  //guest type of middleware
-  if (!isPublicRoute && !isLoggedIn) {
+  //redirect user when not authenticated and accesing public routes
+  if (!isPublicRoute) {
     return Response.redirect(new URL(DEFAULT_LOGIN_ROUTE, nextUrl));
   }
   //nextjs server actions returns undefined when doing the one below

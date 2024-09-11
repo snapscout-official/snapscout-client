@@ -19,9 +19,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOutUser } from "@/app/actions/authentication";
+import { toast, useToast } from "@/components/ui/use-toast";
 export default function AccountDropdown() {
+  const { toast } = useToast()
+  //toast during logout error
   async function handleLogout() {
-    await signOutUser();
+    try {
+      await signOutUser();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Logout Error",
+        description: "Something went wrong during logging out try again later"
+      })
+    }
+
   }
   return (
     <DropdownMenu>
