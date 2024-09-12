@@ -12,8 +12,7 @@ export default auth((req, _) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const headers = new Headers(req.headers);
-  headers.set("x-current-path", req.nextUrl.pathname);
-
+  headers.set("x-current-path", nextUrl.pathname);
   //auth type of middleware
   if (isLoggedIn) {
     if (isAuthRoute) {

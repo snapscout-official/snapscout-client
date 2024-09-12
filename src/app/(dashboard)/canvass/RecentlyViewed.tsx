@@ -1,29 +1,26 @@
-import { inter } from "@/app/ui/fonts";
-import RecentlyCard from "./RecentlyCard";
 import { cookies } from "next/headers";
 import { ProductType } from "@/types/product-types";
+import { ScrollableCards } from "./ScrollableCards";
 type RecentlyViewedProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 export default async function RecentlyViewed({
   children,
 }: RecentlyViewedProps) {
   const recentlyViewedCookies = cookies().get("recentlyViewed")?.value;
-  if (!recentlyViewedCookies) {
-    return <div className="col-span-3 text-center text-xl">No Product</div>;
-  }
-  const products: ProductType[] = JSON.parse(recentlyViewedCookies);
+  const products: ProductType[] = recentlyViewedCookies
+    ? JSON.parse(recentlyViewedCookies)
+    : [];
   return (
-    <div className="col-span-3 p-5 rounded-[.5rem] text-black shadow-sm bg-[#F8FAFC] hidden lg:block">
-      <p className={`${inter.className} font-semibold text-lg`}>
-        Recently Viewed
-      </p>
-      <div className="flex flex-col space-y-2">
-        {products.map((product, idx) => (
-          <RecentlyCard key={idx} />
-        ))}
-        <div>{children}</div>
-      </div>
+    <div className="col-span-3 p-5 rounded-[.5rem] text-black shadow-sm justify-between hidden lg:flex flex-col lg:min-h-[1072px]">
+      {products.length !== 0 ? (
+        <ScrollableCards products={products} />
+      ) : (
+        <div className="col-span-3 text-center text-xl">
+          No Reciently Viewed Products
+        </div>
+      )}
+      <div className="bg-[#F8FAFC] rounded-sm p-3">{children}</div>
     </div>
   );
 }

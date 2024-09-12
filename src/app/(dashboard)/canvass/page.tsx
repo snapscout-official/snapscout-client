@@ -13,6 +13,7 @@ export default async function Canvass({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+
   const cartCookie = cookies().get("carts");
   const LazyMap = dynamic(() => import("@/componentUtils/LeafletMap"), {
     ssr: false,

@@ -1,7 +1,9 @@
 import NextAuth, { Session } from "next-auth";
+import { decodeJwt } from "jose";
 import { authConfig } from "./auth.config";
 import Credentials from "next-auth/providers/credentials";
 import { authenticate, destroyApiToken } from "./app/actions/authentication";
+import { cookies } from "next/headers";
 export const {
   handlers: { GET, POST },
   auth,

@@ -1,8 +1,11 @@
 "use server";
-import { LocationType } from "@/types/map-types";
+
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
 export async function getLocations(
   search: string,
-  limit: number,
+  limit: number
 ): Promise<LocationType[]> {
   console.log("Getting locations");
 
@@ -16,7 +19,7 @@ export async function getLocations(
       headers: {
         Accept: "application/json",
       },
-    },
+    }
   );
   if (!result.ok) {
     console.log("We have an error");
@@ -34,7 +37,7 @@ export async function getLocations(
 }
 
 export async function forwardGeolocation(
-  search: string,
+  search: string
 ): Promise<LocationType> {
   const result = await fetch(
     `https://us1.locationiq.com/v1/search?key=${process.env.LOCATION_IQ_TOKEN}&q=${search}&format=json&`,
@@ -43,18 +46,18 @@ export async function forwardGeolocation(
       headers: {
         Accept: "application/json",
       },
-    },
+    }
   );
   if (!result.ok) {
     console.log("We have an error");
     throw new Error("We have an error fetching the locations");
   }
-  //im assuming this si safe since the api returns only one element but in a form of array
+  //im assuming this is safe since the api returns only one element but in a form of array
   const [data] = await result.json();
   const location: LocationType = {
     display_address: data.display_name,
-    lat: Number(data.lat),
-    lon: Number(data.lon),
+    latitude: Number(data.lat),
+    longitude: Number(data.lon),
   };
   return location;
 }
@@ -70,12 +73,22 @@ export async function getLocationFromLatLon(coordinates: {
       headers: {
         Accept: "application/json",
       },
-    },
+    }
   );
   if (!result.ok) {
     console.log("We have an error");
     throw new Error("We have an error fetching the locations");
   }
   const data = await result.json();
-  return { display_address: data.display_name, lon: data.lon, lat: data.lat };
+  return {
+    display_address: data.display_name,
+    longitude: data.lon,
+    latitude: data.lat,
+  };
+}
+export async function fetchWithDistance(
+  nextDistance: number,
+  query: string | string[]
+) {
+  redirect(`/canvass/products?search=${query}&distance=${nextDistance}`);
 }

@@ -123,6 +123,7 @@ export async function registerMerchantUser(formData: FormData) {
 }
 type Role = "merchant" | "agency";
 
+//why unknown?
 export async function authenticate(
   email: string | unknown,
   password: string | unknown,

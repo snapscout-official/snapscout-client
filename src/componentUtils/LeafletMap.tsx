@@ -10,14 +10,14 @@ import { LegacyRef } from "react";
 type LeafletMapProps = {
   className: string;
   children: React.ReactNode;
-  mapRef: LegacyRef<Map>;
+  mapRef?: LegacyRef<Map>;
 };
 export default function LeafletMap({
   className,
   mapRef,
   children,
 }: LeafletMapProps): ReactElement {
-  //change the default position to Butuan's coordinates
+  //change the default position to  current users location
   const position: LatLngExpression = [8.951549, 125.527725];
   return (
     <MapContainer

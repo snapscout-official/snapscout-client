@@ -3,7 +3,7 @@ import { ProductType } from "@/types/product-types";
 import MyPagination from "@/componentUtils/MyPagination";
 import { LinksProp } from "@/types/product-types";
 import { fetchWithToken, splitUrlString } from "@/services/fetchService";
-import { getCarts, getCookieValue } from "@/app/actions/products";
+import { getCarts } from "@/app/actions/products";
 type ProductSectionProp = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
@@ -23,11 +23,12 @@ export default async function ProductSection({
       Accept: "application/json",
     },
   });
-  let links: LinksProp[] | [] = [];
+  let links: LinksProp[] = [];
   const productData = await result.json();
-  const products: ProductType[][] | [] = productData.products.data;
+  const products: Array<ProductType[]> = productData.products.data;
   const prevPage = splitUrlString(productData.products.prev_page_url);
   const nextPage = splitUrlString(productData.products.next_page_url);
+  console.log(products)
   if (productData.products.links) {
     links = productData.products.links.filter((link: LinksProp) => {
       return link.label !== "&laquo; Previous" && link.label !== "Next &raquo;";

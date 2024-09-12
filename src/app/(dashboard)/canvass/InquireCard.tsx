@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Me from "@/public-assets/gio.jpg";
-import Spam from "@/public-assets/product-spam.jpg";
 import { useToast } from "@/components/ui/use-toast";
 import UserPlus from "@/public-assets/user-plus.svg";
 import Verified from "@/public-assets/verified.svg";
