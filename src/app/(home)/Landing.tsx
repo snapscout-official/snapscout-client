@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import Video from "./Video";
 const formSchema = z.object({
   email: z
     .string()
@@ -84,6 +85,7 @@ function Landing() {
           </Form>
         </div>
       </div>
+      <Video />
     </MainContainer>
   );
 }

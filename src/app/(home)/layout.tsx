@@ -6,7 +6,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }): Promise<ReactNode> {
   return (
-    <div className="h-dvh">
+    <div className="">
       <Topnav />
       <main className=" w-full">{children}</main>
     </div>
