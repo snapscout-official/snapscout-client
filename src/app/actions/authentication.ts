@@ -1,192 +1,143 @@
 "use server";
-import { auth, signIn, signOut } from "@/auth";
+import { auth, decodeJWTClaims, login, logout, setSessionToken } from "@/auth";
 import {
   AGENCY_DEFAULT_LOGIN_REDIRECT,
   DEFAULT_LOGIN_ROUTE,
   MERCHANT_DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
-import { fetchWithToken } from "@/services/fetchService";
 import { LoginStates, States } from "@/types/auth-types";
-import { AuthError } from "next-auth";
+import { decodeJwt } from "jose";
+import { redirect } from "next/navigation";
+
+/**
+ * accepts relevant merchant information for registering and sends it to the laravel/api
+ * if success, api returns user info and token and sets the token to the session cookie
+ */
+//server side validation must be done
 export async function registerAgencyUser(formData: States) {
-  console.log("submitted form data:", formData);
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/register`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          ...formData,
-          agencyCategory: "Testing123",
-          position: "CEO",
-        }),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
+  const res = await fetch(
+    `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/register`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        ...formData,
+        agencyCategory: "Testing123",
+        position: "CEO",
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-    );
+    },
+  );
 
-    if (!res.ok) {
-      const data = await res.json();
-      console.log(data);
-      throw new Error("Auth service has error authenticating");
-    }
-    await signIn("credentials", {
-      email: formData.email,
-      password: formData.password,
-      role: "agency",
-      redirectTo: AGENCY_DEFAULT_LOGIN_REDIRECT,
-    });
-  } catch (err) {
-    if (err instanceof AuthError) {
-      switch (err.type) {
-        case "CredentialsSignin":
-          return { error: "Invalid Credentials" };
-        default:
-          return { error: "Something went wrong" };
-      }
-    }
-    throw err;
+  if (!res.ok) {
+    const errorData = await res.json();
+    console.log(errorData);
+    return { error: "an error during fetching data", errorData: errorData };
   }
+  const successResultData = await res.json();
+  const tokenClaims = decodeJWTClaims(successResultData.token);
+  if (tokenClaims?.exp) {
+    setSessionToken(successResultData.token, new Date(tokenClaims.exp * 1000));
+  } else {
+    setSessionToken(
+      successResultData.token,
+      new Date(Date.now() + 60 * 60 * 1000),
+    );
+  }
+  //sets token in the session cookie and sets its expiration
+  setSessionToken(successResultData.token, new Date(Date.now() + 60 * 1000));
+  redirect(AGENCY_DEFAULT_LOGIN_REDIRECT);
 }
+
 export async function agencyLoginUser(formData: LoginStates) {
-  try {
-    await signIn("credentials", {
-      email: formData.email,
-      password: formData.password,
-      role: "agency",
-      redirectTo: AGENCY_DEFAULT_LOGIN_REDIRECT,
-    });
-  } catch (err) {
-    if (err instanceof AuthError) {
-      switch (err.type) {
-        case "CredentialsSignin":
-          return { error: "Invalid Credentials" };
-        default:
-          return { error: "something went wrong" };
-      }
-    }
-    throw err;
+  const loginResult = await login({
+    email: formData.email,
+    password: formData.password,
+    role: "agency",
+  });
+  if (!loginResult.ok) {
+    const errorLoginData = await loginResult.json();
+    return { error: "Error logging agency in", errorData: errorLoginData };
   }
-}
-export async function logoutUser() {
-  try {
-    await signOut({
-      redirectTo: DEFAULT_LOGIN_ROUTE,
-    });
-  } catch (err) {
-    if (err instanceof AuthError) {
-      switch (err.type) {
-        case "SignOutError":
-          return { error: "Error Signing Out" };
-        default:
-          return { error: "Something went wrong" };
-      }
-    }
-    throw err;
+  const successLoginData = await loginResult.json();
+  const claims = decodeJwt(successLoginData.token);
+  if (claims.exp) {
+    setSessionToken(successLoginData.token, new Date(claims.exp * 1000));
+  } else {
+    setSessionToken(
+      successLoginData.token,
+      new Date(Date.now() + 60 * 60 * 1000),
+    );
   }
+  redirect(AGENCY_DEFAULT_LOGIN_REDIRECT);
 }
 
+/**
+ * accepts relevant merchant information for registering and sends it to the laravel/api
+ * if success, api returns user info and token and sets the token to the session cookie
+ */
 export async function registerMerchantUser(formData: FormData) {
-  //persist in the db and wont be authenticated until not reviewed by the admin
-  try {
-    console.log(formData);
-    const res = await fetch(
-      `${process.env.BACKEND_SERVICE_URL}/api/v1/merchant/register`,
-      {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
+  //todo:persist in the db and wont be authenticated until not reviewed by the admin
+  const registerResult = await fetch(
+    `${process.env.BACKEND_SERVICE_URL}/api/v1/merchant/register`,
+    {
+      method: "POST",
+      body: formData,
+      headers: {
+        Accept: "application/json",
       },
-    );
-    if (!res.ok) {
-      const data = await res.json();
-      console.log(data);
-      throw new Error(
-        `Something went wrong in the server, status code:  ${res.status}`,
-      );
-    }
-  } catch (err) {
-    if (err instanceof AuthError) {
-      switch (err.type) {
-        case "CredentialsSignin":
-          return { error: "invalid credentials" };
-        default:
-          return { error: "something went wrong" };
-      }
-    }
-    throw err;
+    },
+  );
+  if (!registerResult.ok) {
+    const errorRegisterData = await registerResult.json();
+    return {
+      error: "Something went wrong during merchant registration",
+      errorData: errorRegisterData,
+    };
   }
+  const successRegisterData = await registerResult.json();
+  const claims = decodeJwt(successRegisterData.token);
+  if (claims.exp) {
+    setSessionToken(successRegisterData.token, new Date(claims.exp * 1000));
+  } else {
+    setSessionToken(
+      successRegisterData.token,
+      new Date(Date.now() + 60 * 60 * 1000),
+    );
+  }
+  redirect(MERCHANT_DEFAULT_LOGIN_REDIRECT);
 }
-type Role = "merchant" | "agency";
 
-//why unknown?
-export async function authenticate(
-  email: string | unknown,
-  password: string | unknown,
-  role: Role | unknown,
-) {
-  try {
-    if (role === "agency") {
-      const res = await fetch(
-        `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/login`,
-        {
-          body: JSON.stringify({ email: email, password: password }),
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        },
-      );
-      return res;
-    }
-    const res = await fetch(
-      `${process.env.BACKEND_SERVICE_URL}/api/v1/merchant/login`,
-      {
-        body: JSON.stringify({ email: email, password: password }),
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      },
-    );
-    return res;
-  } catch (error) {
-    console.log("Failed to authenticate user in our server:", error);
-    throw new Error("Failed to authenticate user in our server");
-  }
-}
+/**
+ * logins merchant user and retrieves jwt api token from laravel/api
+ * sets the retrieved api token into the session cookie of the app
+ */
 export async function loginMerchantUser(credentialsData: {
   email: string;
   password: string;
 }) {
-  try {
-    await signIn("credentials", {
-      password: credentialsData.password,
-      email: credentialsData.email,
-      role: "merchant",
-      redirectTo: MERCHANT_DEFAULT_LOGIN_REDIRECT,
-    });
-  } catch (err) {
-    if (err instanceof AuthError) {
-      switch (err.type) {
-        case "CredentialsSignin":
-          return { error: "invalid credentials" };
-        default:
-          return { error: "something went wrong during sign in flow" };
-      }
-    }
-    if (err instanceof Error) {
-      console.log("We got Error: ", err.message);
-      throw err;
-    }
-    throw err;
+  const loginRes = await login({ ...credentialsData, role: "merchant" });
+  if (!loginRes.ok) {
+    const errorLoginData = await loginRes.json();
+    return {
+      error: "Error occured during login process",
+      errorData: errorLoginData,
+    };
   }
+
+  const successLoginData = await loginRes.json();
+  const claims = decodeJwt(successLoginData.token);
+  if (claims.exp) {
+    setSessionToken(successLoginData.token, new Date(claims.exp * 1000));
+  } else {
+    setSessionToken(
+      successLoginData.token,
+      new Date(Date.now() + 60 * 60 * 1000),
+    );
+  }
+  redirect(MERCHANT_DEFAULT_LOGIN_REDIRECT);
 }
 
 export async function foo() {
@@ -204,15 +155,13 @@ export async function foo() {
   }
   return null;
 }
+/**
+ * Throws an error
+ */
 export async function signOutUser() {
-  await signOut({ redirectTo: "/login" });
-}
-export async function destroyApiToken(apiToken: string) {
-  await fetchWithToken({
-    url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/signout`,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-  });
+  const logoutResult = await logout();
+  if (logoutResult?.error) {
+    throw new Error("Error signing out");
+  }
+  redirect(DEFAULT_LOGIN_ROUTE);
 }
