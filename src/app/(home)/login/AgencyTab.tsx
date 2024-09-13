@@ -34,20 +34,15 @@ export default function AgencyTab() {
     },
   });
   async function handleLogin(formData: LoginStates) {
-    try {
-      setLoading(true);
-      const result = await agencyLoginUser({
-        email: formData.email,
-        password: formData.password,
-      });
-      if (result?.error) {
-        setError(result.error);
-      }
-      setLoading(false);
-    } catch (err) {
-      setError("Something went wrong");
-      setLoading(false);
+    setLoading(true);
+    const result = await agencyLoginUser({
+      email: formData.email,
+      password: formData.password,
+    });
+    if (result?.error) {
+      setError(result.error);
     }
+    setLoading(false);
   }
   return (
     <Card className="bg-[#F1F5F9] min-w-full border-none p-5 ">

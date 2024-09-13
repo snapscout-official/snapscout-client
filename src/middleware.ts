@@ -1,13 +1,17 @@
-import { auth } from "@/auth";
+import { isAuthenticated } from "@/auth";
 import {
   AGENCY_DEFAULT_LOGIN_REDIRECT,
   DEFAULT_LOGIN_ROUTE,
   authRoutes,
   publicRoutes,
 } from "@/routes";
-import { NextResponse } from "next/server";
-export default auth((req, _) => {
-  const isLoggedIn = req.auth?.apiToken;
+import { NextRequest, NextResponse } from "next/server";
+
+export const config = {
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};
+export function middleware(req: NextRequest) {
+  const isLoggedIn = isAuthenticated(req);
   const { nextUrl } = req;
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
@@ -18,9 +22,10 @@ export default auth((req, _) => {
     if (isAuthRoute) {
       return Response.redirect(new URL(AGENCY_DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
+    return NextResponse.next({ request: { headers: headers } });
   }
-  //guest type of middleware
-  if (!isPublicRoute && !isLoggedIn) {
+  //redirect user when not authenticated and accesing public routes
+  if (!isPublicRoute) {
     return Response.redirect(new URL(DEFAULT_LOGIN_ROUTE, nextUrl));
   }
   //nextjs server actions returns undefined when doing the one below
@@ -28,8 +33,4 @@ export default auth((req, _) => {
 
   //this fixed the problem
   return NextResponse.next({ request: { headers: headers } });
-});
-
-export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
-};
+}

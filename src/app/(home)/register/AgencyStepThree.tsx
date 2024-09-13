@@ -26,11 +26,9 @@ function AgencyStepThree({ globalStates }: { globalStates: States }) {
     resolver: zodResolver(stageThreeSchema),
   });
   async function signUser(formData: States) {
-    try {
-
-      await registerAgencyUser(formData);
-    } catch (err) {
-      console.log(err);
+    const registerResult = await registerAgencyUser(formData);
+    if (registerResult?.error) {
+      setError(registerResult.error)
     }
   }
   async function onSubmit(data: z.infer<typeof stageThreeSchema>) {

@@ -1,10 +1,8 @@
-import { MyUser } from "@/types/auth-types";
-import { Session, User } from "next-auth";
 import { createContext, useContext } from "react";
 
 type MySessionType = {
   token: string | null;
-  user: (MyUser & User) | null;
+  user: MyUser | null;
 };
 export const SessionContext = createContext<Session | null>(null);
 
