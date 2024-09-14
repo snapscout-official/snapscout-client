@@ -20,6 +20,9 @@ const config = {
     },
     extend: {
       colors: {
+        gradientStart: "#1b7354",
+        gradientMiddle: "#1c4a54",
+        gradientEnd: "#121242",
         snapGreen: "#16EF86",
         primaryText: "#FFFFFF",
         lightText: "#64748B",
