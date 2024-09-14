@@ -4,7 +4,7 @@
 
 body {
   --tw-bg-opacity: 1;
-
+  min-height: 100vh;
   background: rgb(27, 115, 84);
   background: linear-gradient(
     56deg,
