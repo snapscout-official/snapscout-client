@@ -4,7 +4,10 @@ import Image from "next/image";
 import Facebook from "@/public-assets/facebook.svg";
 import Linkedin from "@/public-assets/linkedin.svg";
 import Map from "@/public-assets/map-footer.svg";
+import Email from "@/public-assets/email.svg";
 import FooterItem from "./FooterItem";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 export default function Footer() {
   const logos = [Facebook, Map, Linkedin];
   const footerContents = [
@@ -52,7 +55,19 @@ export default function Footer() {
             contents={content.contents}
             key={idx}
           >
-            {content.title === "Waitlist" ? <p>Hello world</p> : null}
+            {content.title === "Waitlist" ? (
+              <form>
+                <div className="flex w-full max-w-sm items-center space-x-2">
+                  <Input
+                    placeholder="Enter your e-mail"
+                    className="border-none bg-[#2F6374] text-black rounded-sm"
+                  />
+                  <Button>
+                    <Image src={Email} alt="Email Icon" />
+                  </Button>
+                </div>
+              </form>
+            ) : null}
           </FooterItem>
         ))}
       </div>

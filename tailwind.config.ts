@@ -23,6 +23,7 @@ const config = {
         gradientStart: "#1b7354",
         gradientMiddle: "#1c4a54",
         gradientEnd: "#121242",
+        gradientStartCredits: "#0f172a",
         snapGreen: "#16EF86",
         primaryText: "#FFFFFF",
         lightText: "#64748B",

@@ -1,4 +1,5 @@
 import { AboutSection } from "./AboutSection";
+import Credits from "./Credits";
 import Footer from "./Footer";
 import Landing from "./Landing";
 export default async function Home() {
@@ -7,6 +8,7 @@ export default async function Home() {
       <Landing />
       <AboutSection />
       <Footer />
+      <Credits />
     </div>
   );
 }

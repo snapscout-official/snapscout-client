@@ -14,8 +14,8 @@ export default function FooterItem({
   return (
     <div className={`${inter700.className} text-white font-bold space-y-4`}>
       <h2>{title}</h2>
-      <Separator orientation="horizontal" className="bg-black " />
-      <div>
+      <Separator orientation="horizontal" className="bg-black w-[80%]" />
+      <div className="w-[75%] ">
         {contents.map((content, idx) => (
           <p
             className={`${inter.className} text-pretty text-[#FFF5E0] text-sm`}
@@ -25,6 +25,7 @@ export default function FooterItem({
           </p>
         ))}
       </div>
+      {children ? children : null}
     </div>
   );
 }
