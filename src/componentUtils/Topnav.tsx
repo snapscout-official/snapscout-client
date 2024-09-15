@@ -14,11 +14,11 @@ export default function Topnav() {
   const navList = [
     {
       name: "About Us",
-      href: "#",
+      href: "#about",
     },
     {
       name: "Contact Us",
-      href: "#",
+      href: "#contact-us",
     },
     {
       name: "Help",
@@ -37,18 +37,18 @@ export default function Topnav() {
         />
       ) : null}
       <header
-        className={` ${roboto.className} flex items-center justify-between sticky bg-transparent w-full px-5 py-7 shadow-md `}
+        className={` ${roboto.className} bg-gradient-to-r from-gradientStartCredits to-gradientEnd fixed flex items-center justify-between w-full px-5 py-6 shadow-md z-50 top-0`}
       >
         <div className="hidden md:flex items-center justify-between w-full">
-          <div className="flex items-center w-full">
+          <Link href="/" className="flex items-center w-full">
             <Image src={SnapscoutSmall} alt="Snapscout" />
             <div className="text-white text-2xl">Snapscout</div>
-          </div>
+          </Link>
           <div className="flex  justify-between w-full text-lg text-white">
             {navList.map((item, index) => (
-              <h1 key={index} className={`${inter_semilight.className}`}>
+              <Link href={item.href} key={index} className={`${inter_semilight.className}`}>
                 {item.name}
-              </h1>
+              </Link>
             ))}
           </div>
           <div className="w-full flex justify-end">
@@ -57,7 +57,7 @@ export default function Topnav() {
               asChild
             >
               <Link href={user ? "/dashboard" : "/login"}>
-                {user ? "Dashboard" : "login"}
+                {user ? "Dashboard" : "Get Started"}
               </Link>
             </Button>
           </div>

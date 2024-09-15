@@ -1,7 +1,7 @@
 "use client";
 import MainContainer from "@/componentUtils/MainContainer";
 import React from "react";
-import { inter700, inter, interLight } from "../ui/fonts";
+import { inter700, inter } from "../ui/fonts";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import Video from "./Video";
 const formSchema = z.object({
   email: z
     .string()
@@ -33,7 +32,7 @@ function Landing() {
   };
   return (
     <MainContainer>
-      <div className="grid grid-cols-1">
+      <div className="grid grid-cols-1 pt-10">
         <h2
           className={`${inter.className} text-[#18C873] font-bold text-lg text-center`}
         >
@@ -45,7 +44,7 @@ function Landing() {
           Canvassing Made Easy
         </h1>
         <p
-          className={`${interLight.className} text-md text-[#FFF5E0] font-semibold mx-auto text-center lg:w-[45%] lg:mx-auto`}
+          className={`${inter.className} text-lg text-[#FFF5E0]  text-pretty font-semibold mx-auto text-center lg:w-[45%] lg:mx-auto`}
         >
           Forget scrolling through endless online reviews or sifting through
           online posts - SnapScout puts the power of convenience at your
@@ -84,8 +83,8 @@ function Landing() {
             </form>
           </Form>
         </div>
+        <div className="h-[300px]"></div>
       </div>
-      <Video />
     </MainContainer>
   );
 }

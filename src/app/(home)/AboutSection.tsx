@@ -22,6 +22,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import LandingCard from "./LandingCard";
+import SnapVideo from "./SnapVideo";
 
 export function AboutSection(): ReactElement {
   const featured = [Podcast, Bida, Psc];
@@ -57,25 +58,26 @@ export function AboutSection(): ReactElement {
     },
   ];
   return (
-    <div className="bg-[#DAE6F8]">
-      <div className="h-[10rem]"></div>
-      <div className="mt-[3rem] w-[70%] mx-auto grid grid-cols-3 h-[500px] gap-x-7">
-        <div className="col-span-2 flex flex-col space-y-10">
+    <div id="about" className="bg-[#DAE6F8] relative">
+      <SnapVideo />
+      <div className="h-[300px]"></div>
+      <div className="w-[70%] mx-auto grid lg:grid-cols-3 lg:gap-x-7">
+        <div className=" flex flex-col space-y-6 lg:col-span-2 xl:space-y-10">
           <div>
             <p
-              className={`${inter700.className} text-[#A5A5A5] font-bold text-lg`}
+              className={`${inter700.className} text-[#A5A5A5] text-center font-bold  lg:text-left xl:text-lg`}
             >
               The SnapScout Advantage
             </p>
             <h1
-              className={`${inter700.className} text-6xl text-balance font-bold text-[#09143E]`}
+              className={`${inter700.className}  text-5xl text-balance font-bold text-[#09143E] text-center lg:text-left xl:text-6xl`}
             >
               Innovative Features Tailored For You
             </h1>
           </div>
-          <div className="w-[60%]">
+          <div className="lg:w-[60%]">
             <p
-              className={`${interLight.className} text-lg text-[#030538] text-balance`}
+              className={`${interLight.className} text-lg text-center text-[#030538] text-balance xl:text-2xl lg:text-left 2xl:leading-loose`}
             >
               Forget scrolling through endless online reviews or sifting
               throughonline posts - SnapScout puts the power of convenience at
@@ -83,44 +85,46 @@ export function AboutSection(): ReactElement {
               quickly and effortlessly.
             </p>
           </div>
-          <div className="w-[30%]">
+          <div className="flex justify-center lg:block lg:w-[30%] pb-5">
             <Button>Learn More</Button>
           </div>
         </div>
-        <div className="col-span-1">
-          <Carousel
-            className="w-full"
-            plugins={[
-              Autoplay({
-                delay: 3000,
-              }),
-            ]}
-          >
-            <CarouselContent className="shadow-lg">
-              {carouselItems.map((carouselImage, idx) => (
-                <CarouselItem>
-                  <Image
-                    className="w-[300px] h-auto rounded-md "
-                    src={carouselImage}
-                    alt="Product"
-                    placeholder="blur"
-                    width={300}
-                    height={350}
-                  />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
+        <div className=" flex justify-center lg:justify-end">
+          <div className="w-[60%] lg:w-full">
+            <Carousel
+              className="w-full h-full"
+              plugins={[
+                Autoplay({
+                  delay: 3000,
+                }),
+              ]}
+            >
+              <CarouselContent className="shadow-lg">
+                {carouselItems.map((carouselImage, idx) => (
+                  <CarouselItem>
+                    <Image
+                      className="w-full lg:w-full h-full rounded-md"
+                      src={carouselImage}
+                      alt="Product"
+                      placeholder="blur"
+                      width={300}
+                      height={350}
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          </div>
         </div>
       </div>
-      <p className={`${inter700.className} text-[#737373] text-center text-xl`}>
+      <p className={`${inter700.className} p-5 text-[#737373] text-center text-xl`}>
         Featured In
       </p>
       <div className="bg-[#69B892] px-3">
         <div className="w-[80%] mx-auto flex justify-evenly items-center">
           {featured.map((featurePic) => (
             <Image
-              className="w-[150px] h-auto"
+              className="w-[80px] md:w-[150px] h-auto"
               src={featurePic}
               alt="Feature Logo"
               height={200}
@@ -129,8 +133,8 @@ export function AboutSection(): ReactElement {
           ))}
         </div>
       </div>
-      <div className=" px-[5rem] py-10">
-        <div className="grid grid-cols-4 gap-x-3">
+      <div className="px-8 sm:px-[5rem] py-10">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4 gap-x-3">
           {cardItems.map((item, idx) => (
             <LandingCard key={idx}>
               <div className="flex flex-col space-y-3 h-full ">
@@ -167,7 +171,7 @@ export function AboutSection(): ReactElement {
           ))}
         </div>
         <h2
-          className={`${inter700.className} text-center text-lg mt-5 text-[#030538]`}
+          className={`${inter700.className}  text-sm text-center  mt-5 text-[#030538] sm:text-lg`}
         >
           Learn More About SnapScout and Our Team
         </h2>

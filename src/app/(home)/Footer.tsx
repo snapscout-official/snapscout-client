@@ -24,9 +24,9 @@ export default function Footer() {
     },
   ];
   return (
-    <div className="bg-gradient-to-b from-gradientStart via-gradientMiddle to-gradientEnd px-[5rem] py-10">
-      <div className="grid grid-cols-4 gap-x-3">
-        <div className="space-y-4">
+    <div id="contact-us" className="bg-gradient-to-b from-gradientStart via-gradientMiddle to-gradientEnd py-10 px-[3rem] xl:px-[5rem]">
+      <div className="grid gap-x-3 md:grid-cols-2 xl:grid-cols-4">
+        <div className="space-y-4 mb-4">
           <Image
             src={SnapscoutLogo}
             className="w-[200px] h-auto"
