@@ -66,10 +66,28 @@ export async function logout() {
   }
   cookies().delete("sessionToken");
 }
+/**
+ * login function for snapscout users
+ * throws error when fetch fails
+ */
 export async function login({ email, password, role }: any) {
-  if (role === "agency") {
+  try {
+    if (role === "agency") {
+      const res = await fetch(
+        `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/login`,
+        {
+          body: JSON.stringify({ email: email, password: password }),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        },
+      );
+      return res;
+    }
     const res = await fetch(
-      `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/login`,
+      `${process.env.BACKEND_SERVICE_URL}/api/v1/merchant/login`,
       {
         body: JSON.stringify({ email: email, password: password }),
         method: "POST",
@@ -80,19 +98,9 @@ export async function login({ email, password, role }: any) {
       },
     );
     return res;
+  } catch (error) {
+    throw error;
   }
-  const res = await fetch(
-    `${process.env.BACKEND_SERVICE_URL}/api/v1/merchant/login`,
-    {
-      body: JSON.stringify({ email: email, password: password }),
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    },
-  );
-  return res;
 }
 //this returns the sessionData
 export async function auth() {

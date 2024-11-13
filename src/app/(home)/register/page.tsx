@@ -8,7 +8,7 @@ import MerchantTab from "./MerchantTab";
 async function Register() {
   return (
     <CenterContainer>
-      <div className="h-[50px] lg:h-[100px]"></div>
+      <div className="h-[50px] lg:h-[150px]"></div>
       <Tabs
         defaultValue="agency"
         className={`${inter.className} w-[500px] items-center  p-5 `}
