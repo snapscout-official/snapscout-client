@@ -40,7 +40,6 @@ export default function MerchantTab() {
       if (result?.error) {
         setError(result.error);
       }
-      console.log(result);
       setLoading(false);
     } catch (err) {
       if (err instanceof Error) {

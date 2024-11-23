@@ -131,8 +131,24 @@ export async function deleteCartProduct(product_id: string, cart_name: string) {
   revalidatePath("/carts");
 }
 
-export async function addToQuote(data: Quote[] | undefined) {
-  console.log(data);
+export async function addToQuote(data: {
+  quotes: Quote[];
+  merchantId: string;
+}) {
+  try {
+    const res = await fetchWithToken({
+      url: `${process.env.BACKEND_SERVICE_URL}/api/v1/quotes`,
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return { error: "an error occured during add to quote operation" };
+  }
 }
 
 export async function searchProductsInServer(

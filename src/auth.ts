@@ -15,15 +15,17 @@ function getIsValidToken(token: string) {
   }
   return true;
 }
-//functio that will parse the api token
+
+//function that will parse the api token
 function parseJWT(token: string) {
   try {
     return JSON.parse(atob(token.split(".")[1]));
   } catch (err) {
-    console.log(err);
+    return err;
   }
 }
-export function decodeJWTClaims(token?: string) {
+
+export function decodeJWTClaims(token: string | undefined) {
   if (!token) {
     const sessionToken = getSessionToken();
     return sessionToken ? decodeJwt(sessionToken) : null;
@@ -34,7 +36,27 @@ export function decodeJWTClaims(token?: string) {
 export function updateSessionToken(token: string, expires: Date) {
   setSessionToken(token, expires);
 }
-
+export function getUserSession() {
+  const userData = cookies().get("userData")?.value;
+  if (!userData) {
+    return { error: "error! cannot retrieve user data in cookie" };
+  }
+  return JSON.parse(userData);
+}
+export function getCurrentUserRole() {
+  const token = getSessionToken();
+  if (token) {
+    const claims = decodeJWTClaims(token);
+    switch (claims?.role_id) {
+      case 1:
+        return "Merchant";
+      case 2:
+        return "Agency";
+      default:
+        return "";
+    }
+  }
+}
 export function setSessionToken(token: string, expires: Date) {
   cookies().set("sessionToken", token, {
     expires: expires,
@@ -42,7 +64,18 @@ export function setSessionToken(token: string, expires: Date) {
     sameSite: true,
   });
 }
-
+export function setUserSession(user: MyUser, expires: Date) {
+  try {
+    cookies().set("userData", JSON.stringify(user), {
+      expires: expires,
+      httpOnly: true,
+      sameSite: true,
+    });
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
 export function getSessionToken() {
   return cookies().get("sessionToken")?.value;
 }
@@ -102,13 +135,13 @@ export async function login({ email, password, role }: any) {
     throw error;
   }
 }
-//this returns the sessionData
+//retrives authenticated user info from the cookie
 export async function auth() {
-  //only server components can call this function or anything that resides in the server environment
-  const sessionData = getSessionToken();
-  if (sessionData) {
-    const user = decodeJWTClaims(sessionData);
-    return { apiToken: sessionData, user: user };
+  const token = getSessionToken();
+  if (token) {
+    //might return an error
+    const user = getUserSession();
+    return { apiToken: token, user: user };
   }
-  return null;
+  return { error: "error retrieving the token" };
 }

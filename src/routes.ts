@@ -23,7 +23,7 @@ export const AGENCY_DEFAULT_LOGIN_REDIRECT = "/dashboard";
  * Redirect route after for merchant login
  *  @type {string }
  */
-export const MERCHANT_DEFAULT_LOGIN_REDIRECT = "/dashboard";
+export const MERCHANT_DEFAULT_LOGIN_REDIRECT = "/merchant";
 /**
  * The route for logging in
  * @type {string }

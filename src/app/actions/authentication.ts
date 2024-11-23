@@ -1,5 +1,11 @@
 "use server";
-import { decodeJWTClaims, login, logout, setSessionToken } from "@/auth";
+import {
+  decodeJWTClaims,
+  login,
+  logout,
+  setSessionToken,
+  setUserSession,
+} from "@/auth";
 import {
   AGENCY_DEFAULT_LOGIN_REDIRECT,
   DEFAULT_LOGIN_ROUTE,
@@ -12,8 +18,7 @@ import { redirect } from "next/navigation";
 /**
  * accepts relevant merchant information for registering and sends it to the laravel/api
  * if success, api returns user info and token and sets the token to the session cookie
- */
-//server side validation must be done
+ **/
 export async function registerAgencyUser(formData: States) {
   const res = await fetch(
     `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/register`,
@@ -33,11 +38,11 @@ export async function registerAgencyUser(formData: States) {
 
   if (!res.ok) {
     const errorData = await res.json();
-    console.log(errorData);
-    return { error: "an error during fetching data", errorData: errorData };
+    return { error: "error registering agency user", errorData: errorData };
   }
   const successResultData = await res.json();
   const tokenClaims = decodeJWTClaims(successResultData.token);
+
   if (tokenClaims?.exp) {
     setSessionToken(successResultData.token, new Date(tokenClaims.exp * 1000));
   } else {
@@ -70,15 +75,14 @@ export async function agencyLoginUser(formData: LoginStates) {
     if (claims.exp) {
       setSessionToken(successLoginData.token, new Date(claims.exp * 1000));
     } else {
-      setSessionToken(
-        successLoginData.token,
-        new Date(Date.now() + 60 * 60 * 1000),
-      );
+      return { error: "No expiration claim detected in returned token" };
     }
   } catch (error) {
+    console.log(error);
     return { error: "Error logging agency in" };
   }
 
+  //redirect to the dashboard
   redirect(AGENCY_DEFAULT_LOGIN_REDIRECT);
 }
 
@@ -142,11 +146,20 @@ export async function loginMerchantUser(credentialsData: {
 
     if (claims.exp) {
       setSessionToken(successLoginData.token, new Date(claims.exp * 1000));
+      if (!setUserSession(successLoginData.user, new Date(claims.exp * 1000)))
+        return { error: "Error setting user session data" };
     } else {
       setSessionToken(
         successLoginData.token,
         new Date(Date.now() + 60 * 60 * 1000),
       );
+      if (
+        !setUserSession(
+          successLoginData.user,
+          new Date(Date.now() + 60 * 60 * 1000),
+        )
+      )
+        return { error: "Error setting user session data" };
     }
   } catch (error) {
     return { error: "Error logging merchant in" };

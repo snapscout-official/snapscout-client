@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
+import { getMoneyText } from "@/app/utils/helpers";
 
 type Props = {
   product: ProductType[];
@@ -42,10 +43,11 @@ const formSchema = z.object({
     .optional(),
   productId: z.string(),
 });
+
 export type Quote = {
   quantity: number;
-  budget?: string | undefined;
-  need?: Date | undefined;
+  budget?: string;
+  need?: Date;
   productId: string;
 };
 export default function RequestQuote({ product }: Props) {
@@ -65,7 +67,8 @@ export default function RequestQuote({ product }: Props) {
   function handleAddQuote() {
     try {
       const quoteData: Quote = formSchema.parse(form.getValues());
-      setQuotes(quoteData);
+
+      setQuotes({ ...quoteData, budget: getMoneyText(quoteData.budget) });
     } catch (err) {
       toast({
         title: "Something went wrong",
@@ -74,8 +77,11 @@ export default function RequestQuote({ product }: Props) {
       });
     }
   }
-  function submitQuote(data: z.infer<typeof formSchema>) {
-    addToQuote(quotes);
+  async function submitQuote(_: z.infer<typeof formSchema>) {
+    if (quotes && currentProduct.merchant_id) {
+      await addToQuote({ quotes: quotes, merchantId: currentProduct.merchant_id.toString() });
+    }
+    else throw new Error("No quote data or cannot find merchant during quote submission")
     toast({
       title: "Quote Requested",
       description: "View Notifications for Updates",
@@ -195,29 +201,29 @@ export default function RequestQuote({ product }: Props) {
               <div className="space-y-3 md:p-3">
                 {quotes
                   ? quotes.map((quote: Quote, idx: number) => (
-                      <div
-                        className="flex justify-between items-center"
-                        key={idx}
-                      >
-                        <div className="flex gap-x-3 items-center">
-                          <Image
-                            src={Bag}
-                            alt="bag-icon"
-                            width={40}
-                            height={40}
-                            className="w-[15px] h-[15px] md:w-auto md:h-auto"
-                          />
-                          <HoverText>
-                            <p className="text-xs md:text-sm truncate">
-                              {quote.productId}
-                            </p>
-                          </HoverText>
-                        </div>
-                        <span className="text-xs md:text-sm">
-                          x{quote.quantity}
-                        </span>
+                    <div
+                      className="flex justify-between items-center"
+                      key={idx}
+                    >
+                      <div className="flex gap-x-3 items-center">
+                        <Image
+                          src={Bag}
+                          alt="bag-icon"
+                          width={40}
+                          height={40}
+                          className="w-[15px] h-[15px] md:w-auto md:h-auto"
+                        />
+                        <HoverText>
+                          <p className="text-xs md:text-sm truncate">
+                            {quote.productId}
+                          </p>
+                        </HoverText>
                       </div>
-                    ))
+                      <span className="text-xs md:text-sm">
+                        x{quote.quantity}
+                      </span>
+                    </div>
+                  ))
                   : null}
               </div>
               <ScrollBar orientation="vertical" />

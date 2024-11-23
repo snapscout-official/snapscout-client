@@ -17,7 +17,7 @@
     "@nextui-org/system": "^2.2.2",
     "@nextui-org/tabs": "^2.0.32",
     "@nextui-org/theme": "^2.2.6",
-    "@radix-uireact-accordion": "^1.1.2",
+    "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",

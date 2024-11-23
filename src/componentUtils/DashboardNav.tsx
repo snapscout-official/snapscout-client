@@ -16,9 +16,9 @@ export default function DashboardNav() {
           <Link href="/"> SnapScout</Link>
         </div>
         <ul className="flex items-center gap-x-5">
-          <Link href="/canvass"> Canvass</Link>
-          <Link href="/carts"> Carts</Link>
-          <Link href="/orders">Orders</Link>
+          <Link href="/canvass" prefetch> Canvass</Link>
+          <Link href="/carts" prefetch> Carts</Link>
+          <Link href="/orders" prefetch>Orders</Link>
         </ul>
       </div>
       <div className="flex items-center gap-3">

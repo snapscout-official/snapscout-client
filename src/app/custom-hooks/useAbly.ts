@@ -8,9 +8,14 @@ export default function useAbly(
   cleaner: (echo: Echo) => void,
 ) {
   const [echoInstance, setEchoInstance] = useState<Echo>();
-  const { token } = useMySession();
+  const sessionData = useMySession();
+  if (!sessionData.token || !sessionData.user)
+    throw new Error("No user or token");
+
+  const token = sessionData.token;
   useEffect(() => {
     const echo = bootEcho(token);
+    console.log("Done booting echo");
     setEchoInstance(echo);
     executor(echo);
     return () => {
