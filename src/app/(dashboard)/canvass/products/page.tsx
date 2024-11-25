@@ -16,15 +16,12 @@ export default async function Products({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  await new Promise((resolve) => {
-    setTimeout(resolve, 2000);
-  });
   const { search, page, distance } = searchParams;
   async function fetchSearchedProducts() {
     const result = await fetchWithToken({
       url: page
-        ? `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/search-products?search=${search}&page=${page}&distance=${distance ?? "2"}`
-        : `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/search-products?search=${search}&distance=${distance ?? "2"}`,
+        ? `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/search-products?search=${search}&page=${page}&distance=${distance ?? "5"}`
+        : `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/search-products?search=${search}&distance=${distance ?? "5"}`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -46,6 +43,7 @@ export default async function Products({
     console.log(fetchData.errorData)
     return <NoSearchAlert />;
   }
+
   const links = fetchData.meta.links;
   const nextDistance = fetchData.next_distance
   const merchants: MerchantType[] = fetchData.merchants;

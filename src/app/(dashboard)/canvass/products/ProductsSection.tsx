@@ -8,10 +8,6 @@ export default async function ProductsSection({
   search,
   page,
 }: ProductSectionProps) {
-  //just testing the streaming feature of react
-  await new Promise((resolve) => {
-    setTimeout(resolve, 1000);
-  });
   async function fetchSearchedProducts() {
     const result = await fetchWithToken({
       url: page
@@ -22,6 +18,8 @@ export default async function ProductsSection({
         Accept: "application/json",
       },
     });
+    if (!result.ok)
+      throw new Error("Error fetching data within product section")
     return await result.json();
   }
   const fetchData = await fetchSearchedProducts();

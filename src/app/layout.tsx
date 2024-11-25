@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { Providers } from "@/lib/providers";
 import { auth } from "@/auth";
 import SessionContextProvider from "@/componentUtils/SessionContextProvider";
+import Head from "next/head";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         <title>Snapscout</title>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body className={`${inter.className} antialiased`}>
         <SessionContextProvider value={session}>

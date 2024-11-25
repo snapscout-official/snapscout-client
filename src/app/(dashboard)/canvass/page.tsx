@@ -27,10 +27,6 @@ export default async function Canvass({
   return (
     <div className="grid grid-cols-12 gap-x-4 mt-5">
       <RecentlyViewed>
-        <LazyMap className="w-full h-[200px] rounded-lg" />
-        <MapDialog>
-          <LazyMap className="w-full h-full" />
-        </MapDialog>
       </RecentlyViewed>
       <MainSection>
         <Suspense fallback={<ProductsSkeleton />}>

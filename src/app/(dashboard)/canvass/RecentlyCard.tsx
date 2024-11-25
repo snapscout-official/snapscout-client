@@ -3,7 +3,7 @@ import Image from "next/image";
 import HoverText from "@/componentUtils/HoverText";
 export default function RecentlyCard() {
   return (
-    <div className="grid grid-cols-3 shadow-lg p-4 bg-white gap-x-3 items-center rounded-md ">
+    <div className="grid grid-cols-3 p-4 bg-white gap-x-3 items-center border-2 border-[#F1F1F1] rounded-md ">
       <Image
         src={FruitProduct}
         alt="product"

@@ -11,7 +11,7 @@ export default function ProductInformation({
   changeProduct: (id: string) => void;
 }) {
   return (
-    <div>
+    <div className="grow">
       <div className="flex justify-center w-full">
         <ProductCarousel />
       </div>

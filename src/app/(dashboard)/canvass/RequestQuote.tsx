@@ -79,17 +79,27 @@ export default function RequestQuote({ product }: Props) {
   }
   async function submitQuote(_: z.infer<typeof formSchema>) {
     if (quotes && currentProduct.merchant_id) {
-      await addToQuote({ quotes: quotes, merchantId: currentProduct.merchant_id.toString() });
+      const actionResult = await addToQuote({ quoteData: quotes, merchantId: currentProduct.merchant_id.toString() });
+      if (actionResult.error)
+        toast({
+          variant: "destructive",
+          title: "Something Went Wrong",
+          description: "Error occured during quote submission",
+          action: <ToastAction altText="Continue">Continue</ToastAction>,
+
+        });
+      else
+        toast({
+          title: "Quote Requested",
+          description: "View Notifications for Updates",
+          action: <ToastAction altText="Continue">Continue</ToastAction>,
+        });
     }
     else throw new Error("No quote data or cannot find merchant during quote submission")
-    toast({
-      title: "Quote Requested",
-      description: "View Notifications for Updates",
-      action: <ToastAction altText="Continue">Continue</ToastAction>,
-    });
+
   }
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 grow">
       <div>Choose Product</div>
       <p className="text-sm md:text-base">{currentProduct._id}</p>
       <ScrollArea>
@@ -110,7 +120,7 @@ export default function RequestQuote({ product }: Props) {
 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      <div className="text-sm h-[150px] mt-2 p-4 border-border border-[1px] md:text-base md:h-[150px]">
+      <div className="text-sm h-[250px] mt-2 p-4 border-border border-[1px] md:text-base">
         <p>Description Content Here</p>
       </div>
       <Form {...form}>
