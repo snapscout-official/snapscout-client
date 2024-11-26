@@ -1,18 +1,15 @@
-
-
 import { LatLngExpression } from "leaflet";
-import { useEffect } from "react"
+import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 
 type MapCenterType = {
-  position: LatLngExpression
-}
+  position: LatLngExpression;
+};
 export default function MapCenter({ position }: MapCenterType) {
-  const map = useMap()
+  const map = useMap();
 
   useEffect(() => {
-    if (position)
-      map.setView(position, map.getZoom())
-  }, [])
-  return null
+    if (position) map.setView(position, map.getZoom());
+  }, []);
+  return null;
 }
