@@ -23,10 +23,9 @@ export default function Notifications({
   function executor(echo: Echo) {
     echo
       .private("notifications.1")
-
       .listen(
         ".orders.update",
-        function (newNotifData: { data: Notification; socket: null }) {
+        function(newNotifData: { data: Notification; socket: null }) {
           console.log(newNotifData.data);
           setNotifications((oldNotifications) => [
             newNotifData.data,

@@ -7,7 +7,11 @@ type MapDialogProps = {
 export function MapDialog({ children }: MapDialogProps): ReactElement {
   return (
     <Dialog>
-      <DialogTrigger className={`${interLight.className} underline text-[#64748B] text-right w-full`}>Show Map Preview</DialogTrigger>
+      <DialogTrigger
+        className={`${interLight.className} underline text-[#64748B] text-right w-full`}
+      >
+        Show Map Preview
+      </DialogTrigger>
       <DialogContent className="min-w-[1500px] h-screen">
         {children}
       </DialogContent>

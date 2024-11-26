@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 export async function getLocations(
   search: string,
-  limit: number,
+  limit: number
 ): Promise<LocationType[]> {
   console.log("Getting locations");
 
@@ -19,7 +19,7 @@ export async function getLocations(
       headers: {
         Accept: "application/json",
       },
-    },
+    }
   );
   if (!result.ok) {
     console.log("We have an error");
@@ -37,7 +37,7 @@ export async function getLocations(
 }
 
 export async function forwardGeolocation(
-  search: string,
+  search: string
 ): Promise<LocationType> {
   const result = await fetch(
     `https://us1.locationiq.com/v1/search?key=${process.env.LOCATION_IQ_TOKEN}&q=${search}&format=json&`,
@@ -46,7 +46,7 @@ export async function forwardGeolocation(
       headers: {
         Accept: "application/json",
       },
-    },
+    }
   );
   if (!result.ok) {
     console.log("We have an error");
@@ -73,7 +73,7 @@ export async function getLocationFromLatLon(coordinates: {
       headers: {
         Accept: "application/json",
       },
-    },
+    }
   );
   if (!result.ok) {
     console.log("We have an error");
@@ -88,7 +88,7 @@ export async function getLocationFromLatLon(coordinates: {
 }
 export async function fetchWithDistance(
   nextDistance: number,
-  query: string | string[],
+  query: string | string[]
 ) {
   redirect(`/canvass/products?search=${query}&distance=${nextDistance}`);
 }

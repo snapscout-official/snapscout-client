@@ -67,5 +67,5 @@ export type ConversationType = {
 };
 export type ProductSearchResultType = {
   products: string[];
-  merchants: string[];
+  merchants: { merchant_id: number; business_name: string }[];
 };

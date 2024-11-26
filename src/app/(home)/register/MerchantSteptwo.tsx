@@ -32,7 +32,7 @@ import { PinMapRegister } from "@/componentUtils/RegiterMap";
 
 type MerchantStepTwoProps = {
   handleNextStep: (
-    formData: StageOneFormData | MerchantStageTwo | MerchantStageThree,
+    formData: StageOneFormData | MerchantStageTwo | MerchantStageThree
   ) => void;
 };
 
@@ -48,7 +48,7 @@ export default function MerchantSteptwo({
       dynamic(() => import("@/componentUtils/LeafletMap"), {
         ssr: false,
       }),
-    [],
+    []
   );
 
   const form = useForm<z.infer<typeof merchantTwoSchema>>({
@@ -57,8 +57,7 @@ export default function MerchantSteptwo({
       //just added one as initial values since it will be changed through validating the client to have location inputted
       location: "",
       longitude: 1,
-      latitude: 1
-
+      latitude: 1,
     },
   });
 
@@ -68,9 +67,9 @@ export default function MerchantSteptwo({
   };
 
   const setCoordinate = (coordinate: LocationType) => {
-    form.setValue("latitude", Number(coordinate.latitude))
-    form.setValue("longitude", Number(coordinate.longitude))
-  }
+    form.setValue("latitude", Number(coordinate.latitude));
+    form.setValue("longitude", Number(coordinate.longitude));
+  };
   const reverseGeocoding = async (coordinates: LatLng) => {
     const codedLocation = await getLocationFromLatLon({
       lat: coordinates.lat,
@@ -78,7 +77,7 @@ export default function MerchantSteptwo({
     });
     setSelectedLocation(codedLocation);
 
-    setCoordinate(codedLocation)
+    setCoordinate(codedLocation);
 
     form.setValue("location", codedLocation.display_address);
   };
@@ -88,9 +87,9 @@ export default function MerchantSteptwo({
       //handleNextStep from the parent component
       handleNextStep(formData);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -143,12 +142,15 @@ export default function MerchantSteptwo({
                               setSelectedLocation(location);
                               setCoordinate(location);
                               mapRef.current?.flyTo(
-                                new LatLng(location.latitude, location.longitude),
-                                mapRef.current.getZoom(),
+                                new LatLng(
+                                  location.latitude,
+                                  location.longitude
+                                ),
+                                mapRef.current.getZoom()
                               );
                               form.setValue(
                                 "location",
-                                location.display_address,
+                                location.display_address
                               );
                               setLocations([]);
                             }}
@@ -171,7 +173,10 @@ export default function MerchantSteptwo({
                 positionProp={
                   !selectedLocation
                     ? new LatLng(51.505, -0.09)
-                    : new LatLng(selectedLocation.latitude, selectedLocation.longitude)
+                    : new LatLng(
+                        selectedLocation.latitude,
+                        selectedLocation.longitude
+                      )
                 }
               />
             </LazyMap>

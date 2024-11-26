@@ -5,10 +5,10 @@ import AgencyTab from "./AgencyTab";
 import CenterContainer from "@/componentUtils/CenterContainer";
 import Link from "next/link";
 import MerchantTab from "./MerchantTab";
-import dynamic from "next/dynamic";
 async function Register() {
   return (
     <CenterContainer>
+      <div className="h-[50px] lg:h-[150px]"></div>
       <Tabs
         defaultValue="agency"
         className={`${inter.className} w-[500px] items-center  p-5 `}

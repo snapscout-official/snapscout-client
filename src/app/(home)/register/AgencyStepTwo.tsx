@@ -48,7 +48,10 @@ const stageTwoSchema = z.object({
   }),
 });
 function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
-  const LazyMap = useMemo(() => dynamic(() => import('@/componentUtils/LeafletMap'), { ssr: false }), []);
+  const LazyMap = useMemo(
+    () => dynamic(() => import("@/componentUtils/LeafletMap"), { ssr: false }),
+    []
+  );
 
   const [selectedLocation, setSelectedLocation] = useState<LocationType>();
   const mapRef = useRef<Map>(null);
@@ -69,20 +72,24 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
       mapRef.current?.flyTo(new LatLng(locationResult.latitude, locationResult.longitude), mapRef.current.getZoom());
     }
     console.log("Done setting the values");
-  }
+  };
   function onSubmit(data: StageTwoFormData) {
     handleNextStep(data);
   }
-  const agencies = [{
-    agency: "Navigatu",
-    location: "Caraga State University, Butuan City"
-  }, {
-    agency: "SumMo",
-    location: "Agusan National High School, Butuan City",
-  }, {
-    agency: "Mine Gears",
-    location: "San Vicente, Butuan City",
-  }];
+  const agencies = [
+    {
+      agency: "Navigatu",
+      location: "Caraga State University, Butuan City",
+    },
+    {
+      agency: "SumMo",
+      location: "Agusan National High School, Butuan City",
+    },
+    {
+      agency: "Mine Gears",
+      location: "San Vicente, Butuan City",
+    },
+  ];
   const genders = ["male", "female"];
   return (
     <Form {...form}>
@@ -97,11 +104,13 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
                   <FormLabel>Agency Name</FormLabel>
                   <Select
                     onValueChange={(value) => {
-                      field.onChange(value)
+                      field.onChange(value);
 
-                      const agency = agencies.find((item) => item.agency === value)
+                      const agency = agencies.find(
+                        (item) => item.agency === value
+                      );
                       if (agency) {
-                        queryLocation(agency.location)
+                        queryLocation(agency.location);
                       }
                     }}
                     defaultValue={field.value}
@@ -111,10 +120,9 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
                         <SelectValue placeholder="Select an agency" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="bg-[#18C873] text-white" >
+                    <SelectContent className="bg-[#18C873] text-white">
                       {agencies.map((item, index) => (
-                        <SelectItem value={item.agency} key={index}
-                        >
+                        <SelectItem value={item.agency} key={index}>
                           {item.agency}
                         </SelectItem>
                       ))}
@@ -128,8 +136,9 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
           <div className="w-full h-[200px]">
             <LazyMap className="w-full h-full" mapRef={mapRef}>
               <PinMapRegister positionProp={selectedLocation ? new LatLng(selectedLocation.latitude, selectedLocation.longitude) : new LatLng(8.951549, 125.527725)} />
-            </LazyMap>
-          </div>
+            </LazyMap >
+          </div >
+
           <FormField
             control={form.control}
             name="gender"
@@ -172,7 +181,7 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
                         <Button
                           className={cn(
                             "w-[250px] pl-3 text-left font-normal bg-white border-[#CBD5E1] border-[1px]",
-                            !field.value && "text-muted-foreground",
+                            !field.value && "text-muted-foreground"
                           )}
                         >
                           {field.value ? (
@@ -230,9 +239,9 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
           <div className="mt-5 flex justify-end w-full">
             <SubmitButton>Continue</SubmitButton>
           </div>
-        </div>
-      </form>
-    </Form>
+        </div >
+      </form >
+    </Form >
   );
 }
 

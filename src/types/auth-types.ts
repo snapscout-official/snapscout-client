@@ -87,6 +87,6 @@ export interface AgencyStageComponentProps {
 }
 export interface MerchantStageComponentProps {
   handleNextStep: (
-    formData: StageOneFormData | MerchantStageTwo | MerchantStageThree,
+    formData: StageOneFormData | MerchantStageTwo | MerchantStageThree
   ) => void;
 }

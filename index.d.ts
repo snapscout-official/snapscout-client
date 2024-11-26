@@ -43,7 +43,10 @@ type MyUser = {
   role: string;
   sub?: string;
 };
-
+type MySessionType = {
+  token: string | null;
+  user: MyUser | null;
+}
 type Session = {
   apiToken: string;
   user: MyUser;

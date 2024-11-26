@@ -131,15 +131,39 @@ export async function deleteCartProduct(product_id: string, cart_name: string) {
   revalidatePath("/carts");
 }
 
-export async function addToQuote(data: Quote[] | undefined) {
-  console.log(data);
+export async function addToQuote(data: {
+  quoteData: Quote[];
+  merchantId: string;
+}) {
+  try {
+    const res = await fetchWithToken({
+      url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/quotes`,
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      const errorResultData = await res.json();
+      return { error: errorResultData };
+    }
+    return { message: "success" };
+  } catch (error) {
+    return { error: "an error occured during add to quote operation" };
+  }
 }
 
+type SearchErrorType = {
+  error: string;
+  errorData?: any;
+};
 export async function searchProductsInServer(
   queryString: string,
-): Promise<ProductSearchResultType | undefined> {
+): Promise<ProductSearchResultType | SearchErrorType> {
   if (queryString.length === 0) {
-    return;
+    return { error: "no query string" };
   }
   const result = await fetchWithToken({
     url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/search`,
@@ -156,7 +180,10 @@ export async function searchProductsInServer(
   if (!result.ok) {
     const errorData = await result.json();
     console.log("fetching with search has an error", errorData);
-    return;
+    return {
+      error: "Error during searching in server action",
+      errorData: errorData,
+    };
   }
   const data = await result.json();
   return { products: data.products, merchants: data.merchants };

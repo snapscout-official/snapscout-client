@@ -11,7 +11,7 @@ import HoverText from "@/componentUtils/HoverText";
 export default function InquireCard() {
   const { toast } = useToast();
   return (
-    <div className={`${inter.className} flex flex-col space-y-3`}>
+    <div className={`${inter.className} flex flex-col space-y-3 grow`}>
       <div className="grid grid-cols-5 items-center gap-x-5">
         <div className="col-span-2 p-2 object-center">
           <Image

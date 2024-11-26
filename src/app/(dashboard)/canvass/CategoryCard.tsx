@@ -20,6 +20,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
     <Link
       href={"/canvass" + "?" + createQueryString("category", category)}
       className="p-2 text-center bg-[#F8FAFC] shadow-sm "
+      prefetch
     >
       <div className="rounded-full mx-auto border-[1px] border-[#18C873] bg-white h-[80px] object-cover aspect-square flex items-center justify-center  ">
         <Image src={CategoryIcon} alt="category-icon" width={60} height={80} />

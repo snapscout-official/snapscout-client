@@ -39,6 +39,7 @@ export default function AgencyTab() {
       email: formData.email,
       password: formData.password,
     });
+
     if (result?.error) {
       setError(result.error);
     }

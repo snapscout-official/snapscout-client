@@ -4,7 +4,10 @@ import { cookies } from "next/headers";
 import ProductSection from "./ProductSection";
 import { Suspense } from "react";
 import ProductsSkeleton from "./ProductsSkeleton";
+import { MapDialog } from "@/componentUtils/MapDialog";
 import { Cart } from "@/types/product-types";
+
+import dynamic from "next/dynamic";
 export default async function Canvass({
   searchParams,
 }: {
@@ -12,6 +15,9 @@ export default async function Canvass({
 }) {
 
   const cartCookie = cookies().get("carts");
+  const LazyMap = dynamic(() => import("@/componentUtils/LeafletMap"), {
+    ssr: false,
+  });
   if (cartCookie) {
     const cartData: Cart[] = JSON.parse(cartCookie.value);
     cartData.forEach((cart) => {
@@ -20,7 +26,8 @@ export default async function Canvass({
   }
   return (
     <div className="grid grid-cols-12 gap-x-4 mt-5">
-      <RecentlyViewed />
+      <RecentlyViewed>
+      </RecentlyViewed>
       <MainSection>
         <Suspense fallback={<ProductsSkeleton />}>
           <ProductSection searchParams={searchParams} />
