@@ -43,7 +43,7 @@ export default async function Products({
     console.log(fetchData.errorData)
     return <NoSearchAlert />;
   }
-
+  console.log(fetchData)
   const links = fetchData.meta.links;
   const nextDistance = fetchData.next_distance
   const merchants: MerchantType[] = fetchData.merchants;
@@ -57,10 +57,12 @@ export default async function Products({
   return (
     <div className={`${inter.className} mt-5 grid grid-cols-12 gap-x-4`}>
       <RecentlyViewed>
-        <SearchMap locations={merchants.map((merchant) => merchant.location)} nextDistance={nextDistance} search={search} />
-        <MapDialog>
-          <SearchMap forDialog locations={merchants.map((merchant) => merchant.location)} nextDistance={nextDistance} search={search} />
-        </MapDialog>
+        <div className="p-2 bg-[#F8FAFC] rounded-md">
+          <SearchMap locations={merchants.map((merchant) => merchant.location)} nextDistance={nextDistance} search={search} />
+          <MapDialog>
+            <SearchMap forDialog locations={merchants.map((merchant) => merchant.location)} nextDistance={nextDistance} search={search} />
+          </MapDialog>
+        </div>
       </RecentlyViewed>
       <MainSection>
         <div className=" flex flex-col justify-between bg-[#F8FAFC] p-4 flex-1">
@@ -70,7 +72,7 @@ export default async function Products({
 
           <div className="flex mt-2 items-center">
             <p className={`${interLight.className} text-sm text-[#64748B]`}>
-              Showing <strong className="font-bold">{fetchData.meta.per_page}</strong> results out of{" "}
+              Showing <strong className="font-bold">{fetchData.data.length}</strong> results out of{" "}
               <strong className="font-bold">{fetchData.meta.total}</strong>
             </p>
             <MyPagination

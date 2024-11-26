@@ -8,7 +8,7 @@ export default function Orders({
   //if we fetch all orders data in here
   return (
     <DashboardContainer>
-      <div className="flex flex-col h-[814px]">
+      <div className="flex flex-col ">
         <OrdersTab />
       </div>
     </DashboardContainer>
