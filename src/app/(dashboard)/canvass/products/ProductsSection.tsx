@@ -8,6 +8,7 @@ export default async function ProductsSection({
   search,
   page,
 }: ProductSectionProps) {
+  //why are we fetching data without distance?
   async function fetchSearchedProducts() {
     const result = await fetchWithToken({
       url: page

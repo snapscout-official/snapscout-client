@@ -39,7 +39,7 @@ export default async function Products({
   const fetchData = await fetchSearchedProducts();
 
   //this is the temporary handler if error occured during fetching data
-  if (fetchData.error) {
+  if ('error' in fetchData) {
     console.log(fetchData.errorData)
     return <NoSearchAlert />;
   }

@@ -2,6 +2,7 @@
 import {
   CommandDialog,
   CommandEmpty,
+  CommandList,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -21,7 +22,6 @@ export default function SearchBox() {
   const router = useRouter()
   async function handleSearch() {
     if (!searchRef.current || searchRef.current.value.length === 0) {
-      //console.log("sets to undefined")
       setResults(undefined)
       return
     }
@@ -29,50 +29,53 @@ export default function SearchBox() {
     const resultData = await searchProductsInServer(searchRef.current.value)
     if ('error' in resultData)
       console.log("error")
-    else
+    else {
+      console.log(resultData)
       setResults(resultData)
-  }
-}
-useEffect(() => {
-  const down = (e: KeyboardEvent) => {
-    if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-      e.preventDefault()
-      setOpen((open) => !open)
     }
-  }
-  document.addEventListener("keydown", down)
-  return () => document.removeEventListener("keydown", down)
-}, [])
-return (
-  <>
-    <Button
-      name="search"
-      className="p-2 text-[#94A3B8] bg-white border-[1px] border-[#94A3B8] rounded-[.5rem] text-left flex justify-between lg:col-span-8 hover:bg-transparent "
-      onClick={() => setOpen(true)}
-    >
-      <p>Click to search </p>
-      <p>Ctrl K</p>
-    </Button>
-    <CommandDialog open={open} onOpenChange={setOpen}>
 
-      { /*calls the api every change in value, change it in the future*/}
-      <CommandInput name="query" ref={searchRef} placeholder="Search for product name or merchant name" onValueChange={(_) => {
-        handleSearch()
-      }} />
-      <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        {results ? <>
-          <CommandGroup heading="Products">{results.products.map((product: string, idx: number) => (
-            <CommandItem key={idx} value={product} onSelect={(_) => router.push(`canvass/products?search=${product}`)}>{product}</CommandItem>
-          ))}
-          </CommandGroup>
-          <CommandGroup heading="Merchants">{results.merchants.map((merchant: string, idx: number) => (
-            <CommandItem key={idx} value={merchant} onSelect={(_) => router.push(`canvass/products?search=${merchant}`)}>{merchant}</CommandItem>
-          ))}
-          </CommandGroup>
-        </> : null}
-      </CommandList>
-    </CommandDialog>
-  </>
-);
+
+  }
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault()
+        setOpen((open) => !open)
+      }
+    }
+    document.addEventListener("keydown", down)
+    return () => document.removeEventListener("keydown", down)
+  }, [])
+  return (
+    <>
+      <Button
+        name="search"
+        className="p-2 text-[#94A3B8] bg-white border-[1px] border-[#94A3B8] rounded-[.5rem] text-left flex justify-between lg:col-span-8 hover:bg-transparent "
+        onClick={() => setOpen(true)}
+      >
+        <p>Click to search </p>
+        <p>Ctrl K</p>
+      </Button>
+      <CommandDialog open={open} onOpenChange={setOpen}>
+
+        { /*calls the api every change in value, change it in the future*/}
+        <CommandInput name="query" ref={searchRef} placeholder="Search for product name or merchant name" onValueChange={(_) => {
+          handleSearch()
+        }} />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          {results ? <>
+            <CommandGroup heading="Products">{results.products.map((product: string, idx: number) => (
+              <CommandItem key={idx} value={product} onSelect={(_) => router.replace(`/canvass/products?search=${product}`)}>{product}</CommandItem>
+            ))}
+            </CommandGroup>
+            <CommandGroup heading="Merchants">{results.merchants.map((merchant: { merchant_id: number; business_name: string }, idx: number) => (
+              <CommandItem key={idx} value={merchant.business_name} onSelect={(_) => router.replace(`/canvass/products?search=${merchant.business_name}`)}>{merchant.business_name}</CommandItem>
+            ))}
+            </CommandGroup>
+          </> : null}
+        </CommandList>
+      </CommandDialog>
+    </>
+  );
 }

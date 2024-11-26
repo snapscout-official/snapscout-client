@@ -120,7 +120,7 @@ export default function RequestQuote({ product }: Props) {
 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      <div className="text-sm h-[250px] mt-2 p-4 border-border border-[1px] md:text-base">
+      <div className="text-sm h-[200px] mt-2 p-4 border-border border-[1px] md:text-base">
         <p>Description Content Here</p>
       </div>
       <Form {...form}>
