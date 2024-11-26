@@ -138,6 +138,7 @@ function AgencyStepTwo({ handleNextStep }: AgencyStageComponentProps) {
               <PinMapRegister positionProp={selectedLocation ? new LatLng(selectedLocation.latitude, selectedLocation.longitude) : new LatLng(8.951549, 125.527725)} />
             </LazyMap >
           </div >
+
           <FormField
             control={form.control}
             name="gender"

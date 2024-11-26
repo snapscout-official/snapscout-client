@@ -145,3 +145,84 @@ export async function auth() {
   }
   return { error: "error retrieving the token" };
 }
+export function decodeJWTClaims(token?: string) {
+  if (!token) {
+    const sessionToken = getSessionToken();
+    return sessionToken ? decodeJwt(sessionToken) : null;
+  }
+  return decodeJwt(token);
+}
+
+export function updateSessionToken(token: string, expires: Date) {
+  setSessionToken(token, expires);
+}
+
+export function setSessionToken(token: string, expires: Date) {
+  cookies().set("sessionToken", token, {
+    expires: expires,
+    httpOnly: true,
+    sameSite: true,
+  });
+}
+
+export function getSessionToken() {
+  return cookies().get("sessionToken")?.value;
+}
+export function isAuthenticated(request: NextRequest) {
+  //we can access cookie from here
+  return getSessionToken() ? true : false;
+}
+
+/**
+ * invalidates token in laravel/api and delete the api token in cookie
+ */
+export async function logout() {
+  //invalidate the sessionToken first
+  const fetchResult = await fetchWithToken({
+    url: `${process.env.BACKEND_SERVICE_URL}/api/v1/signout`,
+    method: "POST",
+  });
+  if (!fetchResult.ok) {
+    const signOutErrorData = await fetchResult.json();
+    return { error: "Error during signing out", errorData: signOutErrorData };
+  }
+  cookies().delete("sessionToken");
+}
+export async function login({ email, password, role }: any) {
+  if (role === "agency") {
+    const res = await fetch(
+      `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/login`,
+      {
+        body: JSON.stringify({ email: email, password: password }),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      },
+    );
+    return res;
+  }
+  const res = await fetch(
+    `${process.env.BACKEND_SERVICE_URL}/api/v1/merchant/login`,
+    {
+      body: JSON.stringify({ email: email, password: password }),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    },
+  );
+  return res;
+}
+//this returns the sessionData
+export async function auth() {
+  //only server components can call this function or anything that resides in the server environment
+  const sessionData = getSessionToken();
+  if (sessionData) {
+    const user = decodeJWTClaims(sessionData);
+    return { apiToken: sessionData, user: user };
+  }
+  return null;
+}

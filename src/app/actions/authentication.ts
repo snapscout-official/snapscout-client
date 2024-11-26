@@ -1,4 +1,5 @@
 "use server";
+
 import {
   decodeJWTClaims,
   login,
@@ -6,6 +7,8 @@ import {
   setSessionToken,
   setUserSession,
 } from "@/auth";
+
+
 import {
   AGENCY_DEFAULT_LOGIN_REDIRECT,
   DEFAULT_LOGIN_ROUTE,
@@ -18,7 +21,9 @@ import { redirect } from "next/navigation";
 /**
  * accepts relevant merchant information for registering and sends it to the laravel/api
  * if success, api returns user info and token and sets the token to the session cookie
+
  **/
+
 export async function registerAgencyUser(formData: States) {
   const res = await fetch(
     `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/register`,
@@ -38,6 +43,7 @@ export async function registerAgencyUser(formData: States) {
 
   if (!res.ok) {
     const errorData = await res.json();
+
     return { error: "error registering agency user", errorData: errorData };
   }
   const successResultData = await res.json();
@@ -51,12 +57,14 @@ export async function registerAgencyUser(formData: States) {
       new Date(Date.now() + 60 * 60 * 1000),
     );
   }
+
   //sets token in the session cookie and sets its expiration
   setSessionToken(successResultData.token, new Date(Date.now() + 60 * 1000));
   redirect(AGENCY_DEFAULT_LOGIN_REDIRECT);
 }
 
 export async function agencyLoginUser(formData: LoginStates) {
+
   try {
     const loginResult = await login({
       email: formData.email,
@@ -83,6 +91,7 @@ export async function agencyLoginUser(formData: LoginStates) {
   }
 
   //redirect to the dashboard
+
   redirect(AGENCY_DEFAULT_LOGIN_REDIRECT);
 }
 
@@ -165,9 +174,9 @@ export async function loginMerchantUser(credentialsData: {
     return { error: "Error logging merchant in" };
   }
 
+
   redirect(MERCHANT_DEFAULT_LOGIN_REDIRECT);
 }
-
 /**
  * Throws an error
  */

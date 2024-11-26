@@ -1,4 +1,7 @@
+
 import { getCurrentUserRole, isAuthenticated } from "@/auth";
+
+
 import {
   AGENCY_DEFAULT_LOGIN_REDIRECT,
   DEFAULT_LOGIN_ROUTE,
@@ -31,10 +34,12 @@ export function middleware(req: NextRequest) {
       (isMerchantRoute && role == "Agency")
     )
       return Response.redirect(new URL(AGENCY_DEFAULT_LOGIN_REDIRECT, nextUrl));
+
     else if (isAuthRoute && role == "Merchant")
       return Response.redirect(
         new URL(MERCHANT_DEFAULT_LOGIN_REDIRECT, nextUrl),
       );
+
     return NextResponse.next({ request: { headers: headers } });
   }
   //redirect user when not authenticated and accesing public routes
