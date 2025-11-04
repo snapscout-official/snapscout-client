@@ -5,7 +5,7 @@ export type LinksProp = {
 };
 //merchant information should be added for every product
 export type ProductType = {
-    _id: string;
+    id: string;
     barcode: number;
     created_at: string;
     is_available: boolean;

@@ -10,31 +10,31 @@ import Image from "next/image";
 import { inter } from "@/app/ui/fonts";
 import HoverText from "@/componentUtils/HoverText";
 type ProductProps = {
-  productName: string;
+    productName: string;
 };
 export default function ProductCard({ productName }: ProductProps) {
-  const products = [Product1, Product2, Product3, Product4, Product5, Product6, Product7,]
-  const randIdx = Math.floor(Math.random() * products.length)
-  const selectedProduct = products[randIdx]
-  return (
-    <div
-      className={`bg-white shadow-md rounded-[.5rem] py-2 ${inter.className}`}
-    >
-      <Image src={selectedProduct} alt="product-picture" />
-      <div className="space-y-2">
-        <div className="flex px-4 justify-between">
-          <p className="">{productName}</p>
-          <span>4.9</span>
+    const products = [Product1, Product2, Product3, Product4, Product5, Product6, Product7,]
+    // const randIdx = Math.floor(Math.random() * products.length)
+    const selectedProduct = products[0]
+    return (
+        <div
+            className={`bg-white shadow-md rounded-[.5rem] py-2 ${inter.className}`}
+        >
+            <Image src={selectedProduct} alt="product-picture" />
+            <div className="space-y-2">
+                <div className="flex px-4 justify-between">
+                    <p className="">{productName}</p>
+                    <span>4.9</span>
+                </div>
+                <div className="flex px-4 gap-1 max-w-max">
+                    <Image className="w-auto h-auto" src={Pin} alt="map-pin" width={20} height={20} />
+                    <HoverText>
+                        <p className="text-[#64748B] font-semibold truncate">
+                            Lopez Jaena St.
+                        </p>
+                    </HoverText>
+                </div>
+            </div>
         </div>
-        <div className="flex px-4 gap-1 max-w-max">
-          <Image src={Pin} alt="map-pin" width={20} height={20} />
-          <HoverText>
-            <p className="text-[#64748B] font-semibold truncate">
-              Lopez Jaena St.
-            </p>
-          </HoverText>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }

@@ -32,7 +32,8 @@ export default async function MainSection({
     const { categories } = await fetchCategories();
     return (
         <div className="col-span-12 lg:col-span-9 flex flex-col">
-            <div className="grid gap-1 items-center grid-cols-12 lg:gap-x-8">
+            {/* <div className="grid gap-1 items-center grid-cols-12 lg:gap-x-8"> */}
+            <div className="flex gap-2 items-center">
                 <MyComboBox />
                 <SearchBox />
                 <OcrIcon />

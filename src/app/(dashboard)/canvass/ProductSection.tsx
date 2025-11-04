@@ -41,7 +41,7 @@ export default async function ProductSection({
     const cartCookie = await getCarts();
 
     return (
-        <div className="bg-[#F8FAFC] flex flex-col p-5 flex-1">
+        <div className="bg-[#F8FAFC] flex flex-col p-5 flex-1 space-y-5">
             {
                 products.length !== 0 ? (
                     <div className="grid gap-3 grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
