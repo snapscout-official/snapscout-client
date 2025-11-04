@@ -22,7 +22,7 @@ export default async function RecentlyViewed({
                     NO ITEMS TO DISPLAY
                 </div>
             )}
-            <div>{children ? children : null}</div>
+            <div className="flex-1">{children ? children : null}</div>
         </div>
     );
 }

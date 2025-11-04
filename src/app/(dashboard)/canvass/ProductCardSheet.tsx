@@ -26,7 +26,7 @@ export default function ProductCardSheet({
     const [currentProduct, setCurrentProduct] = useState<ProductType>(product[0]);
     const [content, setContent] = useState<string>("product");
     function changeProduct(id: string) {
-        //typescript always ruin my fucking coding style!!!!!!!
+
         setCurrentProduct(product.filter((product) => product.id === id)[0]);
     }
     function handlePanelChange(panel: string) {

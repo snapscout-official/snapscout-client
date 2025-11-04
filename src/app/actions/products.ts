@@ -82,6 +82,8 @@ export async function getCarts(): Promise<Cart[]> {
         },
     });
     if (!result.ok) {
+        const cartErrorResult = await result.json()
+        console.log(cartErrorResult)
         throw new Error("Something went wrong on the server");
     }
     const data = await result.json();
@@ -99,7 +101,7 @@ export async function addToCart(
 
         body: JSON.stringify({
             cart_name: cartName,
-            items: item ? item : [],
+            items: item ?? [],
         }),
         headers: {
             Accept: "application/json",
@@ -107,6 +109,8 @@ export async function addToCart(
         },
     });
     if (!result.ok) {
+        const errorCartData = await result.json()
+        console.log(errorCartData)
         throw new Error("Something went wrong on the server");
     }
     revalidatePath("/canvass");
@@ -166,7 +170,7 @@ export async function searchProductsInServer(
         return { error: "no query string" };
     }
     const result = await fetchWithToken({
-        url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/search`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_SERVICE_URL}/api/v1/agency/search`,
         method: "POST",
         headers: {
             "Content-Type": "application/json",
