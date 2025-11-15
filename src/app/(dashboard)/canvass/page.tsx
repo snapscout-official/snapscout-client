@@ -18,7 +18,7 @@ export default async function Canvass({
         ssr: false,
     });
     return (
-        <div className="grid grid-cols-12 gap-x-4 mt-5 min-h-[550px]">
+        <div className="grid grid-cols-12 gap-x-4 py-5 min-h-full">
             <RecentlyViewed>
                 <div className="w-full min-h-[250px] h-full">
                     <LazyMap posix={{ lat: 8.951549, lng: 125.527725 }} />

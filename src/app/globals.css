@@ -46,6 +46,7 @@ body {
 
 @layer base {
   :root {
+    --primary-color: 151%, 62%, 74%;
     --background: 210 40%, 96%;
     --text-secondary:0, 0%, 32%;
     --secondary-foreground:0, 0%, 88%;

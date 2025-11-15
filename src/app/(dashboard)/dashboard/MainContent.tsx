@@ -31,7 +31,7 @@ export default async function MainContent() {
                     />
                 </div>
             </div>
-            <div className="flex flex-col justify-center min-h-[400px] w-auto bg-[#F8FAFC] shadow-md rounded-[.5rem] p-4 px-7">
+            <div className="flex-1 flex flex-col min-h-[400px] w-auto bg-[#F8FAFC] shadow-md rounded-[.5rem] p-4 px-7">
                 <div className="flex justify-between">
                     <Input
                         className="w-[40%] rounded-[.5rem] text-slate-400 border-lightBorder"

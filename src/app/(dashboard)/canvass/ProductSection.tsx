@@ -27,17 +27,18 @@ export default async function ProductSection({
 
     let links: LinksProp[] = [];
     const productData = await result.json();
-    console.log("Products", productData)
+
     const products: Array<ProductType[]> = productData.products.data;
     const prevPage = splitUrlString(productData.products.prev_page_url);
     const nextPage = splitUrlString(productData.products.next_page_url);
 
+    //REMOVING LINKS ELEMENT THAT DONT HAVE A NUMBER LABEL
     if (productData.products.links) {
         links = productData.products.links.filter((link: LinksProp) => {
             return link.label !== "&laquo; Previous" && link.label !== "Next &raquo;";
         });
     }
-    //add error handling
+    //TODO::Maybe its a good idea to just use the backend for the cart as of now
     const cartCookie = await getCarts();
 
     return (
@@ -50,7 +51,7 @@ export default async function ProductSection({
                         ))}
                     </div>
                 ) : (
-                    <div className="flex justify-center items-center text-center font-inter font-normal text-secondary">
+                    <div className="flex justify-center items-center text-center font-inter font-normal text-secondary h-full">
                         NO PRODUCTS CURRENTLY
                     </div>
 
