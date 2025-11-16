@@ -120,6 +120,7 @@ const LoginForm = () => {
                             ) : null}
                             <Button
                                 type="submit"
+                                disabled={loading}
                                 className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-medium text-base mt-6"
                             >
                                 {loading ? (

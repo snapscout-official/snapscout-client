@@ -28,7 +28,6 @@ function LoginV2() {
                     <div className="flex justify-center ">
                         <LoginForm />
                     </div>
-
                     <div className="hidden lg:flex">
                         <HeroSection />
                     </div>

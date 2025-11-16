@@ -39,7 +39,7 @@ export default function ProductInformation({
                     </Button>
                 </div>
             </div>
-            <div className="w-full border-[1px] border-border h-[300px]"></div>
+            <div className="w-full border-[1px] border-border h-[20%]"></div>
         </div>
     );
 }

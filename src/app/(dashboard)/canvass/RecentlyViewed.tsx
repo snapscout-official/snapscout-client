@@ -16,7 +16,6 @@ export default async function RecentlyViewed({
         <div className="bg-[#F8FAFC] col-span-3 p-5 rounded-[.5rem] text-black shadow-sm space-y-2 hidden lg:flex flex-col min-h-full space-y-[2rem]">
             <div className="h-[300px]">{children ? children : null}</div>
             <div>
-
                 <p className={`${inter700.className} font-bold text-xl`}>Recently Viewed</p>
                 {products.length !== 0 ? (
                     <ScrollableCards products={products} />

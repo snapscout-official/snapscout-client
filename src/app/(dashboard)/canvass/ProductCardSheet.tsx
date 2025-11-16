@@ -42,7 +42,7 @@ export default function ProductCardSheet({
                 <ProductCard productName={product[0].product_name} />
             </SheetTrigger>
             <SheetContent
-                className={`${inter.className} bg-white overflow-auto h-full p-4 md:min-w-[500px] md:overflow-hidden`}
+                className={`${inter.className} bg-white overflow-auto h-full p-4 md:min-w-[500px]`}
             >
                 <SheetHeader>
                     <SheetTitle className="text-xl">
@@ -72,7 +72,7 @@ export default function ProductCardSheet({
                             className={
                                 (content === "inquire"
                                     ? "bg-primary text-primary-foreground"
-                                    : `bg-secondary text-secondary-foreground`) +
+                                    : `bg-secondary text-secondary border-1 border-secondary-foreground`) +
                                 " text-xs md:text-lg md:px-10 md:py-6"
                             }
                         >
@@ -85,7 +85,7 @@ export default function ProductCardSheet({
                             className={
                                 (content === "request-quote"
                                     ? "bg-primary text-primary-foreground"
-                                    : `bg-secondary text-secondary-foreground`) +
+                                    : `bg-secondary text-secondary border-1 border-secondary-foreground`) +
                                 " text-xs md:text-lg md:px-8 md:py-6"
                             }
                         >
