@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { getMoneyText } from "@/app/utils/helpers";
 
 type Props = {
     product: ProductType[];
@@ -46,7 +45,7 @@ const formSchema = z.object({
 
 export type Quote = {
     quantity: number;
-    budget?: string;
+    budget: number | null;
     need?: Date;
     productId: string;
 };
@@ -66,10 +65,19 @@ export default function RequestQuote({ product }: Props) {
 
     function handleAddQuote() {
         try {
-            const quoteData: Quote = formSchema.parse(form.getValues());
+            const quoteData = formSchema.parse(form.getValues());
+            if (!quoteData?.budget) {
+                setQuotes({ ...quoteData, budget: null });
+                return
+            }
+            if ((typeof quoteData.budget === "string")) {
+                setQuotes({ ...quoteData, budget: Number(quoteData.budget) });
+                return
+            }
 
-            setQuotes({ ...quoteData, budget: getMoneyText(quoteData.budget) });
+            setQuotes({ ...quoteData, budget: quoteData.budget });
         } catch (err) {
+            console.log(err)
             toast({
                 title: "Something went wrong",
                 description: "something went wrong during processing the input",
@@ -79,6 +87,7 @@ export default function RequestQuote({ product }: Props) {
     }
     async function submitQuote(_: z.infer<typeof formSchema>) {
         if (quotes && currentProduct.merchant_id) {
+            console.log(quotes)
             const actionResult = await addToQuote({ quoteData: quotes, merchantId: currentProduct.merchant_id.toString() });
             if (actionResult.error)
                 toast({
@@ -157,6 +166,7 @@ export default function RequestQuote({ product }: Props) {
                                         <Input
                                             {...field}
                                             placeholder="What is your budget? (optional)"
+                                            type="number"
                                         />
                                     </FormControl>
                                 </FormItem>
