@@ -8,28 +8,34 @@ export default function useAbly(
     cleaner: (echo: Echo) => void,
 ) {
     const [echoInstance, setEchoInstance] = useState<Echo>();
-    const sessionData = useMySession();
+    const { token, user } = useMySession();
+    const [error, setError] = useState<string>()
     // if (!sessionData.token || !sessionData.user)
     //     console.log("No token or user")
 
-    const token = sessionData.token;
+
     useEffect(() => {
-        const echo = bootEcho(token);
-        console.log("Done booting echo");
-        setEchoInstance(echo);
-        executor(echo);
-        return () => {
-            cleaner(echo);
-        };
-    }, []);
-    function bootEcho(token: string): Echo {
         window.Ably = Ably;
+        if (token) {
+            const echo = bootEcho(token);
+            console.log("Done booting echo");
+            setEchoInstance(echo);
+            executor(echo);
+            return () => {
+                cleaner(echo);
+            };
+        } else {
+            setError("No user token found")
+        }
+    }, []);
+
+    function bootEcho(token: string): Echo {
         const echo = new Echo({
             broadcaster: "ably",
             requestTokenFn: async (channelName: string, existingToken: string) => {
                 let postData = {
                     channel_name: channelName,
-                    "ably-token": existingToken,
+                    'ably-token': existingToken,
                     token: token,
                 };
                 const res = await axios.post(

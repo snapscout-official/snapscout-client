@@ -2,6 +2,8 @@ const { withNextVideo } = require("next-video/process");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // reactStrictMode: false,
+  // assetPrefix: "http://localhost:3000",
   logging: {
     fetches: {
       fullUrl: true,

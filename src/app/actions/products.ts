@@ -137,23 +137,31 @@ export async function deleteCartProduct(product_id: string, cart_name: string) {
 
 export async function addToQuote(data: {
     quoteData: Quote[];
-    merchantId: string;
+    merchantId: number;
 }) {
     try {
+
         const res = await fetchWithToken({
-            url: `${process.env.BACKEND_SERVICE_URL}/api/v1/agency/quotes`,
+            url: `${process.env.NEXT_PUBLIC_BACKEND_SERVICE_URL}/api/v1/agency/quote`,
             method: "POST",
-            body: JSON.stringify(data),
+            body: JSON.stringify(data), //NOTE:: quote data is an array of quote objects
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
         });
+
+        //NOTE:: validation error
+        if (res.status === 422) {
+
+        }
         if (!res.ok) {
             const errorResultData = await res.json();
-            return { error: errorResultData };
+            console.log(errorResultData)
+            return { error: errorResultData.message };
         }
-        return { message: "success" };
+        const successResult = await res.json()
+        return { message: successResult.message };
     } catch (error) {
         return { error: "an error occured during add to quote operation" };
     }

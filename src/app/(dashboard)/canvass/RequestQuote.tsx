@@ -71,6 +71,10 @@ export default function RequestQuote({ product }: Props) {
                 return
             }
             if ((typeof quoteData.budget === "string")) {
+                if (quoteData.budget.length === 0) {
+                    setQuotes({ ...quoteData, budget: null });
+                    return
+                }
                 setQuotes({ ...quoteData, budget: Number(quoteData.budget) });
                 return
             }
@@ -88,7 +92,7 @@ export default function RequestQuote({ product }: Props) {
     async function submitQuote(_: z.infer<typeof formSchema>) {
         if (quotes && currentProduct.merchant_id) {
             console.log(quotes)
-            const actionResult = await addToQuote({ quoteData: quotes, merchantId: currentProduct.merchant_id.toString() });
+            const actionResult = await addToQuote({ quoteData: quotes, merchantId: currentProduct.merchant_id });
             if (actionResult.error)
                 toast({
                     variant: "destructive",
@@ -100,7 +104,7 @@ export default function RequestQuote({ product }: Props) {
             else
                 toast({
                     title: "Quote Requested",
-                    description: "View Notifications for Updates",
+                    description: actionResult.message,
                     action: <ToastAction altText="Continue">Continue</ToastAction>,
                 });
         }

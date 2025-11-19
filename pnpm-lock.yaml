@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@ably/laravel-echo':
-        specifier: ^1.0.5
-        version: 1.0.5(ably@1.2.50(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        specifier: ^1.0.6
+        version: 1.0.6(ably@2.14.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@hookform/resolvers':
         specifier: ^3.4.2
         version: 3.4.2(react-hook-form@7.51.5(react@18.3.1))
@@ -84,8 +84,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ably:
-        specifier: ^1.2.50
-        version: 1.2.50(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 2.x
+        version: 2.14.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       axios:
         specifier: ^1.7.2
         version: 1.7.2
@@ -204,8 +204,8 @@ importers:
 
 packages:
 
-  '@ably/laravel-echo@1.0.5':
-    resolution: {integrity: sha512-EWTVKqQqSHoq462LcDBT0+WICmlodS6JoDFuYCwW1mKStvL1bU+Y0NHbxErw6XC9+4bhXXZoBFeyFAtmjph/oQ==}
+  '@ably/laravel-echo@1.0.6':
+    resolution: {integrity: sha512-SLui6f1FO/8sn6aQqWnl43iTOkoVpRTNVgV3b51uEcUjGOwSz0xeuShk30ongqvduwQfFXN0ik2K3apAWGLIuQ==}
     engines: {node: '>=10'}
     peerDependencies:
       ably: ^1.2
@@ -2742,9 +2742,9 @@ packages:
     resolution: {integrity: sha512-mCfR3gylCzPC+iqdxEA6z5SxJeOgzgbwmyxanKriIne5qZLswDe/M43aD3p5MNzwzXRhbZg/OX+MpES6Zk1a6A==}
     engines: {node: '>=12.10'}
 
-  ably@1.2.50:
-    resolution: {integrity: sha512-9uC5lE7wFBR7nOJdltArHU1UDaBu6CTMbMuie+brUuH884fM1mQuFiMzZetxVacygyUG38dp5MFOyOPF9h0RsQ==}
-    engines: {node: '>=5.10.x'}
+  ably@2.14.0:
+    resolution: {integrity: sha512-GWNza+URnh/W5IuoJX7nXJpQCs2Dxby6t5A20vL3PBqGIJceA94/1xje4HOZbqFtMEPkRVsYHBIEuQRWL+CuvQ==}
+    engines: {node: '>=16'}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -3360,6 +3360,9 @@ packages:
   fast-xml-parser@4.4.1:
     resolution: {integrity: sha512-xkjOecfnKGkSsOwtZ5Pz7Us/T6mrbPQrq0nh+aCO5V9nk5NLWmasAHumTKjiPJPWANe+kAZ84Jc8ooJkzZ88Sw==}
     hasBin: true
+
+  fastestsmallesttextencoderdecoder@1.0.22:
+    resolution: {integrity: sha512-Pb8d48e+oIuY4MaM64Cd7OW1gt4nxCHs7/ddPPZ/Ic3sg8yVGM7O9wDvZ7us6ScaUupzM+pfBolwtYhN1IxBIw==}
 
   fastq@1.17.1:
     resolution: {integrity: sha512-sRVD3lWVIXWg6By68ZN7vho9a1pQcN/WBFaAAsDDFzlJjvoGx0P8z7V1t72grFJfJhu3YPZBuu25f7Kaw2jN1w==}
@@ -4599,6 +4602,10 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  ulid@2.4.0:
+    resolution: {integrity: sha512-fIRiVTJNcSRmXKPZtGzFQv9WRrZ3M9eoptl/teFJvjOzmpU+/K/JH6HZ8deBfb5vMEpicJcLn7JmvdknlMq7Zg==}
+    hasBin: true
+
   unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
 
@@ -4770,9 +4777,9 @@ packages:
 
 snapshots:
 
-  '@ably/laravel-echo@1.0.5(ably@1.2.50(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@ably/laravel-echo@1.0.6(ably@2.14.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
-      ably: 1.2.50(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      ably: 2.14.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   '@ably/msgpack-js@0.4.0':
     dependencies:
@@ -8621,10 +8628,13 @@ snapshots:
     dependencies:
       rimraf: 3.0.2
 
-  ably@1.2.50(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  ably@2.14.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@ably/msgpack-js': 0.4.0
+      dequal: 2.0.3
+      fastestsmallesttextencoderdecoder: 1.0.22
       got: 11.8.6
+      ulid: 2.4.0
       ws: 8.18.0
     optionalDependencies:
       react: 18.3.1
@@ -9407,6 +9417,8 @@ snapshots:
   fast-xml-parser@4.4.1:
     dependencies:
       strnum: 1.0.5
+
+  fastestsmallesttextencoderdecoder@1.0.22: {}
 
   fastq@1.17.1:
     dependencies:
@@ -10690,6 +10702,8 @@ snapshots:
       possible-typed-array-names: 1.0.0
 
   typescript@5.4.5: {}
+
+  ulid@2.4.0: {}
 
   unbox-primitive@1.0.2:
     dependencies:
