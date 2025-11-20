@@ -3,6 +3,7 @@ import Echo from "@ably/laravel-echo";
 import { useMySession } from "./sessionContext";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 export default function useAbly(
     executor: (echo: Echo) => void,
     cleaner: (echo: Echo) => void,
@@ -10,12 +11,8 @@ export default function useAbly(
     const [echoInstance, setEchoInstance] = useState<Echo>();
     const { token, user } = useMySession();
     const [error, setError] = useState<string>()
-    // if (!sessionData.token || !sessionData.user)
-    //     console.log("No token or user")
-
 
     useEffect(() => {
-        window.Ably = Ably;
         if (token) {
             const echo = bootEcho(token);
             console.log("Done booting echo");
@@ -30,6 +27,9 @@ export default function useAbly(
     }, []);
 
     function bootEcho(token: string): Echo {
+        if (typeof window !== "undefined") {
+            window.Ably = Ably;
+        }
         const echo = new Echo({
             broadcaster: "ably",
             requestTokenFn: async (channelName: string, existingToken: string) => {

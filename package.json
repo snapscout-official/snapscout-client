@@ -10,7 +10,7 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@ably/laravel-echo": "^1.0.6",
+        "@ably/laravel-echo": "1.0.6",
         "@hookform/resolvers": "^3.4.2",
         "@nextui-org/button": "^2.0.34",
         "@nextui-org/react": "^2.4.2",
@@ -35,7 +35,7 @@
         "@radix-ui/react-toast": "^1.2.1",
         "@radix-ui/react-toggle": "^1.1.0",
         "@radix-ui/react-tooltip": "^1.1.1",
-        "ably": "2.x",
+        "ably": "~1.2.50",
         "axios": "^1.7.2",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",

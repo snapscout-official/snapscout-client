@@ -48,6 +48,17 @@ export type Notification = {
     data: Order;
 };
 
+type NotificationType = "quote" | "message" | "order"
+export interface NotificationData {
+    created_at: string
+    description: string
+    notification_data: any
+    notification_type: NotificationType
+    title: string
+    opened: boolean
+    id: string
+}
+
 export type MessageType = {
     content: string;
     creator: number;

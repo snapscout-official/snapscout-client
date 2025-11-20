@@ -1,20 +1,21 @@
 "use client";
 import NotificationCard from "@/componentUtils/NotificationCard";
 import { Card, CardContent } from "@/components/ui/card";
-import { Notification } from "@/types/product-types";
+import { NotificationData } from "@/types/product-types";
 import { useState } from "react";
 
 import Echo from "@ably/laravel-echo";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import useAbly from "@/app/custom-hooks/useAbly";
 
+
 export default function Notifications({
     initialNotifications,
 }: {
-    initialNotifications: Notification[];
+    initialNotifications: NotificationData[];
 }) {
     const [notifications, setNotifications] =
-        useState<Notification[]>(initialNotifications);
+        useState<NotificationData[]>(initialNotifications);
     useAbly(executor, cleaner);
     function cleaner(echo: Echo) {
         console.log("We are leaving ");
@@ -25,7 +26,7 @@ export default function Notifications({
             .private("notifications.1")
             .listen(
                 ".orders.update",
-                function (newNotifData: { data: Notification; socket: null }) {
+                function (newNotifData: { data: NotificationData; socket: null }) {
                     console.log(newNotifData.data);
                     setNotifications((oldNotifications) => [
                         newNotifData.data,
@@ -42,8 +43,8 @@ export default function Notifications({
                     <h1 className="text-start text-lg text-[#0F172A] font-semibold">
                         Notifications
                     </h1>
-                    {notifications ? notifications.map((notif: Notification) => (
-                        <NotificationCard type="email" key={notif.id} notif={notif} />
+                    {notifications ? notifications.map((notif: NotificationData) => (
+                        <NotificationCard notification={notif} />
                     )) : null}
                 </CardContent>
                 <ScrollBar orientation="vertical" className="h-full" />
