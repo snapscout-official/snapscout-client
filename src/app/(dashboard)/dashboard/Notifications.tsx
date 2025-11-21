@@ -10,7 +10,7 @@ import useAbly from "@/app/custom-hooks/useAbly";
 
 
 export default function Notifications({
-    initialNotifications,
+    initialNotifications
 }: {
     initialNotifications: NotificationData[];
 }) {
@@ -36,19 +36,38 @@ export default function Notifications({
             );
     }
 
+    // return (
+    //     <Card className="col-span-2 bg-[#F8FAFC] hidden border-none xl:block xl:col-span-3">
+    //         <ScrollArea className="h-72">
+    //             <CardContent className="flex flex-col pt-4 space-y-4">
+    //                 <h1 className="text-start text-lg text-[#0F172A] font-semibold">
+    //                     Notifications
+    //                 </h1>
+    //                 {notifications ? notifications.map((notif: NotificationData) => (
+    //                     <NotificationCard notification={notif} />
+    //                 )) : null}
+    //             </CardContent>
+    //             <ScrollBar orientation="vertical" />
+    //         </ScrollArea>
+    //     </Card>
+    // );
     return (
-        <Card className="col-span-2 h-full min-h-full bg-[#F8FAFC] max-h-full hidden border-none xl:block xl:col-span-3 ">
-            <ScrollArea className="max-h-full">
-                <CardContent className="flex flex-col pt-4 space-y-4">
+        <Card className="col-span-2 bg-[#F8FAFC] hidden border-none xl:block xl:col-span-3 overflow-auto">
+            <ScrollArea className="h-full">
+                <div className="p-4">   {/* wrapper needed; CardContent grows too much */}
                     <h1 className="text-start text-lg text-[#0F172A] font-semibold">
                         Notifications
                     </h1>
-                    {notifications ? notifications.map((notif: NotificationData) => (
-                        <NotificationCard notification={notif} />
-                    )) : null}
-                </CardContent>
-                <ScrollBar orientation="vertical" className="h-full" />
+
+                    <div className="flex flex-col space-y-4">
+                        {notifications?.map((notif: NotificationData) => (
+                            <NotificationCard key={notif.id} notification={notif} />
+                        ))}
+                    </div>
+                </div>
+
+                <ScrollBar orientation="vertical" />
             </ScrollArea>
         </Card>
-    );
+    )
 }

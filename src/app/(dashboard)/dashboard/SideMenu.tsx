@@ -10,5 +10,7 @@ export default async function SideMenu() {
     const fetchData = await result.json();
     const notifications: NotificationData[] = fetchData.notifications
 
-    return <Notifications initialNotifications={notifications} />;
+    return (
+        <Notifications initialNotifications={notifications} />
+    );
 }
