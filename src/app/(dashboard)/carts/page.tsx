@@ -7,10 +7,11 @@ export default async function Carts({
 }: {
     searchParams: { [key: string]: string | undefined };
 }) {
+    const { cart } = searchParams
     return (
         <DashboardContainer>
             <div className="grid grid-cols-12 gap-x-5 min-h-full max-h-full overflow-hidden">
-                <CartSection />
+                <CartSection selectedCart={cart} />
                 <CartContent searchParams={searchParams} />
             </div>
         </DashboardContainer>

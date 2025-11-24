@@ -54,9 +54,10 @@ export async function getCookieValue(key: string) {
     }
     return [];
 }
+
 export async function getCartProducts(
     cart_name: string,
-): Promise<ProductType[][]> {
+): Promise<{ [keys: string]: ProductType[] } | null> {
     const result = await fetchWithToken({
         url: `${process.env.NEXT_PUBLIC_BACKEND_SERVICE_URL}/api/v1/agency/carts/${cart_name}`,
         method: "GET",
@@ -69,9 +70,14 @@ export async function getCartProducts(
     if (!result.ok) {
         throw new Error("Something went wrong on the server");
     }
-    const data = await result.json();
+    const data = await result.json(); //NOTE:: the api returns empty array on empty cart data
+
+    if (Array.isArray(data.cart_data) && data.cart_data.length === 0) {
+        return null
+    }
     return data.cart_data;
 }
+
 export async function getCarts(): Promise<Cart[]> {
     const result = await fetchWithToken({
         url: `${process.env.NEXT_PUBLIC_BACKEND_SERVICE_URL}/api/v1/agency/carts`,
@@ -84,17 +90,19 @@ export async function getCarts(): Promise<Cart[]> {
     if (!result.ok) {
         const cartErrorResult = await result.json()
         console.log(cartErrorResult)
-        throw new Error("Something went wrong on the server");
+        throw new Error("Cant get cart data");
     }
     const data = await result.json();
     return data.carts;
 }
+
 //can also be used for creating new cookie
 //refactor. remove from cookies and store to db
 export async function addToCart(
     cartName: string,
     item?: { quantity: number; product_id: string },
 ) {
+
     const result = await fetchWithToken({
         url: `${process.env.NEXT_PUBLIC_BACKEND_SERVICE_URL}/api/v1/agency/carts`,
         method: "POST",
@@ -109,9 +117,11 @@ export async function addToCart(
         },
     });
     if (!result.ok) {
-        const errorCartData = await result.json()
-        console.log(errorCartData)
-        throw new Error("Something went wrong on the server");
+        return {
+            message: "Error adding to cart",
+            error: true,
+            description: "Error adding item to the cart, try again later",
+        }
     }
     revalidatePath("/canvass");
 }

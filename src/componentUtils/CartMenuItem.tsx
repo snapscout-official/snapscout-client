@@ -1,12 +1,13 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 type CartButtonProp = {
-  children: React.ReactNode;
-  clickHandler: () => {};
+    children: React.ReactNode;
+    clickHandler: () => {};
 };
 export default function CartMenuItem({
-  children,
-  clickHandler,
+    children,
+    clickHandler,
+
 }: CartButtonProp) {
-  return <DropdownMenuItem onClick={clickHandler}>{children}</DropdownMenuItem>;
+    return <DropdownMenuItem onClick={clickHandler}>{children}</DropdownMenuItem>;
 }

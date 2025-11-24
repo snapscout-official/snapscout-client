@@ -5,7 +5,10 @@ import { Cart } from "@/types/product-types";
 import CartItem from "./CartItem";
 import CreateNewCartSheet from "./CreateNewCartSheet";
 
-export default async function CartSection() {
+interface CartSectionProps {
+    selectedCart?: string
+}
+export default async function CartSection({ selectedCart }: CartSectionProps) {
     const cartItems: Cart[] = await getCarts();
 
     return (
@@ -18,7 +21,7 @@ export default async function CartSection() {
                 <div className={`min-h-[300px] ${!cartItems || cartItems.length === 0 ? 'flex items-center' : null} `}>
                     {cartItems && cartItems.length !== 0
                         ? cartItems.map((cartItem, idx) => (
-                            <CartItem key={idx} cartName={cartItem.cart_name} />
+                            <CartItem key={idx} cartName={cartItem.cart_name} selected={selectedCart && selectedCart === cartItem.cart_name ? true : false} />
                         ))
                         : (
                             <p className="text-center font-inter font-semibold text-text-secondary text-lg flex items-center justify-center min-h-full">

@@ -1,5 +1,5 @@
 import ProductCardSheet from "./ProductCardSheet";
-import { ProductType } from "@/types/product-types";
+import { Cart, ProductType } from "@/types/product-types";
 import MyPagination from "@/componentUtils/MyPagination";
 import { LinksProp } from "@/types/product-types";
 import { fetchWithToken, splitUrlString } from "@/services/fetchService";
@@ -39,7 +39,7 @@ export default async function ProductSection({
         });
     }
     //TODO::Maybe its a good idea to just use the backend for the cart as of now
-    const cartCookie = await getCarts();
+    const cartData: Cart[] = await getCarts();
 
     return (
         <div className="bg-[#F8FAFC] flex flex-col p-5 flex-1 space-y-5">
@@ -47,7 +47,7 @@ export default async function ProductSection({
                 products.length !== 0 ? (
                     <div className="grid gap-3 grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
                         {products.map((product: ProductType[], idx: number) => (
-                            <ProductCardSheet product={product} key={idx} cartData={cartCookie} />
+                            <ProductCardSheet product={product} key={idx} cartData={cartData} />
                         ))}
                     </div>
                 ) : (

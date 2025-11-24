@@ -17,6 +17,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useState } from "react";
+import { describe } from "node:test";
 
 export default function AddToCartDropDown({
     product,
@@ -42,15 +44,23 @@ export default function AddToCartDropDown({
                 <DropdownMenuLabel>My Carts</DropdownMenuLabel>
                 <DropdownMenuSeparator className="border-[1px] border-lightText" />
                 <DropdownMenuGroup>
-                    {cartData ? (
+                    {cartData.length !== 0 ? (
                         cartData.map((cart: Cart, idx: number) => (
                             <CartMenuItem
                                 key={idx}
                                 clickHandler={async () => {
-                                    await addToCart(cart.cart_name, {
+                                    const addCartResponse = await addToCart(cart.cart_name, {
                                         quantity: 12,
                                         product_id: product.id,
                                     });
+                                    if (addCartResponse?.error) {
+                                        toast({
+                                            title: addCartResponse?.message,
+                                            description: addCartResponse?.description,
+                                            variant: "destructive",
+                                        })
+                                        return
+                                    }
                                     toast({
                                         title: `Product Added to Cart ${cart.cart_name}`,
                                         description: `Product ${product.product_name} has been added to cart ${cart.cart_name}`,
@@ -71,6 +81,7 @@ export default function AddToCartDropDown({
                     ) : (
                         <DropdownMenuItem>No Cart Currently</DropdownMenuItem>
                     )}
+
                 </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>

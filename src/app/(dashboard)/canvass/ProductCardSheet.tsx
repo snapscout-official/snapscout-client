@@ -43,6 +43,7 @@ export default function ProductCardSheet({
             </SheetTrigger>
             <SheetContent
                 className={`${inter.className} bg-white overflow-auto h-full p-4 md:min-w-[500px]`}
+                onInteractOutside={event => event.preventDefault()}
             >
                 <SheetHeader>
                     <SheetTitle className="text-xl">
