@@ -1,5 +1,5 @@
 import Image from "next/image";
-import User from "@/public-assets/user.svg";
+import { ShoppingCart } from 'lucide-react';
 import Link from "next/link";
 type CartItemProp = {
     cartName: string;
@@ -10,11 +10,11 @@ export default function CartItem({ cartName, selected }: CartItemProp) {
     params.set("cart", cartName);
     return (
         <Link
-            className={`p-2 flex gap-x-1 items-center  shadow-none rounded-md ${selected ? "bg-green-400 hover:bg-green-200" : "bg-transparent hover:bg-background"}`}
+            className={`p-2 flex gap-x-1 items-center shadow-none rounded-md ${selected ? "bg-green-400 hover:bg-green-200" : "bg-transparent hover:bg-background"}`}
             href={"/carts?" + encodeURI(params.toString())}
         >
-            <Image src={User} alt="cart-icon" />
-            <span className="text-lg text-text-secondary font-semibold">
+            <ShoppingCart />
+            <span className="text-md font-normal">
                 {cartName}
             </span>
         </Link>

@@ -12,8 +12,8 @@ export default async function CartSection({ selectedCart }: CartSectionProps) {
     const cartItems: Cart[] = await getCarts();
 
     return (
-        <Card className="col-span-3">
-            <CardHeader className="text-center font-semibold p-3">
+        <Card className="col-span-3 h-full overflow-hidden sticky top-0">
+            <CardHeader className="font-semibold p-3">
                 My Carts
             </CardHeader>
             <Separator orientation="horizontal" />
@@ -34,4 +34,31 @@ export default async function CartSection({ selectedCart }: CartSectionProps) {
             </CardContent>
         </Card>
     );
+}
+
+export async function CartSectionV2({ selectedCart }: CartSectionProps) {
+    const cartItems: Cart[] = await getCarts();
+
+    return (
+        <div className="bg-card shadow-md rounded-md col-span-3 h-full sticky top-0">
+            <div className="font-semibold p-3 text-lg">
+                My Carts
+            </div>
+            <div className="p-2 space-y-2">
+                <div className={`min-h-[300px] ${!cartItems || cartItems.length === 0 ? 'flex items-center' : null} `}>
+                    {cartItems && cartItems.length !== 0
+                        ? cartItems.map((cartItem, idx) => (
+                            <CartItem key={idx} cartName={cartItem.cart_name} selected={selectedCart && selectedCart === cartItem.cart_name ? true : false} />
+                        ))
+                        : (
+                            <p className="text-center font-inter font-semibold text-text-secondary text-lg flex items-center justify-center min-h-full">
+                                NO CART AVAILABLE CURRENTLY. CREATE A CART
+                            </p>
+                        )}
+                    <CreateNewCartSheet />
+                </div>
+
+            </div>
+        </div>
+    )
 }

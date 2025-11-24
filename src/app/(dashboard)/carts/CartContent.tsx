@@ -34,7 +34,7 @@ export default async function CartContent({
         items: items
     }))
     return (
-        <div className="bg-[#F8FAFC] py-3 col-span-9 rounded-md flex flex-col justify-between flex-1">
+        <div className="bg-[#F8FAFC] py-3 col-span-9 rounded-md flex flex-col justify-between h-full overflow-auto">
             {cartData ? (
                 <div className="overflow-auto">
                     < div className="space-y-5 p-3">
