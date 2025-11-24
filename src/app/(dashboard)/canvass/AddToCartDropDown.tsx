@@ -30,6 +30,7 @@ export default function AddToCartDropDown({
     cartData: Cart[];
 }) {
     const { toast } = useToast();
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

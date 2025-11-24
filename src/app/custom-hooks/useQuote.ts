@@ -15,6 +15,7 @@ export function useQuotes(
     const [quotes, setQuotes] = useState<Quote[]>(
         window.history.state?.[productName] ?? [],
     );
+
     function fromCartToQuote(cart: Cart) {
     }
 

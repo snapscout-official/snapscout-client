@@ -73,7 +73,7 @@ export async function getCartProducts(
     const data = await result.json(); //NOTE:: the api returns empty array on empty cart data
 
     if (Array.isArray(data.cart_data) && data.cart_data.length === 0) {
-        return null
+        return null //NOTE:: we return null when empty array
     }
     return data.cart_data;
 }
@@ -124,6 +124,7 @@ export async function addToCart(
         }
     }
     revalidatePath("/canvass");
+    revalidatePath('/carts')
 }
 
 export async function deleteCartProduct(product_id: string, cart_name: string) {
@@ -140,7 +141,7 @@ export async function deleteCartProduct(product_id: string, cart_name: string) {
         },
     });
     if (!result.ok) {
-        throw new Error("Something went wrong in the service. Try again next time");
+        return { message: "Something went wrong deleting cart item. Please try again later", error: true }
     }
     revalidatePath("/carts");
 }
