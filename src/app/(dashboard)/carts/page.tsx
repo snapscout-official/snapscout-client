@@ -10,7 +10,7 @@ export default async function Carts({
     const { cart } = searchParams
     return (
         <DashboardContainer>
-            <div className="grid grid-cols-12 gap-x-5 h-[100%] overflow-hidden">
+            <div className="grid grid-cols-1 gap-y-4 gap-x-5 h-[100%] overflow-auto md:grid-cols-12 md:overflow-hidden">
                 {/* <CartSection selectedCart={cart} /> */}
                 <CartSectionV2 selectedCart={cart} />
                 <CartContent searchParams={searchParams} />

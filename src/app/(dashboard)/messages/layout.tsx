@@ -29,7 +29,7 @@ export default async function layout({
   const conversationItems: ConversationType[] = fetchData.conversations;
   return (
     <DashboardContainer>
-      <div className="grid grid-cols-12">
+      <div className="grid grid-cols-1 md:grid-cols-12">
         <ConversationList
           conversationItems={conversationItems}
           userId={session.user.id}

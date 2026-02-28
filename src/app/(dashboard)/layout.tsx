@@ -1,5 +1,6 @@
 import React from "react";
 import DashboardNav from "@/componentUtils/DashboardNav";
+import DashboardMobileNav from "@/componentUtils/DashboardMobileNav";
 
 export default async function layout({
   children,
@@ -8,6 +9,9 @@ export default async function layout({
 }) {
   return (
     <div className="min-h-svh overflow-auto bg-[#F1F5F9]">
+      <div className="block lg:hidden">
+        <DashboardMobileNav />
+      </div>
       <div className="hidden py-8 fixed w-full z-50 shadow-md bg-[#F1F5F9] lg:block">
         <DashboardNav />
       </div>

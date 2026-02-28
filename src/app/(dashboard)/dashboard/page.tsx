@@ -8,7 +8,7 @@ async function Dashboard() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return (
         <DashboardContainer>
-            <div className="grid grid-cols-1 gap-2 h-full xl:grid-cols-12">
+            <div className="grid grid-cols-1 gap-2 h-full lg:grid-cols-12">
                 <SideMenu />
                 <MainContent />
             </div>

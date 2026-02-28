@@ -12,7 +12,7 @@ export default async function CartSection({ selectedCart }: CartSectionProps) {
     const cartItems: Cart[] = await getCarts();
 
     return (
-        <Card className="col-span-3 h-full overflow-hidden sticky top-0">
+        <Card className="col-span-12 h-full overflow-hidden sticky top-0 md:col-span-4 lg:col-span-3">
             <CardHeader className="font-semibold p-3">
                 My Carts
             </CardHeader>
@@ -40,7 +40,7 @@ export async function CartSectionV2({ selectedCart }: CartSectionProps) {
     const cartItems: Cart[] = await getCarts();
 
     return (
-        <Card className="col-span-3 h-full sticky top-0">
+        <Card className="col-span-12 h-full sticky top-0 md:col-span-4 lg:col-span-3">
             <CardHeader className="font-semibold p-3 text-lg">
                 My Carts
             </CardHeader>

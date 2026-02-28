@@ -36,7 +36,7 @@ export default function Notifications({
             );
     }
     return (
-        <Card className="col-span-2 bg-[#F8FAFC] hidden border-none xl:block xl:col-span-3 overflow-auto">
+        <Card className="col-span-2 bg-[#F8FAFC] hidden border-none lg:block lg:col-span-3 overflow-auto">
             <div className="p-4">   {/* wrapper needed; CardContent grows too much */}
                 <h1 className="text-start text-lg text-[#0F172A] font-semibold">
                     Notifications

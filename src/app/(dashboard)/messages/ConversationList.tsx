@@ -59,7 +59,7 @@ export default function ConversationList({
 
   return (
     <ScrollArea
-      className="bg-white col-span-3 h-[816px] border-[1px] border-gray-300"
+      className="bg-white col-span-12 h-[40vh] border-[1px] border-gray-300 md:col-span-3 md:h-screen"
       type="scroll"
     >
       <div className="space-y-3 py-3 px-1 max-w-full">
