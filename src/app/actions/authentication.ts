@@ -15,7 +15,6 @@ import {
     MERCHANT_DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
 import { LoginStates, States } from "@/types/auth-types";
-import exp from "constants";
 import { decodeJwt } from "jose";
 import { redirect } from "next/navigation";
 
@@ -59,8 +58,6 @@ export async function registerAgencyUser(formData: States) {
         );
     }
 
-    //sets token in the session cookie and sets its expiration
-    setSessionToken(successResultData.token, new Date(Date.now() + 60 * 1000));
     redirect(AGENCY_DEFAULT_LOGIN_REDIRECT);
 }
 
@@ -75,15 +72,12 @@ export async function agencyLoginUser(formData: LoginStates) {
 
         if (!loginResult.ok) {
             const errorLoginData = await loginResult.json();
-            console.log(errorLoginData)
             return { error: errorLoginData.error, errorData: errorLoginData };
         }
 
         const successLoginData = await loginResult.json();
-        console.log("Data returned by the auth server server", successLoginData)
 
         const claims = decodeJwt(successLoginData.token);
-        console.log("Claims", claims)
 
         if (successLoginData.user && claims.exp) {
             const expiryDate = new Date(claims.exp * 1000);
@@ -95,7 +89,6 @@ export async function agencyLoginUser(formData: LoginStates) {
         }
 
     } catch (error) {
-        console.log(error);
         return { error: "Error logging agency in" };
     }
     redirect(AGENCY_DEFAULT_LOGIN_REDIRECT);

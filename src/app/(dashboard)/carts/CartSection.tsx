@@ -40,12 +40,12 @@ export async function CartSectionV2({ selectedCart }: CartSectionProps) {
     const cartItems: Cart[] = await getCarts();
 
     return (
-        <div className="bg-card shadow-md rounded-md col-span-3 h-full sticky top-0">
-            <div className="font-semibold p-3 text-lg">
+        <Card className="col-span-3 h-full sticky top-0">
+            <CardHeader className="font-semibold p-3 text-lg">
                 My Carts
-            </div>
-            <div className="p-2 space-y-2">
-                <div className={`min-h-[300px] ${!cartItems || cartItems.length === 0 ? 'flex items-center' : null} `}>
+            </CardHeader>
+            <CardContent className="p-2 space-y-2">
+                <div className={`min-h-[300px] ${!cartItems || cartItems.length === 0 ? 'flex flex-col items-center' : null} `}>
                     {cartItems && cartItems.length !== 0
                         ? cartItems.map((cartItem, idx) => (
                             <CartItem key={idx} cartName={cartItem.cart_name} selected={selectedCart && selectedCart === cartItem.cart_name ? true : false} />
@@ -57,8 +57,7 @@ export async function CartSectionV2({ selectedCart }: CartSectionProps) {
                         )}
                     <CreateNewCartSheet />
                 </div>
-
-            </div>
-        </div>
+            </CardContent>
+        </Card>
     )
 }

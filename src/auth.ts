@@ -2,13 +2,17 @@ import { decodeJwt } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 import { fetchWithToken } from "./services/fetchService";
+import { MyUser } from "./types/auth-types";
 
 //checks wether the apitoken is not expired
-function getIsValidToken(token: string) {
+export function getIsValidToken(token: string) {
     if (!token) {
         return false;
     }
     const parsedJWT = parseJWT(token);
+    if (!parsedJWT) {
+        return false;
+    }
     const JWTExpirationDate = new Date(parsedJWT.exp * 1000);
     if (JWTExpirationDate < new Date()) {
         return false;
@@ -21,7 +25,7 @@ function parseJWT(token: string) {
     try {
         return JSON.parse(atob(token.split(".")[1]));
     } catch (err) {
-        return err;
+        return null;
     }
 }
 
@@ -59,7 +63,8 @@ export function setUserSession(user: MyUser, expires: Date) {
         cookies().set("userData", JSON.stringify(user), {
             expires: expires,
             httpOnly: true,
-            sameSite: true,
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
         });
         return true;
     } catch (_) {
@@ -132,7 +137,8 @@ export function setSessionToken(token: string, expires: Date) {
     cookies().set("sessionToken", token, {
         expires: expires,
         httpOnly: true,
-        sameSite: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
     });
 }
 

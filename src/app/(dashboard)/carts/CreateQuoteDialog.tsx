@@ -19,36 +19,20 @@ import {
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ProductType } from "@/types/product-types"
 import { Calendar } from "@/components/ui/calendar"
 import { ChevronDown } from "lucide-react"
+import { useQuoteDialog } from "@/app/custom-hooks/useQuoteDialog"
+import { CartItems } from "@/types/cart-types"
 
-interface CreateQuoteDialogProps {
+export interface CreateQuoteDialogProps {
     buttonProps: { className: string }
-    cartItems: { merchant: string, items: ProductType[], date?: Date, budget?: number }[]
+    cartItems: CartItems[]
     currentCart: string
 }
 
 export function CreateQuoteDialog({ buttonProps, cartItems, currentCart }: CreateQuoteDialogProps): ReactElement {
-    const [currentCartItems, setCurrentCartItems] = useState(cartItems)
 
-    const updateCurrentCartItemsDate = (date: Date, merchant: string) => {
-        if (!currentCartItems) {
-            return
-        }
-        setCurrentCartItems(currentCartItems.map((cartItem) => {
-            if (cartItem.merchant === merchant) {
-                return { ...cartItem, date: date }
-            }
-            return cartItem
-        }))
-    }
-
-    useEffect(() => {
-
-        setCurrentCartItems(cartItems)
-
-    }, [currentCart, cartItems])
+    const { currentCartItems, updateCurrentCartItemsDate, } = useQuoteDialog({ cartItems, currentCart })
 
     return (
         <Dialog>
@@ -64,7 +48,7 @@ export function CreateQuoteDialog({ buttonProps, cartItems, currentCart }: Creat
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4">
-                        {currentCartItems ? currentCartItems.map((cartEntry) => (
+                        {currentCartItems.length !== 0 && currentCartItems ? currentCartItems.map((cartEntry) => (
                             <div className="font-inter p-3 grid gap-3 border-1 border-foreground-200 rounded-md" key={cartEntry.merchant}>
                                 <h3 className="font-inter font-semibold text-md"> Merchant: {cartEntry.merchant}</h3>
                                 <p className="text-sm" >Total Items: <span className="font-bold">{cartEntry.items.length}</span></p>
@@ -86,7 +70,12 @@ export function CreateQuoteDialog({ buttonProps, cartItems, currentCart }: Creat
                                     </div>
                                 </div>
                             </div>
-                        )) : null}
+                        )) : <div className="p-7">
+                            <p className="text-center font-bold text-2xl">
+                                NO ITEMS TO CREATE QUOTE
+                            </p>
+
+                        </div>}
                     </div>
                     <DialogFooter>
                         <DialogClose asChild>

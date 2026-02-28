@@ -61,11 +61,16 @@ export default async function CartContent({
 
             )
             }
-            <div className="flex justify-end gap-x-4 px-3">
-                <CreateQuoteDialog buttonProps={{ className: "bg-secondary-foreground hover:bg-[#83CAA8] border-border border-[1px] text-text-secondary shadow-none text-lg px-8 py-5 " }} cartItems={quoteCartData} currentCart={cart ?? ""} />
-                <Button className="bg-secondary-foreground hover:bg-[#83CAA8] border-border border-[1px] text-text-secondary shadow-none text-lg px-8 py-5 ">
-                    Create Itinerary
+            <div className="flex justify-between items-center gap-x-4 px-3 py-2">
+                <Button variant="outline" className="text-[#525252] shadow-none text-sm">
+                    Print List
                 </Button>
+                <div className="flex gap-x-3">
+                    <CreateQuoteDialog buttonProps={{ className: "bg-secondary-foreground hover:bg-[#83CAA8] border-border border-[1px] text-text-secondary shadow-none text-lg px-8 py-5 " }} cartItems={quoteCartData} currentCart={cart ?? ""} />
+                    <Button variant="outline" className="text-[#525252] shadow-none text-sm">
+                        Create Itinerary
+                    </Button>
+                </div>
             </div>
         </div >
     );

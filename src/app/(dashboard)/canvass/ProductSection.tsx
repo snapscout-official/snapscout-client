@@ -28,6 +28,7 @@ export default async function ProductSection({
     let links: LinksProp[] = [];
     const productData = await result.json();
 
+
     const products: Array<ProductType[]> = productData.products.data;
     const prevPage = splitUrlString(productData.products.prev_page_url);
     const nextPage = splitUrlString(productData.products.next_page_url);

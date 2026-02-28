@@ -1,5 +1,5 @@
 
-import { getCurrentUserRole, isAuthenticated } from "@/auth";
+import { getCurrentUserRole, getIsValidToken } from "@/auth";
 
 
 import {
@@ -15,13 +15,13 @@ export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
 export function middleware(req: NextRequest) {
-  const isLoggedIn = isAuthenticated(req);
+  const sessionToken = req.cookies.get("sessionToken")?.value;
+  const isLoggedIn = sessionToken ? getIsValidToken(sessionToken) : false;
   const { nextUrl } = req;
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isMerchantRoute = nextUrl.pathname.startsWith("/merchant");
   const headers = new Headers(req.headers);
-  const role = "Agency";
   headers.set("x-current-path", nextUrl.pathname);
   //auth type of middleware
 
